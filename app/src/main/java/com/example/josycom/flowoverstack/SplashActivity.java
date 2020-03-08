@@ -14,6 +14,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        //SplashScreen handler
         Handler handler = new Handler();
         long splashTime = 5000L;
         handler.postDelayed(new Runnable() {
@@ -24,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         }, splashTime);
     }
 
+    //Launch MainActivity
     private void goToMainActivity() {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
