@@ -39,6 +39,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    //Full screen implementation
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
