@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="4dp"
+    tools:showIn="@layout/fragment_first">
+
+    <ImageView
+        android:id="@+id/iv_avatar_item"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/avatar_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_name_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="monospace"
+        android:maxLines="3"
+        android:text="@string/tv_example_name_item"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_avatar_item"
+        app:layout_constraintTop_toBottomOf="@+id/iv_avatar_item"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_question_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:fontFamily="monospace"
+        android:maxLines="4"
+        android:text="@string/tv_example_question_item"
+        android:textColor="#000"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_avatar_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_views_item"
+        android:layout_width="15dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/iv_views"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_item"
+        android:contentDescription="@string/view_indicator_image" />
+
+    <TextView
+        android:id="@+id/tv_counter_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="monospace"
+        android:textColor="#000"
+        android:text="@string/tv_example_counter_item"
+        app:layout_constraintStart_toEndOf="@+id/iv_views_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
+
+    <TextView
+        android:id="@+id/tv_asked_text_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/tv_asked_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_views_item" />
+
+    <TextView
+        android:id="@+id/tv_date_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="4dp"
+        android:fontFamily="monospace"
+        android:text="@string/tv_example_date_item"
+        app:layout_constraintStart_toEndOf="@id/tv_asked_text_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_counter_item"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_answers_count_text_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="monospace"
+        android:text="@string/tv_answers_count_text_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date_item" />
+
+    <TextView
+        android:id="@+id/tv_answers_count_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="4dp"
+        android:text="@string/tv_example_counter_item"
+        android:fontFamily="monospace"
+        android:textColor="#000"
+        app:layout_constraintStart_toEndOf="@id/tv_answers_count_text_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date_item" />
+
+    <TextView
+        android:id="@+id/tv_votes_count_text_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/tv_votes_count_text"
+        android:fontFamily="monospace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
+
+    <TextView
+        android:id="@+id/tv_votes_count_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="4dp"
+        android:text="@string/tv_example_counter_item"
+        android:fontFamily="monospace"
+        android:textColor="#000"
+        app:layout_constraintStart_toEndOf="@id/tv_votes_count_text_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
+
+    <TextView
+        android:id="@+id/tv_tags_list_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/tv_tags_placeholder"
+        android:fontFamily="monospace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_votes_count_text_item" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#dadada"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

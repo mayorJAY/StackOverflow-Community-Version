@@ -9,4 +9,23 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+    <string name="error">Something is going wrong! Try again please</string>
+    <string name="search">Search</string>
+    <string name="tv_enter_question">Enter the question bellow</string>
+    <string name="avatar_description">Userpic</string>
+    <string name="tv_example_question_item">Here will be the question! ;kfvs;lhfvl;sndflvndsf ;kfvs;lhfvl;sndflvndsf ;kfvs;lhfvl;sndflvndsf ;kfvs;lhfvl;sndflvndsf ;kfvs;lhfvl;sndflvndsf ;kfvs;lhfvl;sndflvndsf;kfvs;lhfvl;sndflvndsf;kfvs;lhfvl;sndflvndsf;kfvs;lhfvl;sndflvndsf;kfvs;lhfvl;sndflvndsf;kfvs;lhfvl;sndflvndsf;kfvs;lhfvl;sndflvndsf;kfvs;lhfvl;sndflvndsf</string>
+    <string name="tv_example_date_item">11.10.2019</string>
+    <string name="tv_example_counter_item">12</string>
+    <string name="tv_example_name_item">Alex Names</string>
+    <string name="tv_asked_detail">Asked</string>
+    <string name="tv_answers_count_text_item">Answers:</string>
+    <string name="tv_example_answer_item">Here will be answer</string>
+    <string name="tv_score_text_item">Score</string>
+    <string name="tv_date_answer_text_item">Answered</string>
+    <string name="view_indicator_image">view indicator image</string>
+    <string name="tv_votes_count_text">Votes:</string>
+    <string name="tv_asked_text">Asked</string>
+    <string name="tv_tags_placeholder">Tags</string>
 </resources>
