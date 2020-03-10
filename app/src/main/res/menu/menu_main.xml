@@ -3,8 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.josycom.flowoverstack.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_search"
+        android:title="@string/action_search"
+        android:icon="@drawable/shr_search"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_filter"
+        android:title="@string/action_filter"
+        android:icon="@drawable/shr_filter"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_sign_in"
+        android:title="@string/action_sign_in"
+        app:showAsAction="never"/>
 </menu>
