@@ -30,6 +30,7 @@
     <string name="tv_asked_text">Asked</string>
     <string name="tv_tags_placeholder">Tags</string>
     <string name="action_sign_in">Sign in</string>
+    <string name="dev_jobs">Dev Jobs</string>
 
     <string-array name="labels_array">
         <item>Home</item>

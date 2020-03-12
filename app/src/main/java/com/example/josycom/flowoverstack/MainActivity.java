@@ -26,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
     @Override
@@ -51,21 +51,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
+        if (id == R.id.action_sign_in) {
             return true;
-        } else if (id == R.id.action_filter){
-//            LinearLayout linearLayout = new LinearLayout(this);
-//            Spinner spinner = new Spinner(this);
-//            ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.labels_array,
-//                    android.R.layout.simple_spinner_item);
-//            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            spinner.setAdapter(arrayAdapter);
-//            linearLayout.addView(spinner);
-//            setContentView(linearLayout);
-//            LinearLayout.LayoutParams layoutParams = (android.widget.LinearLayout.LayoutParams) spinner.getLayoutParams();
-//            layoutParams.width = 400;
-//            layoutParams.height = 400;
-//            spinner.setLayoutParams(layoutParams);
+        } else if (id == R.id.action_jobs){
             return true;
         }
         return super.onOptionsItemSelected(item);
