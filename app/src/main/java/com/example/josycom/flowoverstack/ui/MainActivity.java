@@ -1,8 +1,9 @@
-package com.example.josycom.flowoverstack;
+package com.example.josycom.flowoverstack.ui;
 
 import android.content.Context;
 import android.os.Bundle;
 
+import com.example.josycom.flowoverstack.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -34,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.labels_array,
+                android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
+        // TODO: Respond to user selection using OnItemSelectedListener
     }
 
     @Override

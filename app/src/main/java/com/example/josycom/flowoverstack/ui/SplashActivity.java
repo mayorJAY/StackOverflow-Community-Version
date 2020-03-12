@@ -1,4 +1,4 @@
-package com.example.josycom.flowoverstack;
+package com.example.josycom.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+
+import com.example.josycom.flowoverstack.R;
 
 public class SplashActivity extends AppCompatActivity {
 
