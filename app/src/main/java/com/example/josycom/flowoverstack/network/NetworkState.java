@@ -2,19 +2,19 @@ package com.example.josycom.flowoverstack.network;
 
 public class NetworkState {
 
-    private final Status status;
-    private final int code;
-    private final String msg;
-    private final String apiName;
+    private final Status mStatus;
+    private final int mCode;
+    private final String mMsg;
+    private final String mApiName;
 
     public static final NetworkState LOADED;
     public static final NetworkState LOADING;
 
     public NetworkState(Status status, int code, String msg, String apiName) {
-        this.status = status;
-        this.code = code;
-        this.msg = msg;
-        this.apiName = apiName;
+        this.mStatus = status;
+        this.mCode = code;
+        this.mMsg = msg;
+        this.mApiName = apiName;
     }
 
     static {
@@ -23,19 +23,19 @@ public class NetworkState {
     }
 
     public Status getStatus() {
-        return status;
+        return mStatus;
     }
 
     public String getMsg() {
-        return msg;
+        return mMsg;
     }
 
     public int getCode() {
-        return code;
+        return mCode;
     }
 
     public String getApiName() {
-        return apiName;
+        return mApiName;
     }
 
     public enum Status {
