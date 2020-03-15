@@ -10,6 +10,11 @@ public interface StringConstants {
 
     String ORDER_DESCENDING = "desc";
 
+    /**
+     * Filter for getting upvote count in the response
+     */
+    String FILTER = "!Fc6b6oecdMxo)a9GWh_oLGugZw";
+
     String SORT_BY_ACTIVITY = "activity";
     String SORT_BY_VOTES = "votes";
     String SORT_BY_CREATION = "creation";
