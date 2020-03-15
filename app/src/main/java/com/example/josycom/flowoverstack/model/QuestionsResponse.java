@@ -9,23 +9,23 @@ public class QuestionsResponse {
 
     @SerializedName("has_more")
     @Expose
-    private Boolean has_more;
+    private Boolean hasMore;
     @SerializedName("items")
     @Expose
     private List<Question> items;
     @SerializedName("quota_max")
     @Expose
-    private Integer quota_max;
+    private Integer quotaMax;
     @SerializedName("quota_remaining")
     @Expose
-    private Integer quota_remaining;
+    private Integer quotaRemaining;
 
-    public Boolean getHas_more() {
-        return has_more;
+    public Boolean getHasMore() {
+        return hasMore;
     }
 
-    public void setHas_more(Boolean has_more) {
-        this.has_more = has_more;
+    public void setHasMore(Boolean hasMore) {
+        this.hasMore = hasMore;
     }
 
     public List<Question> getItems() {
@@ -36,19 +36,19 @@ public class QuestionsResponse {
         this.items = items;
     }
 
-    public Integer getQuota_max() {
-        return quota_max;
+    public Integer getQuotaMax() {
+        return quotaMax;
     }
 
-    public void setQuota_max(Integer quota_max) {
-        this.quota_max = quota_max;
+    public void setQuotaMax(Integer quotaMax) {
+        this.quotaMax = quotaMax;
     }
 
-    public Integer getQuota_remaining() {
-        return quota_remaining;
+    public Integer getQuotaRemaining() {
+        return quotaRemaining;
     }
 
-    public void setQuota_remaining(Integer quota_remaining) {
-        this.quota_remaining = quota_remaining;
+    public void setQuotaRemaining(Integer quotaRemaining) {
+        this.quotaRemaining = quotaRemaining;
     }
 }

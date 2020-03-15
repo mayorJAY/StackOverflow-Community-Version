@@ -14,7 +14,7 @@ import java.util.concurrent.Executor;
 
 import retrofit2.Call;
 
-public class ItemDataSource extends PageKeyedDataSource<Integer, Question> implements StringConstants {
+public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> implements StringConstants {
 
     private static final int FIRST_PAGE = 1;
 
@@ -27,7 +27,7 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, Question> imple
     private MutableLiveData<NetworkState> mInitialLoading;
     private Executor mRetryExecutor;
 
-    public ItemDataSource(ApiService apiService, String accessToken, String serviceName, String sortType, Executor retryExecutor){
+    public QuestionDataSource(ApiService apiService, String accessToken, String serviceName, String sortType, Executor retryExecutor){
         this.mApiService = apiService;
         this.mAccessToken = accessToken;
         this.mServiceName = serviceName;
@@ -65,8 +65,8 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, Question> imple
 
             @Override
             public void onError(String strApiName, ErrorModel errorModel) {
-                mInitialLoading.postValue(new NetworkState(NetworkState.Status.FAILED, errorModel.getError_id(), errorModel.getError_message(), mServiceName));
-                mNetworkState.postValue(new NetworkState(NetworkState.Status.FAILED, errorModel.getError_id(), errorModel.getError_message(), mServiceName));
+                mInitialLoading.postValue(new NetworkState(NetworkState.Status.FAILED, errorModel.getErrorId(), errorModel.getErrorMessage(), mServiceName));
+                mNetworkState.postValue(new NetworkState(NetworkState.Status.FAILED, errorModel.getErrorId(), errorModel.getErrorMessage(), mServiceName));
             }
 
             @Override
@@ -91,7 +91,7 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, Question> imple
 
             @Override
             public void onError(String strApiName, ErrorModel errorModel) {
-                mNetworkState.postValue(new NetworkState(NetworkState.Status.FAILED, errorModel.getError_id(), errorModel.getError_message(), mServiceName));
+                mNetworkState.postValue(new NetworkState(NetworkState.Status.FAILED, errorModel.getErrorId(), errorModel.getErrorMessage(), mServiceName));
             }
 
             @Override
@@ -111,13 +111,13 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, Question> imple
             public void onSuccess(String strApiName, Object response) {
                 mNetworkState.postValue(NetworkState.LOADED);
                 QuestionsResponse questionsResponse = (QuestionsResponse) response;
-                Integer key = questionsResponse.getHas_more() ? params.key + 1 : null;
+                Integer key = questionsResponse.getHasMore() ? params.key + 1 : null;
                 callback.onResult(questionsResponse.getItems(), key);
             }
 
             @Override
             public void onError(String strApiName, ErrorModel errorModel) {
-                mNetworkState.postValue(new NetworkState(NetworkState.Status.FAILED, errorModel.getError_id(), errorModel.getError_message(), mServiceName));
+                mNetworkState.postValue(new NetworkState(NetworkState.Status.FAILED, errorModel.getErrorId(), errorModel.getErrorMessage(), mServiceName));
             }
 
             @Override

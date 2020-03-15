@@ -7,39 +7,39 @@ public class ErrorModel {
 
     @SerializedName("error_id")
     @Expose
-    private Integer error_id;
+    private Integer errorId;
     @SerializedName("error_message")
     @Expose
-    private String error_message;
+    private String errorMessage;
     @SerializedName("error_name")
     @Expose
-    private String error_name;
+    private String errorName;
     @SerializedName("api_name")
     @Expose
     private String apiName;
 
-    public Integer getError_id() {
-        return error_id;
+    public Integer getErrorId() {
+        return errorId;
     }
 
-    public void setError_id(Integer error_id) {
-        this.error_id = error_id;
+    public void setErrorId(Integer errorId) {
+        this.errorId = errorId;
     }
 
-    public String getError_message() {
-        return error_message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setError_message(String error_message) {
-        this.error_message = error_message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
-    public String getError_name() {
-        return error_name;
+    public String getErrorName() {
+        return errorName;
     }
 
-    public void setError_name(String error_name) {
-        this.error_name = error_name;
+    public void setErrorName(String errorName) {
+        this.errorName = errorName;
     }
 
     public String getApiName() {

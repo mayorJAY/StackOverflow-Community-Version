@@ -29,8 +29,8 @@ public class ApiResponse {
                                     apiResponseListener.onError(strApiName, errorModel);
                                 }
                             } catch (IOException e){
-                                errorModel.setError_id(600);
-                                errorModel.setError_message("Internal Error. Please try again later");
+                                errorModel.setErrorId(600);
+                                errorModel.setErrorMessage("Internal Error. Please try again later");
                                 errorModel.setApiName(strApiName);
                                 apiResponseListener.onError(strApiName, errorModel);
                             }
