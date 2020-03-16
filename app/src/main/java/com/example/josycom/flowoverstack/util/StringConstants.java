@@ -7,7 +7,7 @@ public interface StringConstants {
     String SITE = "stackoverflow";
 
     int PAGE_SIZE = 50;
-
+    String ACCESS_TOKEN = "ACCESS_TOKEN";
     String ORDER_DESCENDING = "desc";
 
     /**
