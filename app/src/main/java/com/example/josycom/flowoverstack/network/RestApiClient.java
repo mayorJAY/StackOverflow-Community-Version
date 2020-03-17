@@ -11,11 +11,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestApiClient {
     private Retrofit mRetrofit;
-    private static RestApiClient mInstance;
+    private static RestApiClient sInstance;
 
     private RestApiClient(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        interceptor.level(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         Gson gson = new GsonBuilder()
@@ -30,10 +30,10 @@ public class RestApiClient {
     }
 
     public static synchronized RestApiClient getClientInstance(){
-        if (mInstance == null){
-            mInstance = new RestApiClient();
+        if (sInstance == null){
+            sInstance = new RestApiClient();
         }
-        return mInstance;
+        return sInstance;
     }
 
     public ApiService getApiService(){

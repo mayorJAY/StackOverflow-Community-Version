@@ -1,5 +1,6 @@
 package com.example.josycom.flowoverstack.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.josycom.flowoverstack.R;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         mApiService = RestApiClient.getClientInstance().getApiService();
         mPreferenceHelper = PreferenceHelper.getInstance(getApplicationContext());
-        mAccessToken = mPreferenceHelper.getString(StringConstants.ACCESS_TOKEN);
+        mAccessToken = "access";//mPreferenceHelper.getString(StringConstants.ACCESS_TOKEN);
 
         RecyclerView recyclerView = findViewById(R.id.rv_questions);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         QuestionViewModel questionViewModel = new ViewModelProvider(this,
                 new CustomViewModelFactory(mApiService, mAccessToken, StringConstants.QUESTIONS_BY_ACTIVITY_API_SERVICE,
                         StringConstants.SORT_BY_ACTIVITY)).get(QuestionViewModel.class);
-        final QuestionAdapter questionAdapter = new QuestionAdapter(this);
+        final QuestionAdapter questionAdapter = new QuestionAdapter();
 
         questionViewModel.getQuestionPagedList().observe(this, new Observer<PagedList<Question>>() {
             @Override
@@ -74,14 +75,15 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(questionAdapter);
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AnswerActivity.class));
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-//            }
-//        });
+            }
+        });
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.labels_array,
                 android.R.layout.simple_spinner_item);

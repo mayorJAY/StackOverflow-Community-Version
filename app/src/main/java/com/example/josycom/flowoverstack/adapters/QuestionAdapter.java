@@ -1,7 +1,6 @@
 package com.example.josycom.flowoverstack.adapters;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import java.util.List;
 
 public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.QuestionViewHolder> {
 
-    private Context mContext;
     private static final int QUESTION_ITEM_VIEW_TYPE = 1;
     private static final int LOAD_ITEM_VIEW_TYPE = 0;
     private NetworkState mNetworkState;
@@ -43,9 +41,8 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
         }
     };
 
-    public QuestionAdapter(Context context){
+    public QuestionAdapter(){
         super(DIFF_CALLBACK);
-        this.mContext = context;
     }
 
     @Override
@@ -73,8 +70,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
-        Question question = getItem(position);
-        holder.bind(question);
+        holder.bind(getItem(position));
     }
 
     public void setNetworkState(NetworkState networkState){

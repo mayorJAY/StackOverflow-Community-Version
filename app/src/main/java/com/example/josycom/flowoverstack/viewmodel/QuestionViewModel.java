@@ -29,7 +29,7 @@ public class QuestionViewModel extends ViewModel {
         mExecutor = Executors.newFixedThreadPool(5);
 
         QuestionDataSourceFactory factory = new QuestionDataSourceFactory(apiService, accessToken, serviceName, sortType, mExecutor);
-        mDataSource = factory.getMutableLiveData();
+        mDataSource = factory.getQuestionLiveDataSource();
 
         mNetworkStateLiveData = Transformations.switchMap(mDataSource, new Function<QuestionDataSource, LiveData<NetworkState>>() {
             @Override
@@ -43,7 +43,7 @@ public class QuestionViewModel extends ViewModel {
                 .setPageSize(StringConstants.PAGE_SIZE)
                 .build();
 
-        mQuestionPagedList = (new LivePagedListBuilder<Integer, Question>(factory, pageConfig))
+        mQuestionPagedList = (new LivePagedListBuilder<>(factory, pageConfig))
                 .setFetchExecutor(mExecutor)
                 .build();
     }

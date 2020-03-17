@@ -4,6 +4,8 @@ import com.example.josycom.flowoverstack.model.ErrorModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 
 import retrofit2.Call;
@@ -15,12 +17,11 @@ public class ApiResponse {
     public static <T> void sendRequest(Call<T> call, final String strApiName, final ApiResponseListener apiResponseListener){
         call.enqueue(new Callback<T>() {
             @Override
-            public void onResponse(Call<T> call, Response<T> response) {
+            public void onResponse(@NotNull Call<T> call, @NotNull Response<T> response) {
                 if (response.isSuccessful() && response.code() == 200){
                     if (response.body() != null){
                         apiResponseListener.onSuccess(strApiName, response.body());
                     } else {
-                        if (response.code() == 400){
                             Gson gson = new GsonBuilder().create();
                             ErrorModel errorModel = new ErrorModel();
                             try{
@@ -34,14 +35,13 @@ public class ApiResponse {
                                 errorModel.setApiName(strApiName);
                                 apiResponseListener.onError(strApiName, errorModel);
                             }
-                        }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<T> call, Throwable t) {
-                String errorMessage = (t == null) ? "Unknown Error" :t.getMessage();
+            public void onFailure(@NotNull Call<T> call, @NotNull Throwable t) {
+                String errorMessage = t.getMessage();
                 apiResponseListener.onFailure(strApiName, errorMessage);
             }
         });

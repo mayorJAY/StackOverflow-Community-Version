@@ -7,14 +7,14 @@ import com.example.josycom.flowoverstack.network.ApiService;
 
 import java.util.concurrent.Executor;
 
-public class QuestionDataSourceFactory extends DataSource.Factory {
+public class QuestionDataSourceFactory extends DataSource.Factory<Integer, Question> {
 
     private final ApiService mApiService;
     private final String mAccessToken;
     private final String mServiceName;
     private String mSortType;
 
-    private MutableLiveData<QuestionDataSource> mMutableLiveData;
+    private MutableLiveData<QuestionDataSource> mQuestionLiveDataSource;
 
     private Executor mExecutor;
 
@@ -24,17 +24,17 @@ public class QuestionDataSourceFactory extends DataSource.Factory {
         this.mServiceName = serviceName;
         this.mSortType = sortType;
         this.mExecutor = executor;
-        this.mMutableLiveData = new MutableLiveData<>();
+        this.mQuestionLiveDataSource = new MutableLiveData<>();
     }
 
     @Override
-    public DataSource create() {
+    public DataSource<Integer, Question> create() {
         QuestionDataSource questionDataSource = new QuestionDataSource(mApiService, mAccessToken, mServiceName, mSortType, mExecutor);
-        mMutableLiveData.postValue(questionDataSource);
+        mQuestionLiveDataSource.postValue(questionDataSource);
         return questionDataSource;
     }
 
-    public MutableLiveData<QuestionDataSource> getMutableLiveData() {
-        return mMutableLiveData;
+    public MutableLiveData<QuestionDataSource> getQuestionLiveDataSource() {
+        return mQuestionLiveDataSource;
     }
 }
