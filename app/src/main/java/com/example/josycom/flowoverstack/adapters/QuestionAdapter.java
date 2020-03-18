@@ -47,12 +47,13 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        return (isLoadingData() && position == getItemCount() - 1) ? LOAD_ITEM_VIEW_TYPE : QUESTION_ITEM_VIEW_TYPE;
+        //return (isLoadingData() && position == getItemCount() - 1) ? LOAD_ITEM_VIEW_TYPE : QUESTION_ITEM_VIEW_TYPE;
+        return QUESTION_ITEM_VIEW_TYPE;
     }
 
-    private boolean isLoadingData() {
-        return (mNetworkState != null && mNetworkState != NetworkState.LOADED);
-    }
+//    private boolean isLoadingData() {
+//        return (mNetworkState != null && mNetworkState != NetworkState.LOADED);
+//    }
 
     @NonNull
     @Override
@@ -73,16 +74,16 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
         holder.bind(getItem(position));
     }
 
-    public void setNetworkState(NetworkState networkState){
-        boolean wasLoading = isLoadingData();
-        mNetworkState = networkState;
-        boolean willLoad = isLoadingData();
-        if (wasLoading != willLoad){
-            if (wasLoading)
-                notifyItemRemoved(getItemCount());
-            else notifyItemInserted(getItemCount());
-        }
-    }
+//    public void setNetworkState(NetworkState networkState){
+//        boolean wasLoading = isLoadingData();
+//        mNetworkState = networkState;
+//        boolean willLoad = isLoadingData();
+//        if (wasLoading != willLoad){
+//            if (wasLoading)
+//                notifyItemRemoved(getItemCount());
+//            else notifyItemInserted(getItemCount());
+//        }
+//    }
 
     static class QuestionViewHolder extends RecyclerView.ViewHolder{
         ImageView mAvatarView;

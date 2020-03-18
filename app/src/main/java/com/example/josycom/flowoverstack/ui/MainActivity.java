@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -67,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        questionViewModel.getNetworkStateLiveData().observe(this, new Observer<NetworkState>() {
-            @Override
-            public void onChanged(NetworkState networkState) {
-                questionAdapter.setNetworkState(networkState);
-            }
-        });
+//        questionViewModel.getNetworkStateLiveData().observe(this, new Observer<NetworkState>() {
+//            @Override
+//            public void onChanged(NetworkState networkState) {
+//                questionAdapter.setNetworkState(networkState);
+//            }
+//        });
         recyclerView.setAdapter(questionAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -84,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
             }
         });
-        Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.labels_array,
-                android.R.layout.simple_spinner_item);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(arrayAdapter);
-        // TODO: Respond to user selection using OnItemSelectedListener
+//        Spinner spinner = findViewById(R.id.spinner);
+//        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.labels_array,
+//                android.R.layout.simple_spinner_item);
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(arrayAdapter);
+//        // TODO: Respond to user selection using OnItemSelectedListener
     }
 
     @Override
