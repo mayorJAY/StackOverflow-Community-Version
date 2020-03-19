@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 questionAdapter.setNetworkState(networkState);
             }
         });
-        recyclerView.setAdapter(questionAdapter);
+        //recyclerView.setAdapter(questionAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
