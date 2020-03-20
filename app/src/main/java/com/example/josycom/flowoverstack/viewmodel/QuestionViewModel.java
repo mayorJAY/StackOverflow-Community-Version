@@ -20,18 +20,16 @@ import java.util.concurrent.Executors;
 public class QuestionViewModel extends ViewModel {
     private LiveData<PagedList<Question>> mQuestionPagedList;
     private LiveData<NetworkState> mNetworkStateLiveData;
-    private LiveData<QuestionDataSource> mDataSource;
-    private Executor mExecutor;
 
 
     public QuestionViewModel(ApiService apiService, String accessToken, String serviceName, String sortType) {
 
-        mExecutor = Executors.newFixedThreadPool(5);
+        Executor executor = Executors.newFixedThreadPool(5);
 
-        QuestionDataSourceFactory factory = new QuestionDataSourceFactory(apiService, accessToken, serviceName, sortType, mExecutor);
-        mDataSource = factory.getQuestionLiveDataSource();
+        QuestionDataSourceFactory factory = new QuestionDataSourceFactory(apiService, accessToken, serviceName, sortType, executor);
+        LiveData<QuestionDataSource> dataSource = factory.getQuestionLiveDataSource();
 
-        mNetworkStateLiveData = Transformations.switchMap(mDataSource, new Function<QuestionDataSource, LiveData<NetworkState>>() {
+        mNetworkStateLiveData = Transformations.switchMap(dataSource, new Function<QuestionDataSource, LiveData<NetworkState>>() {
             @Override
             public LiveData<NetworkState> apply(QuestionDataSource source) {
                 return source.getNetworkState();
@@ -44,7 +42,7 @@ public class QuestionViewModel extends ViewModel {
                 .build();
 
         mQuestionPagedList = (new LivePagedListBuilder<>(factory, pageConfig))
-                .setFetchExecutor(mExecutor)
+                .setFetchExecutor(executor)
                 .build();
     }
 

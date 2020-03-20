@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 questionAdapter.setNetworkState(networkState);
             }
         });
-        //recyclerView.setAdapter(questionAdapter);
+        recyclerView.setAdapter(questionAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -83,12 +83,6 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
             }
         });
-        Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.labels_array,
-                android.R.layout.simple_spinner_item);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(arrayAdapter);
-        // TODO: Respond to user selection using OnItemSelectedListener
     }
 
     @Override
@@ -106,9 +100,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_sign_in) {
+        if (id == R.id.action_search) {
             return true;
-        } else if (id == R.id.action_jobs){
+        } else if (id == R.id.action_filter){
             return true;
         }
         return super.onOptionsItemSelected(item);
