@@ -1,6 +1,5 @@
 package com.example.josycom.flowoverstack.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,16 +7,12 @@ import java.util.List;
 public class QuestionsResponse {
 
     @SerializedName("has_more")
-    @Expose
     private Boolean hasMore;
     @SerializedName("items")
-    @Expose
     private List<Question> items;
     @SerializedName("quota_max")
-    @Expose
     private Integer quotaMax;
     @SerializedName("quota_remaining")
-    @Expose
     private Integer quotaRemaining;
 
     public Boolean getHasMore() {

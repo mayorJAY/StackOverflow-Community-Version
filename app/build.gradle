@@ -34,14 +34,27 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'org.jsoup:jsoup:1.12.1'
+
+    // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+
+    // glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+    // Logging
     implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
-    implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'com.squareup.okhttp3:okhttp:4.0.0'
+
+    // paging library
     implementation 'android.arch.paging:runtime:1.0.1'
+
+    //ViewModel
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
 }

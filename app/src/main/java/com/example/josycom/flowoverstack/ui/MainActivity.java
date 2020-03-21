@@ -1,20 +1,11 @@
 package com.example.josycom.flowoverstack.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.QuestionAdapter;
 import com.example.josycom.flowoverstack.model.Question;
-import com.example.josycom.flowoverstack.network.ApiService;
-import com.example.josycom.flowoverstack.network.NetworkState;
-import com.example.josycom.flowoverstack.network.RestApiClient;
-import com.example.josycom.flowoverstack.util.PreferenceHelper;
-import com.example.josycom.flowoverstack.util.StringConstants;
-import com.example.josycom.flowoverstack.viewmodel.CustomViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,18 +16,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ApiService mApiService;
-    private String mAccessToken;
-    private PreferenceHelper mPreferenceHelper;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,44 +29,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mApiService = RestApiClient.getClientInstance().getApiService();
-        mPreferenceHelper = PreferenceHelper.getInstance(getApplicationContext());
-        mAccessToken = mPreferenceHelper.getString(StringConstants.ACCESS_TOKEN);
-
-        RecyclerView recyclerView = findViewById(R.id.rv_questions);
+        recyclerView = findViewById(R.id.rv_questions);
+        final QuestionAdapter questionAdapter = new QuestionAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setHasFixedSize(true);
 
-        QuestionViewModel questionViewModel = new ViewModelProvider(this,
-                new CustomViewModelFactory(mApiService, mAccessToken, StringConstants.QUESTIONS_BY_ACTIVITY_API_SERVICE,
-                        StringConstants.SORT_BY_ACTIVITY)).get(QuestionViewModel.class);
-        final QuestionAdapter questionAdapter = new QuestionAdapter();
-
+        QuestionViewModel questionViewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
         questionViewModel.getQuestionPagedList().observe(this, new Observer<PagedList<Question>>() {
             @Override
             public void onChanged(PagedList<Question> questions) {
                 questionAdapter.submitList(questions);
             }
         });
-
-        questionViewModel.getNetworkStateLiveData().observe(this, new Observer<NetworkState>() {
-            @Override
-            public void onChanged(NetworkState networkState) {
-                questionAdapter.setNetworkState(networkState);
-            }
-        });
         recyclerView.setAdapter(questionAdapter);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), AnswerActivity.class));
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override

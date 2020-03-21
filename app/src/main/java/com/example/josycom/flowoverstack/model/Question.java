@@ -1,6 +1,5 @@
 package com.example.josycom.flowoverstack.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,40 +7,28 @@ import java.util.List;
 public class Question {
 
     @SerializedName("tags")
-    @Expose
     private List<String> tags = null;
     @SerializedName("body")
-    @Expose
     private String body;
     @SerializedName("owner")
-    @Expose
     private Owner mOwner;
     @SerializedName("is_answered")
-    @Expose
     private Boolean isAnswered;
     @SerializedName("view_count")
-    @Expose
     private Integer viewCount;
     @SerializedName("answer_count")
-    @Expose
     private Integer answerCount;
     @SerializedName("score")
-    @Expose
     private Integer score;
     @SerializedName("last_activity_date")
-    @Expose
     private Integer lastActivityDate;
     @SerializedName("creation_date")
-    @Expose
     private Integer creationDate;
     @SerializedName("question_id")
-    @Expose
     private Integer questionId;
     @SerializedName("link")
-    @Expose
     private String link;
     @SerializedName("title")
-    @Expose
     private String title;
 
     public List<String> getTags() {

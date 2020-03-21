@@ -17,16 +17,11 @@ import com.bumptech.glide.Glide;
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
-import com.example.josycom.flowoverstack.network.NetworkState;
 import com.example.josycom.flowoverstack.util.DateUtil;
 
 import java.util.List;
 
 public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.QuestionViewHolder> {
-
-    private static final int QUESTION_ITEM_VIEW_TYPE = 1;
-    private static final int LOAD_ITEM_VIEW_TYPE = 0;
-    private NetworkState mNetworkState;
 
     private static DiffUtil.ItemCallback<Question> DIFF_CALLBACK = new DiffUtil.ItemCallback<Question>() {
         @Override
@@ -45,50 +40,23 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
         super(DIFF_CALLBACK);
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return (isLoadingData() && position == getItemCount() - 1) ? LOAD_ITEM_VIEW_TYPE : QUESTION_ITEM_VIEW_TYPE;
-    }
-
-    private boolean isLoadingData() {
-        return (mNetworkState != null && mNetworkState != NetworkState.LOADED);
-    }
-
     @NonNull
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView;
-        if (viewType == QUESTION_ITEM_VIEW_TYPE){
-            itemView = inflater.inflate(R.layout.question_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_item, parent, false);
             return new QuestionViewHolder(itemView);
-        } else {
-            itemView = inflater.inflate(R.layout.load_progress_item, parent, false);
-            return new ProgressViewHolder(itemView);
         }
-    }
 
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
         holder.bind(getItem(position));
     }
 
-    public void setNetworkState(NetworkState networkState){
-        boolean wasLoading = isLoadingData();
-        mNetworkState = networkState;
-        boolean willLoad = isLoadingData();
-        if (wasLoading != willLoad){
-            if (wasLoading)
-                notifyItemRemoved(getItemCount());
-            else notifyItemInserted(getItemCount());
-        }
-    }
-
     static class QuestionViewHolder extends RecyclerView.ViewHolder{
         ImageView mAvatarView;
         TextView mTitleQuestionText, mViewCounterText, mDateText, mNameText, mAnswersCountText, mTagsText;
 
-        public QuestionViewHolder(@NonNull View itemView) {
+        QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
             mAvatarView = itemView.findViewById(R.id.iv_avatar_item);
             mTitleQuestionText = itemView.findViewById(R.id.tv_question_item);
@@ -99,19 +67,20 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
             mTagsText = itemView.findViewById(R.id.tv_tags_list_item);
         }
 
-        public void bind(Question question) {
+        void bind(Question question) {
             if (question != null){
                 Owner owner = question.getOwner();
                 String profileImage = owner.getProfileImage();
                 List<String> tagList = question.getTags();
                 Glide.with(itemView.getContext())
                         .load(profileImage)
+                        .placeholder(R.drawable.loading)
                         .into(mAvatarView);
                 mTitleQuestionText.setText(question.getTitle());
-                mViewCounterText.setText(question.getViewCount());
+                mViewCounterText.setText(question.getViewCount().toString());
                 mDateText.setText(DateUtil.toNormalDate(question.getCreationDate()));
                 mNameText.setText(owner.getDisplayName());
-                mAnswersCountText.setText(question.getAnswerCount());
+                mAnswersCountText.setText(question.getAnswerCount().toString());
                 mTagsText.setText(updateTagsTextView(tagList));
             } else {
                 Toast.makeText(itemView.getContext(), "No item found", Toast.LENGTH_SHORT).show();
@@ -127,12 +96,6 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
                 }
             }
             return builder.toString();
-        }
-    }
-
-    private static class ProgressViewHolder extends QuestionViewHolder {
-        public ProgressViewHolder(View itemView) {
-            super(itemView);
         }
     }
 }

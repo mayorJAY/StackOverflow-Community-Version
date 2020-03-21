@@ -1,30 +1,22 @@
 package com.example.josycom.flowoverstack.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Owner {
 
     @SerializedName("reputation")
-    @Expose
     private Integer reputation;
     @SerializedName("user_id")
-    @Expose
     private Integer userId;
     @SerializedName("user_type")
-    @Expose
     private String userType;
     @SerializedName("accept_rate")
-    @Expose
     private Integer acceptRate;
     @SerializedName("profile_image")
-    @Expose
     private String profileImage;
     @SerializedName("display_name")
-    @Expose
     private String displayName;
     @SerializedName("link")
-    @Expose
     private String link;
 
     public Integer getReputation() {

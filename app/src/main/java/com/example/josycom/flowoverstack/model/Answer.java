@@ -1,48 +1,34 @@
 package com.example.josycom.flowoverstack.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Answer {
 
     @SerializedName("owner")
-    @Expose
     private Owner owner;
     @SerializedName("down_vote_count")
-    @Expose
     private Integer downVoteCount;
     @SerializedName("up_vote_count")
-    @Expose
     private Integer upVoteCount;
     @SerializedName("is_accepted")
-    @Expose
     private Boolean isAccepted;
     @SerializedName("score")
-    @Expose
     private Integer score;
     @SerializedName("last_activity_date")
-    @Expose
     private Integer lastActivityDate;
     @SerializedName("last_edit_date")
-    @Expose
     private Integer lastEditDate;
     @SerializedName("creation_date")
-    @Expose
     private Integer creationDate;
     @SerializedName("answer_id")
-    @Expose
     private Integer answerId;
     @SerializedName("question_id")
-    @Expose
     private Integer questionId;
     @SerializedName("link")
-    @Expose
     private String link;
     @SerializedName("title")
-    @Expose
     private String title;
     @SerializedName("body")
-    @Expose
     private String body;
 
     public Owner getOwner() {
