@@ -6,6 +6,7 @@ public interface StringConstants {
     String QUESTIONS_END_POINT = "/2.2/questions";
     String SITE = "stackoverflow";
 
+    int FIRST_PAGE = 1;
     int PAGE_SIZE = 50;
     String ACCESS_TOKEN = "ACCESS_TOKEN";
     String ORDER_DESCENDING = "desc";

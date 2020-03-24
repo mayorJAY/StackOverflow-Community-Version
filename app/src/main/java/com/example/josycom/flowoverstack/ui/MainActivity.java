@@ -5,6 +5,8 @@ import android.os.Bundle;
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.QuestionAdapter;
 import com.example.josycom.flowoverstack.model.Question;
+import com.example.josycom.flowoverstack.util.StringConstants;
+import com.example.josycom.flowoverstack.viewmodel.CustomViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
+    QuestionAdapter questionAdapter;
+    QuestionViewModel questionViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +33,29 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        handleRecyclerView(StringConstants.SORT_BY_CREATION);
+
+    }
+
+    public void handleRecyclerView(String sortCondition){
         recyclerView = findViewById(R.id.rv_questions);
-        final QuestionAdapter questionAdapter = new QuestionAdapter();
+        questionAdapter = new QuestionAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        QuestionViewModel questionViewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
+        questionViewModel = new ViewModelProvider(this, new CustomViewModelFactory(StringConstants.FIRST_PAGE,
+                StringConstants.PAGE_SIZE,
+                StringConstants.ORDER_DESCENDING,
+                sortCondition,
+                StringConstants.SITE,
+                StringConstants.FILTER)).get(QuestionViewModel.class);
         questionViewModel.getQuestionPagedList().observe(this, new Observer<PagedList<Question>>() {
             @Override
             public void onChanged(PagedList<Question> questions) {
                 questionAdapter.submitList(questions);
             }
         });
-        recyclerView.setAdapter(questionAdapter);
+        recyclerView.swapAdapter(questionAdapter, false);
     }
 
     @Override
@@ -60,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
+            handleRecyclerView(StringConstants.SORT_BY_ACTIVITY);
             return true;
         } else if (id == R.id.action_filter){
             return true;

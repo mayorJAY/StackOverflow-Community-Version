@@ -15,19 +15,33 @@ import retrofit2.Response;
 
 public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> implements StringConstants {
 
-    private static final int FIRST_PAGE = 1;
+    private final int page;
+    private final int pageSize;
+    private final String order;
+    private final String sortCondition;
+    private final String site;
+    private final String filter;
+
+    public QuestionDataSource(int page, int pageSize, String order, String sortCondition, String site, String filter){
+        this.page = page;
+        this.pageSize = pageSize;
+        this.order = order;
+        this.sortCondition = sortCondition;
+        this.site = site;
+        this.filter = filter;
+    }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Question> callback) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
-        Call<QuestionsResponse> call = apiService.getQuestionsForAll(FIRST_PAGE, PAGE_SIZE, ORDER_DESCENDING, SORT_BY_ACTIVITY, SITE, FILTER);
+        Call<QuestionsResponse> call = apiService.getQuestionsForAll(page, pageSize, order, sortCondition, site, filter);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
             public void onResponse(Call<QuestionsResponse> call, Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null) {
                     List<Question> responseItems = apiResponse.getItems();
-                    callback.onResult(responseItems, null, FIRST_PAGE + 1);
+                    callback.onResult(responseItems, null, page + 1);
                 }
             }
 
@@ -40,7 +54,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
-        Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, PAGE_SIZE, ORDER_DESCENDING, SORT_BY_ACTIVITY, SITE, FILTER);
+        Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
             public void onResponse(Call<QuestionsResponse> call, Response<QuestionsResponse> response) {
@@ -67,7 +81,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
-        Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, PAGE_SIZE, ORDER_DESCENDING, SORT_BY_ACTIVITY, SITE, FILTER);
+        Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
             public void onResponse(Call<QuestionsResponse> call, Response<QuestionsResponse> response) {

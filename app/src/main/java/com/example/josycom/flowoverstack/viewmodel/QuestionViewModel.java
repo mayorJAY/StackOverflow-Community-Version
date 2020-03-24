@@ -11,18 +11,30 @@ import com.example.josycom.flowoverstack.model.QuestionDataSourceFactory;
 import com.example.josycom.flowoverstack.util.StringConstants;
 
 public class QuestionViewModel extends ViewModel {
+    private int page;
+    private int pageSize;
+    private String order;
+    private String sortCondition;
+    private String site;
+    private String filter;
     private LiveData<PagedList<Question>> mQuestionPagedList;
 
-    public QuestionViewModel() {
+    public QuestionViewModel(int page, int pageSize, String order, String sortCondition, String site, String filter) {
+        this.page = page;
+        this.pageSize = pageSize;
+        this.order = order;
+        this.sortCondition = sortCondition;
+        this.site = site;
+        this.filter = filter;
         init();
     }
 
     private void init() {
-        QuestionDataSourceFactory factory = new QuestionDataSourceFactory();
+        QuestionDataSourceFactory factory = new QuestionDataSourceFactory(page, pageSize, order, sortCondition, site, filter);
         LiveData<QuestionDataSource> dataSource = factory.questionLiveDataSource;
         PagedList.Config pageConfig = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
-                .setPageSize(StringConstants.PAGE_SIZE)
+                .setPageSize(pageSize)
                 .build();
         mQuestionPagedList = new LivePagedListBuilder<>(factory, pageConfig).build();
     }
