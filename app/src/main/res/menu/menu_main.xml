@@ -9,8 +9,18 @@
         android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_filter"
-        android:title="@string/action_filter"
-        android:icon="@drawable/ic_filter"
+        android:id="@+id/action_filter_by_creation"
+        android:title="@string/action_filter_by_creation"
+        android:orderInCategory="10"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_filter_by_hot"
+        android:title="@string/action_filter_by_hot"
+        android:orderInCategory="20"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_filter_by_vote"
+        android:title="@string/action_filter_by_vote"
+        android:orderInCategory="30"
         app:showAsAction="never"/>
 </menu>

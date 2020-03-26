@@ -3,27 +3,16 @@ package com.example.josycom.flowoverstack.ui;
 import android.os.Bundle;
 
 import com.example.josycom.flowoverstack.R;
-import com.example.josycom.flowoverstack.adapters.QuestionAdapter;
-import com.example.josycom.flowoverstack.model.Question;
-import com.example.josycom.flowoverstack.util.StringConstants;
-import com.example.josycom.flowoverstack.viewmodel.CustomViewModelFactory;
-import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.paging.PagedList;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
+    FragmentTransaction mFragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,36 +21,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        handleRecyclerView();
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                }
-        });
-
-    }
-
-    public void handleRecyclerView(){
-        RecyclerView recyclerView = findViewById(R.id.rv_questions);
-        final QuestionAdapter questionAdapter = new QuestionAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        QuestionViewModel questionViewModel = new ViewModelProvider(this, new CustomViewModelFactory(StringConstants.FIRST_PAGE,
-                StringConstants.PAGE_SIZE,
-                StringConstants.ORDER_DESCENDING,
-                StringConstants.SORT_BY_ACTIVITY,
-                StringConstants.SITE,
-                StringConstants.FILTER)).get(QuestionViewModel.class);
-        questionViewModel.getQuestionPagedList().observe(this, new Observer<PagedList<Question>>() {
-            @Override
-            public void onChanged(PagedList<Question> questions) {
-                questionAdapter.submitList(questions);
-            }
-        });
-        recyclerView.setAdapter(questionAdapter);
+        if (findViewById(R.id.fragment_container) != null){
+            QuestionsByActivityFragment questionsByActivityFragment = new QuestionsByActivityFragment();
+            mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+            mFragmentTransaction.add(R.id.fragment_container, questionsByActivityFragment).commit();
+        }
     }
 
     @Override
@@ -73,16 +37,35 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             return true;
-        } else if (id == R.id.action_filter){
+        } else if (id == R.id.action_filter_by_creation){
+            if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Creation")){
+                QuestionsByCreationFragment questionsByCreationFragment = new QuestionsByCreationFragment();
+                mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                mFragmentTransaction.replace(R.id.fragment_container, questionsByCreationFragment).commit();
+                item.setTitle(R.string.action_filter_by_activity);
+            } else if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Activity")){
+                QuestionsByActivityFragment questionsByActivityFragment = new QuestionsByActivityFragment();
+                mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                mFragmentTransaction.replace(R.id.fragment_container, questionsByActivityFragment).commit();
+                item.setTitle(R.string.action_filter_by_creation);
+            }
             return true;
+        } else if (id == R.id.action_filter_by_hot){
+            if (findViewById(R.id.fragment_container) != null){
+                QuestionsByHotFragment questionsByHotFragment = new QuestionsByHotFragment();
+                mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                mFragmentTransaction.replace(R.id.fragment_container, questionsByHotFragment).commit();
+            }
+        } else if (id == R.id.action_filter_by_vote){
+            if (findViewById(R.id.fragment_container) != null){
+                QuestionsByVoteFragment questionsByVoteFragment = new QuestionsByVoteFragment();
+                mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                mFragmentTransaction.replace(R.id.fragment_container, questionsByVoteFragment).commit();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
