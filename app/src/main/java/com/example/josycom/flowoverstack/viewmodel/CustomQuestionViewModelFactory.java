@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class CustomViewModelFactory implements ViewModelProvider.Factory {
+public class CustomQuestionViewModelFactory implements ViewModelProvider.Factory {
 
     private int page;
     private int pageSize;
@@ -13,7 +13,7 @@ public class CustomViewModelFactory implements ViewModelProvider.Factory {
     private String site;
     private String filter;
 
-    public CustomViewModelFactory(int page, int pageSize, String order, String sortCondition, String site, String filter){
+    public CustomQuestionViewModelFactory(int page, int pageSize, String order, String sortCondition, String site, String filter){
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;

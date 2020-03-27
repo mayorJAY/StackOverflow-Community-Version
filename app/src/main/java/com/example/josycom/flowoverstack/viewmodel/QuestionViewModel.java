@@ -8,7 +8,6 @@ import androidx.paging.PagedList;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.model.QuestionDataSource;
 import com.example.josycom.flowoverstack.model.QuestionDataSourceFactory;
-import com.example.josycom.flowoverstack.util.StringConstants;
 
 public class QuestionViewModel extends ViewModel {
     private int page;

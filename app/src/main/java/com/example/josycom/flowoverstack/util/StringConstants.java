@@ -21,6 +21,15 @@ public interface StringConstants {
     String SORT_BY_CREATION = "creation";
     String SORT_BY_HOT = "hot";
 
+    String EXTRA_QUESTION_TITLE = "question_title";
+    String EXTRA_AVATAR_ADDRESS = "avatar_address";
+    String EXTRA_QUESTION_DATE = "question_date";
+    String EXTRA_QUESTION_ID = "question_id";
+    String EXTRA_QUESTION_NAME = "question_name";
+    String EXTRA_QUESTION_ANSWERS_COUNT = "question_answers";
+    String EXTRA_QUESTION_FULL_TEXT = "question_full_text";
+    String EXTRA_QUESTION_OWNER_LINK = "question_owner_link";
+
     String QUESTIONS_BY_ACTIVITY_API_SERVICE = "QuestionsByActivityApi";
     String QUESTIONS_BY_VOTES_API_SERVICE = "QuestionsByVoteApi";
     String QUESTIONS_BY_CREATION_API_SERVICE = "QuestionsByCreationApi";

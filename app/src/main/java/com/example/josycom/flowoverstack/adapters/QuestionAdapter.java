@@ -23,6 +23,8 @@ import java.util.List;
 
 public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.QuestionViewHolder> {
 
+    private static View.OnClickListener mOnClickListener;
+
     private static DiffUtil.ItemCallback<Question> DIFF_CALLBACK = new DiffUtil.ItemCallback<Question>() {
         @Override
         public boolean areItemsTheSame(@NonNull Question oldItem, @NonNull Question newItem) {
@@ -52,11 +54,15 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
         holder.bind(getItem(position));
     }
 
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
+    }
+
     static class QuestionViewHolder extends RecyclerView.ViewHolder{
         ImageView mAvatarView;
         TextView mTitleQuestionText, mViewCounterText, mDateText, mNameText, mAnswersCountText, mTagsText;
 
-        QuestionViewHolder(@NonNull View itemView) {
+       QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
             mAvatarView = itemView.findViewById(R.id.iv_avatar_item);
             mTitleQuestionText = itemView.findViewById(R.id.tv_question_item);
@@ -65,6 +71,9 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
             mNameText = itemView.findViewById(R.id.tv_name_item);
             mAnswersCountText = itemView.findViewById(R.id.tv_answers_count_item);
             mTagsText = itemView.findViewById(R.id.tv_tags_list_item);
+
+            itemView.setTag(this);
+            itemView.setOnClickListener(mOnClickListener);
         }
 
         void bind(Question question) {

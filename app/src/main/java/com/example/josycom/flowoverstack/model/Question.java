@@ -11,7 +11,7 @@ public class Question {
     @SerializedName("body")
     private String body;
     @SerializedName("owner")
-    private Owner mOwner;
+    private Owner owner;
     @SerializedName("is_answered")
     private Boolean isAnswered;
     @SerializedName("view_count")
@@ -39,28 +39,20 @@ public class Question {
         this.tags = tags;
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public Owner getOwner() {
-        return mOwner;
+        return owner;
     }
 
     public void setOwner(Owner owner) {
-        mOwner = owner;
+        this.owner = owner;
     }
 
-    public Boolean getAnswered() {
+    public Boolean getIsAnswered() {
         return isAnswered;
     }
 
-    public void setAnswered(Boolean answered) {
-        isAnswered = answered;
+    public void setIsAnswered(Boolean isAnswered) {
+        this.isAnswered = isAnswered;
     }
 
     public Integer getViewCount() {
@@ -125,5 +117,9 @@ public class Question {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getBody() {
+        return body;
     }
 }

@@ -18,7 +18,7 @@ import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.QuestionAdapter;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.StringConstants;
-import com.example.josycom.flowoverstack.viewmodel.CustomViewModelFactory;
+import com.example.josycom.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
 
 /**
@@ -48,7 +48,7 @@ public class QuestionsByVoteFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        QuestionViewModel questionViewModel = new ViewModelProvider(this, new CustomViewModelFactory(StringConstants.FIRST_PAGE,
+        QuestionViewModel questionViewModel = new ViewModelProvider(this, new CustomQuestionViewModelFactory(StringConstants.FIRST_PAGE,
                 StringConstants.PAGE_SIZE,
                 StringConstants.ORDER_DESCENDING,
                 StringConstants.SORT_BY_VOTES,
