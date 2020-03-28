@@ -23,6 +23,8 @@ import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.AnswerViewModel;
 import com.example.josycom.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
 
+import org.jsoup.Jsoup;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -59,7 +61,7 @@ public class AnswerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        questionTitleTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE));
+        questionTitleTextView.setText(Jsoup.parse(intent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE)).text());
         fullQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT));
         dateQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         mNameQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
@@ -75,6 +77,7 @@ public class AnswerActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        // This is currently not working, the RecyclerView is not showing the data
         mAnswerViewModel = new ViewModelProvider(this,
                 new CustomAnswerViewModelFactory(mQuestionId)).get(AnswerViewModel.class);
         mAnswerViewModel.getAnswerLiveData().observe(this, new Observer<List<Answer>>() {

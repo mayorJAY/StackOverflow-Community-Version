@@ -19,6 +19,8 @@ import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.DateUtil;
 
+import org.jsoup.Jsoup;
+
 import java.util.List;
 
 public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.QuestionViewHolder> {
@@ -85,7 +87,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
                         .load(profileImage)
                         .placeholder(R.drawable.loading)
                         .into(mAvatarView);
-                mTitleQuestionText.setText(question.getTitle());
+                mTitleQuestionText.setText(Jsoup.parse(question.getTitle()).text());
                 mViewCounterText.setText(question.getViewCount().toString());
                 mDateText.setText(DateUtil.toNormalDate(question.getCreationDate()));
                 mNameText.setText(owner.getDisplayName());

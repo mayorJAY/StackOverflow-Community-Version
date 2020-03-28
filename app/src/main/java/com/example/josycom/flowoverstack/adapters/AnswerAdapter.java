@@ -14,11 +14,12 @@ import com.example.josycom.flowoverstack.util.DateUtil;
 
 import org.jsoup.Jsoup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerViewHolder> {
 
-    private List<Answer> mAnswers;
+    private List<Answer> mAnswers = new ArrayList<>();
     @NonNull
     @Override
     public AnswerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

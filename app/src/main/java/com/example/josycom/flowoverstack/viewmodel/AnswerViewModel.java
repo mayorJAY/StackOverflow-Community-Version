@@ -17,10 +17,14 @@ import retrofit2.Response;
 public class AnswerViewModel extends ViewModel {
 
     private LiveData<List<Answer>> mAnswerLiveData;
-    private int questionId;
 
     public AnswerViewModel(int questionId){
-        this.questionId = questionId;
+        this.mAnswerLiveData = new LiveData<List<Answer>>() {
+            @Override
+            protected void setValue(List<Answer> value) {
+                super.setValue(value);
+            }
+        };
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
         Call<AnswerResponse> call = apiService.getAnswersToQuestion(questionId);
         call.enqueue(new Callback<AnswerResponse>() {
