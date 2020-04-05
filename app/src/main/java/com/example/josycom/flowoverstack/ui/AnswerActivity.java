@@ -15,10 +15,6 @@ import com.bumptech.glide.Glide;
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.AnswerAdapter;
 import com.example.josycom.flowoverstack.model.Answer;
-import com.example.josycom.flowoverstack.model.AnswerResponse;
-import com.example.josycom.flowoverstack.model.QuestionsResponse;
-import com.example.josycom.flowoverstack.network.ApiService;
-import com.example.josycom.flowoverstack.network.RestApiClient;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.AnswerViewModel;
 import com.example.josycom.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
@@ -27,20 +23,8 @@ import org.jsoup.Jsoup;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class AnswerActivity extends AppCompatActivity {
 
-    private TextView mNameQuestionTextView;
-    private ImageView mAvatarQuestionImageView;
-    private RecyclerView mAnswersRecyclerView;
-    private TextView mAnswersCountTextView;
-    private int mQuestionId;
-    private String mAvatarAddress;
-    private String mOwnerQuestionLink;
-    private AnswerViewModel mAnswerViewModel;
     private AnswerAdapter mAnswerAdapter;
 
     @Override
@@ -51,43 +35,41 @@ public class AnswerActivity extends AppCompatActivity {
         TextView questionTitleTextView = findViewById(R.id.tv_question_detail);
         TextView fullQuestionTextView = findViewById(R.id.tv_full_question_detail);
         TextView dateQuestionTextView = findViewById(R.id.tv_date_question_detail);
-        mNameQuestionTextView = findViewById(R.id.tv_name_question_detail);
-        mAvatarQuestionImageView = findViewById(R.id.iv_avatar_question_detail);
-        mAnswersRecyclerView = findViewById(R.id.rv_answers);
-        mAnswersCountTextView = findViewById(R.id.tv_answers_count_detail);
+        TextView nameQuestionTextView = findViewById(R.id.tv_name_question_detail);
+        ImageView avatarQuestionImageView = findViewById(R.id.iv_avatar_question_detail);
+        RecyclerView answersRecyclerView = findViewById(R.id.rv_answers);
+        TextView answersCountTextView = findViewById(R.id.tv_answers_count_detail);
 
-        mAnswersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        answersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAnswerAdapter = new AnswerAdapter();
 
         Intent intent = getIntent();
 
         questionTitleTextView.setText(Jsoup.parse(intent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE)).text());
-        fullQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT));
+        //fullQuestionTextView.setText(Jsoup.parse(intent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)).text());
         dateQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
-        mNameQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
-        mAnswersCountTextView.setText(String.valueOf(intent.getIntExtra(StringConstants.EXTRA_QUESTION_ANSWERS_COUNT, 0)));
-        mQuestionId = intent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
-        mAvatarAddress = intent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
-        mOwnerQuestionLink = intent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
+        nameQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
+        answersCountTextView.setText(String.valueOf(intent.getIntExtra(StringConstants.EXTRA_QUESTION_ANSWERS_COUNT, 0)));
+        int questionId = intent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
+        String avatarAddress = intent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
+        String ownerQuestionLink = intent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
         Glide.with(this)
-                .load(mAvatarAddress)
+                .load(avatarAddress)
                 .placeholder(R.drawable.loading)
-                .into(mAvatarQuestionImageView);
-    }
+                .into(avatarQuestionImageView);
 
-    @Override
-    protected void onResume() {
-        // This is currently not working, the RecyclerView is not showing the data
-        mAnswerViewModel = new ViewModelProvider(this,
-                new CustomAnswerViewModelFactory(mQuestionId)).get(AnswerViewModel.class);
-        mAnswerViewModel.getAnswerLiveData().observe(this, new Observer<List<Answer>>() {
+        AnswerViewModel answerViewModel = new ViewModelProvider(this,
+                new CustomAnswerViewModelFactory(questionId,
+                        StringConstants.ORDER_DESCENDING,
+                        StringConstants.SORT_BY_ACTIVITY,
+                        StringConstants.SITE,
+                        StringConstants.ANSWER_FILTER)).get(AnswerViewModel.class);
+        answerViewModel.getAnswersByActivity().observe(this, new Observer<List<Answer>>() {
             @Override
             public void onChanged(List<Answer> answers) {
                 mAnswerAdapter.setAnswers(answers);
             }
         });
-        mAnswersRecyclerView.setAdapter(mAnswerAdapter);
-
-        super.onResume();
+        answersRecyclerView.setAdapter(mAnswerAdapter);
     }
 }

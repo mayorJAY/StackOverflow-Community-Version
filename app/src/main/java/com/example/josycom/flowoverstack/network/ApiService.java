@@ -20,6 +20,11 @@ public interface ApiService {
             @Query("site") String site,
             @Query(value = "filter", encoded = true) String filter);
 
-    @GET("/2.2/questions/{question_id}/answers?order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wzu0T")
-    Call<AnswerResponse>getAnswersToQuestion(@Path("question_id") int id);
+    @GET(StringConstants.ANSWERS_END_POINT)
+    Call<AnswerResponse> getAnswersToQuestion(
+            @Path("question_id") int id,
+            @Query("order") String order,
+            @Query("sort") String sortCondition,
+            @Query("site") String site,
+            @Query(value = "filter", encoded = true) String filter);
 }

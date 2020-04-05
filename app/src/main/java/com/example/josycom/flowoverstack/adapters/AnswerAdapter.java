@@ -14,12 +14,11 @@ import com.example.josycom.flowoverstack.util.DateUtil;
 
 import org.jsoup.Jsoup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerViewHolder> {
 
-    private List<Answer> mAnswers = new ArrayList<>();
+    private List<Answer> mAnswers;
     @NonNull
     @Override
     public AnswerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,21 +28,28 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
 
     @Override
     public void onBindViewHolder(@NonNull AnswerViewHolder holder, int position) {
-        Answer currentAnswer = mAnswers.get(position);
+        if (mAnswers != null){
+            Answer currentAnswer = mAnswers.get(position);
 
-        holder.answerScore.setText(String.valueOf(currentAnswer.getScore()));
-        holder.answerName.setText(currentAnswer.getOwner().getDisplayName());
-        holder.answerDate.setText(DateUtil.toNormalDate(currentAnswer.getCreationDate()));
-        holder.answerBody.setText(Jsoup.parse(currentAnswer.getBody()).text());
-    }
-
-    @Override
-    public int getItemCount() {
-        return mAnswers.size();
+            holder.answerScore.setText(String.valueOf(currentAnswer.getScore()));
+            holder.answerName.setText(currentAnswer.getOwner().getDisplayName());
+            holder.answerDate.setText(DateUtil.toNormalDate(currentAnswer.getCreationDate()));
+            holder.answerBody.setText(Jsoup.parse(currentAnswer.getBody()).text());
+        }
     }
 
     public void setAnswers(List<Answer> answers) {
         mAnswers = answers;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount() {
+        if (mAnswers != null){
+            return mAnswers.size();
+        } else {
+            return 0;
+        }
     }
 
     static class AnswerViewHolder extends RecyclerView.ViewHolder {

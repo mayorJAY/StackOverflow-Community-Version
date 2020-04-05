@@ -18,7 +18,7 @@ public class QuestionViewModel extends ViewModel {
     private String filter;
     private LiveData<PagedList<Question>> mQuestionPagedList;
 
-    public QuestionViewModel(int page, int pageSize, String order, String sortCondition, String site, String filter) {
+    QuestionViewModel(int page, int pageSize, String order, String sortCondition, String site, String filter) {
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;

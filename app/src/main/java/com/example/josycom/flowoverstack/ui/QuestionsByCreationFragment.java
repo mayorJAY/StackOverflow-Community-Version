@@ -53,7 +53,7 @@ public class QuestionsByCreationFragment extends Fragment {
                 StringConstants.ORDER_DESCENDING,
                 StringConstants.SORT_BY_CREATION,
                 StringConstants.SITE,
-                StringConstants.FILTER)).get(QuestionViewModel.class);
+                StringConstants.QUESTION_FILTER)).get(QuestionViewModel.class);
         questionViewModel.getQuestionPagedList().observe(getViewLifecycleOwner(), new Observer<PagedList<Question>>() {
             @Override
             public void onChanged(PagedList<Question> questions) {

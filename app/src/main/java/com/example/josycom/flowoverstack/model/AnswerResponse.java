@@ -1,5 +1,6 @@
 package com.example.josycom.flowoverstack.model;
 
+
 import androidx.lifecycle.LiveData;
 
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +12,7 @@ public class AnswerResponse {
     @SerializedName("has_more")
     private Boolean hasMore;
     @SerializedName("items")
-    private LiveData<List<Answer>> items;
+    private List<Answer> items;
     @SerializedName("quota_max")
     private Integer quotaMax;
     @SerializedName("quota_remaining")
@@ -25,11 +26,11 @@ public class AnswerResponse {
         this.hasMore = hasMore;
     }
 
-    public LiveData<List<Answer>> getItems() {
+    public List<Answer> getItems() {
         return items;
     }
 
-    public void setItems(LiveData<List<Answer>> items) {
+    public void setItems(List<Answer> items) {
         this.items = items;
     }
 

@@ -24,8 +24,6 @@ import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
 
-import java.util.List;
-
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_DATE;
@@ -91,7 +89,7 @@ public class QuestionsByActivityFragment extends Fragment {
                 StringConstants.ORDER_DESCENDING,
                 StringConstants.SORT_BY_ACTIVITY,
                 StringConstants.SITE,
-                StringConstants.FILTER)).get(QuestionViewModel.class);
+                StringConstants.QUESTION_FILTER)).get(QuestionViewModel.class);
         questionViewModel.getQuestionPagedList().observe(getViewLifecycleOwner(), new Observer<PagedList<Question>>() {
             @Override
             public void onChanged(PagedList<Question> questions) {
