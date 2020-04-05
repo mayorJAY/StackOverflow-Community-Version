@@ -22,10 +22,12 @@ import com.example.josycom.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
 import org.jsoup.Jsoup;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AnswerActivity extends AppCompatActivity {
 
     private AnswerAdapter mAnswerAdapter;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +45,16 @@ public class AnswerActivity extends AppCompatActivity {
         answersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAnswerAdapter = new AnswerAdapter();
 
-        Intent intent = getIntent();
+        mIntent = getIntent();
 
-        questionTitleTextView.setText(Jsoup.parse(intent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE)).text());
-        //fullQuestionTextView.setText(Jsoup.parse(intent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)).text());
-        dateQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
-        nameQuestionTextView.setText(intent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
-        answersCountTextView.setText(String.valueOf(intent.getIntExtra(StringConstants.EXTRA_QUESTION_ANSWERS_COUNT, 0)));
-        int questionId = intent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
-        String avatarAddress = intent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
-        String ownerQuestionLink = intent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
+        questionTitleTextView.setText(Jsoup.parse(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE)).text());
+        fullQuestionTextView.setText(Jsoup.parse(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)).text());
+        dateQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
+        nameQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
+        answersCountTextView.setText(String.valueOf(mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ANSWERS_COUNT, 0)));
+        int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
+        String avatarAddress = mIntent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
+        String ownerQuestionLink = mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
         Glide.with(this)
                 .load(avatarAddress)
                 .placeholder(R.drawable.loading)

@@ -11,7 +11,7 @@ public interface StringConstants {
     int PAGE_SIZE = 50;
     String ORDER_DESCENDING = "desc";
 
-    String QUESTION_FILTER = "!Fc6b6oecdMxo)a9GWh_oLGugZw";
+    String QUESTION_FILTER = "!9Z(-wwYGT";
     String ANSWER_FILTER = "!9Z(-wzu0T";
 
     String SORT_BY_ACTIVITY = "activity";
