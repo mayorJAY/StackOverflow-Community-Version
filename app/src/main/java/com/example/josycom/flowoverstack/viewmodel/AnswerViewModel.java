@@ -10,14 +10,14 @@ import java.util.List;
 
 public class AnswerViewModel extends ViewModel {
 
-    private LiveData<List<Answer>> mAnswersByActivity;
+    private LiveData<List<Answer>> mAnswersLiveData;
 
     AnswerViewModel(int questionId, String order, String sortCondition, String site, String filter){
         AnswerRepository answerRepository = new AnswerRepository(questionId, order, sortCondition, site, filter);
-        mAnswersByActivity = answerRepository.getAnswers();
+        mAnswersLiveData = answerRepository.getAnswers();
     }
 
-    public LiveData<List<Answer>> getAnswersByActivity() {
-        return mAnswersByActivity;
+    public LiveData<List<Answer>> getAnswersLiveData() {
+        return mAnswersLiveData;
     }
 }

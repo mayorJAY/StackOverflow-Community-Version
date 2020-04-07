@@ -22,7 +22,6 @@ import com.example.josycom.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
 import org.jsoup.Jsoup;
 
 import java.util.List;
-import java.util.Objects;
 
 public class AnswerActivity extends AppCompatActivity {
 
@@ -66,7 +65,7 @@ public class AnswerActivity extends AppCompatActivity {
                         StringConstants.SORT_BY_ACTIVITY,
                         StringConstants.SITE,
                         StringConstants.ANSWER_FILTER)).get(AnswerViewModel.class);
-        answerViewModel.getAnswersByActivity().observe(this, new Observer<List<Answer>>() {
+        answerViewModel.getAnswersLiveData().observe(this, new Observer<List<Answer>>() {
             @Override
             public void onChanged(List<Answer> answers) {
                 mAnswerAdapter.setAnswers(answers);

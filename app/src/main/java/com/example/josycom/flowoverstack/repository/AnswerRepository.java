@@ -44,7 +44,7 @@ public class AnswerRepository {
                 if (answerResponse != null) {
                     mAnswers.setValue(answerResponse.getItems());
                 } else {
-                    Log.d("Tag", "No answer yet");
+                    Log.d("AnswerRepository", "No answer yet");
                 }
             }
 
