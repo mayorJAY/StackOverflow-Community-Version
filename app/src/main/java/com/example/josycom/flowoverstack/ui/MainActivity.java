@@ -1,5 +1,6 @@
 package com.example.josycom.flowoverstack.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.josycom.flowoverstack.R;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_search) {
+            startActivity(new Intent(this, SearchableActivity.class));
             return true;
         } else if (id == R.id.action_filter_by_creation){
             if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Creation")){
