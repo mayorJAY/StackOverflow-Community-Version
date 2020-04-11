@@ -53,7 +53,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private void makeSearch() {
         final SearchAdapter searchAdapter = new SearchAdapter();
-
         SearchViewModel searchViewModel = new ViewModelProvider(this, new CustomSearchViewModelFactory(mSearchInput)).get(SearchViewModel.class);
         searchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
             @Override
