@@ -47,7 +47,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
 
             @Override
             public void onFailure(Call<QuestionsResponse> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }

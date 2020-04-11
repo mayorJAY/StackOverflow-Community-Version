@@ -30,11 +30,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
     public void onBindViewHolder(@NonNull AnswerViewHolder holder, int position) {
         if (mAnswers != null){
             Answer currentAnswer = mAnswers.get(position);
-
-            holder.answerScore.setText(String.valueOf(currentAnswer.getScore()));
-            holder.answerName.setText(currentAnswer.getOwner().getDisplayName());
-            holder.answerDate.setText(DateUtil.toNormalDate(currentAnswer.getCreationDate()));
-            holder.answerBody.setText(Jsoup.parse(currentAnswer.getBody()).text());
+            holder.bind(currentAnswer);
         }
     }
 
@@ -53,10 +49,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
     }
 
     static class AnswerViewHolder extends RecyclerView.ViewHolder {
-        TextView answerBody;
-        TextView answerDate;
-        TextView answerName;
-        TextView answerScore;
+        TextView answerBody, answerDate, answerName, answerScore;
 
         AnswerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +57,13 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
             answerDate = itemView.findViewById(R.id.tv_date_answer_item);
             answerName = itemView.findViewById(R.id.tv_name_answer_item);
             answerScore = itemView.findViewById(R.id.tv_votes_item);
+        }
+
+        void bind(Answer answer){
+            answerScore.setText(String.valueOf(answer.getScore()));
+            answerName.setText(answer.getOwner().getDisplayName());
+            answerDate.setText(DateUtil.toNormalDate(answer.getCreationDate()));
+            answerBody.setText(Jsoup.parse(answer.getBody()).text());
         }
     }
 }

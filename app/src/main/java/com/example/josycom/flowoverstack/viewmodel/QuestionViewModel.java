@@ -8,6 +8,7 @@ import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.repository.QuestionRepository;
 
 public class QuestionViewModel extends ViewModel {
+
     private LiveData<PagedList<Question>> mQuestionPagedList;
 
     QuestionViewModel(int page, int pageSize, String order, String sortCondition, String site, String filter) {

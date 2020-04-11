@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_search) {
-            startActivity(new Intent(this, SearchableActivity.class));
+            startActivity(new Intent(this, SearchActivity.class));
             return true;
         } else if (id == R.id.action_filter_by_creation){
             if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Creation")){
