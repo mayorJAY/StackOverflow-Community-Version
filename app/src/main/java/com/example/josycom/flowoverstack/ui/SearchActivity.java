@@ -141,7 +141,6 @@ public class SearchActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        SearchRepository searchRepository = new SearchRepository();
-        searchRepository.clearDisposable();
+        mSearchRepository.clearDisposable();
     }
 }

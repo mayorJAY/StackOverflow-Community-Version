@@ -13,17 +13,18 @@ import com.example.josycom.flowoverstack.network.RestApiClient;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchRepository {
 
     private String inTitle;
     private MutableLiveData<List<Question>> mQuestions = new MutableLiveData<>();
-    private final CompositeDisposable disposables = new CompositeDisposable();
+    private final CompositeDisposable disposable = new CompositeDisposable();
     //private Boolean shouldShowData = true;
 
     public SearchRepository(String inTitle){
@@ -37,9 +38,9 @@ public class SearchRepository {
     private void getQuestionsWithTextInTitle() {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
         Observable<List<QuestionsResponse>> observable = apiService.getQuestionsWithTextInTitle(inTitle);
-        disposables.add(observable
-        .observeOn(AndroidSchedulers.mainThread())
+        disposable.add(observable
         .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(this::handleResults, this::handleError));
 //        call.enqueue(new Callback<QuestionsResponse>() {
 //            @Override
@@ -47,16 +48,16 @@ public class SearchRepository {
 //                QuestionsResponse questionsResponse = response.body();
 //                if (questionsResponse != null) {
 //                    mQuestions.setValue(questionsResponse.getItems());
-//                    shouldShowData = true;
+//                    //shouldShowData = true;
 //                } else {
 //                    Log.d("SearchRepository", "No matching question");
-//                    shouldShowData = false;
+//                    //shouldShowData = false;
 //                }
 //            }
 //
 //            @Override
 //            public void onFailure(Call<QuestionsResponse> call, Throwable t) {
-//                shouldShowData = false;
+//                //shouldShowData = false;
 //                t.printStackTrace();
 //            }
 //        });
@@ -83,6 +84,6 @@ public class SearchRepository {
 //    }
 
     public void clearDisposable(){
-        disposables.clear();
+        //disposable.clear();
     }
 }

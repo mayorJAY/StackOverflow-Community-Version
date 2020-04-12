@@ -1,7 +1,6 @@
 package com.example.josycom.flowoverstack.model;
 
 
-import androidx.lifecycle.LiveData;
 
 import com.google.gson.annotations.SerializedName;
 

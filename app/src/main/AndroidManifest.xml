@@ -20,10 +20,7 @@
         </activity>
         <activity
             android:name=".ui.AnswerActivity"
-            android:label="Read More"
-            android:parentActivityName=".ui.MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity"/>
+            android:label="Read More">
 
         </activity>
         <activity

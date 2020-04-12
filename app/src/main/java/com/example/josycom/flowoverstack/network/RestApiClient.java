@@ -20,7 +20,7 @@ public class RestApiClient {
     private static Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(StringConstants.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create())
             .client(client.build());
     private static Retrofit retrofit = builder.build();
 
