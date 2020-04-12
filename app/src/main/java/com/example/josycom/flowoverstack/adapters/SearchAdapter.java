@@ -23,6 +23,7 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
 
     private List<Question> mQuestions;
+    private static View.OnClickListener mOnClickListener;
     @NonNull
     @Override
     public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,6 +37,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             Question currentQuestion = mQuestions.get(position);
             holder.bind(currentQuestion);
         }
+    }
+
+    public void setOnClickListener(View.OnClickListener mOnClickListener) {
+        SearchAdapter.mOnClickListener = mOnClickListener;
     }
 
     @Override
@@ -67,6 +72,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             mNameText = itemView.findViewById(R.id.tv_name_item);
             mAnswersCountText = itemView.findViewById(R.id.tv_answers_count_item);
             mTagsText = itemView.findViewById(R.id.tv_tags_list_item);
+
+            itemView.setTag(this);
+            itemView.setOnClickListener(mOnClickListener);
         }
 
         void bind(Question question) {

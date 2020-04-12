@@ -4,6 +4,9 @@ import com.example.josycom.flowoverstack.model.AnswerResponse;
 import com.example.josycom.flowoverstack.model.QuestionsResponse;
 import com.example.josycom.flowoverstack.util.StringConstants;
 
+import java.util.List;
+
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -21,7 +24,7 @@ public interface ApiService {
             @Query(value = "filter", encoded = true) String filter);
 
     @GET(StringConstants.ANSWERS_END_POINT)
-    Call<AnswerResponse> getAnswersToQuestion(
+    Observable<AnswerResponse> getAnswersToQuestion(
             @Path("question_id") int id,
             @Query("order") String order,
             @Query("sort") String sortCondition,
@@ -29,5 +32,5 @@ public interface ApiService {
             @Query(value = "filter", encoded = true) String filter);
 
     @GET("/2.2/search?order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT")
-    Call<QuestionsResponse> getQuestionsWithTextInTitle(@Query("intitle") String inTitle);
+    Observable<List<QuestionsResponse>> getQuestionsWithTextInTitle(@Query("intitle") String inTitle);
 }

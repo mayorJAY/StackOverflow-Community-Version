@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 
 }
 
@@ -42,6 +46,7 @@ dependencies {
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     // glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
@@ -58,4 +63,8 @@ dependencies {
 
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
+
+    // RxAndroid and RxJava
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.3'
 }
