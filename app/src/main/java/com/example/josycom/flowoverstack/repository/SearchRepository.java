@@ -10,6 +10,7 @@ import com.example.josycom.flowoverstack.model.QuestionsResponse;
 import com.example.josycom.flowoverstack.network.ApiService;
 import com.example.josycom.flowoverstack.network.RestApiClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -69,7 +70,11 @@ public class SearchRepository {
 
     private void handleResults(List<QuestionsResponse> questionsResponses) {
         if (questionsResponses != null && questionsResponses.size() != 0) {
-            mQuestions.setValue(questionsResponses.get(0).getItems());
+            List<Question> questions = new ArrayList<>();
+            for (int i = 0; i <= questionsResponses.size(); i++){
+                questions.add(questionsResponses.get(i).getItems().get(0));
+            }
+            mQuestions.setValue(questions);
         } else {
             Log.d("SearchRepository", "No matching question");
         }
