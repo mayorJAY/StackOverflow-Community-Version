@@ -1,7 +1,5 @@
 package com.example.josycom.flowoverstack.model;
 
-
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

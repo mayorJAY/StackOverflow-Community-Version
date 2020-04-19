@@ -3,6 +3,7 @@ package com.example.josycom.flowoverstack.ui;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,8 @@ import com.example.josycom.flowoverstack.util.DateUtil;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
+
+import java.util.Objects;
 
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
@@ -41,6 +45,7 @@ public class QuestionsByActivityFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
+    private Parcelable listState;
 
     public QuestionsByActivityFragment() {
         // Required empty public constructor
@@ -99,5 +104,10 @@ public class QuestionsByActivityFragment extends Fragment {
         });
         mRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

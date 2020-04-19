@@ -24,7 +24,7 @@ public interface ApiService {
             @Query(value = "filter", encoded = true) String filter);
 
     @GET(StringConstants.ANSWERS_END_POINT)
-    Observable<AnswerResponse> getAnswersToQuestion(
+    Call<AnswerResponse> getAnswersToQuestion(
             @Path("question_id") int id,
             @Query("order") String order,
             @Query("sort") String sortCondition,
@@ -32,5 +32,5 @@ public interface ApiService {
             @Query(value = "filter", encoded = true) String filter);
 
     @GET("/2.2/search?order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT")
-    Observable<List<QuestionsResponse>> getQuestionsWithTextInTitle(@Query("intitle") String inTitle);
+    Call<QuestionsResponse> getQuestionsWithTextInTitle(@Query("intitle") String inTitle);
 }

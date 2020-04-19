@@ -16,6 +16,8 @@ public class Question {
 	private Boolean isAnswered;
 	@SerializedName("view_count")
 	private Integer viewCount;
+	@SerializedName("accepted_answer_id")
+	private Integer acceptedAnswerId;
 	@SerializedName("answer_count")
 	private Integer answerCount;
 	@SerializedName("score")
@@ -24,6 +26,8 @@ public class Question {
 	private Integer lastActivityDate;
 	@SerializedName("creation_date")
 	private Integer creationDate;
+	@SerializedName("last_edit_date")
+    private Integer lastEditDate;
 	@SerializedName("question_id")
 	private Integer questionId;
 	@SerializedName("link")
@@ -71,6 +75,14 @@ public class Question {
 		this.answerCount = answerCount;
 	}
 
+	public Integer getAcceptedAnswerId() {
+		return acceptedAnswerId;
+	}
+
+	public void setAcceptedAnswerId(Integer acceptedAnswerId) {
+		this.acceptedAnswerId = acceptedAnswerId;
+	}
+
 	public Integer getScore() {
 		return score;
 	}
@@ -95,7 +107,15 @@ public class Question {
 		this.creationDate = creationDate;
 	}
 
-	public Integer getQuestionId() {
+    public Integer getLastEditDate() {
+        return lastEditDate;
+    }
+
+    public void setLastEditDate(Integer lastEditDate) {
+        this.lastEditDate = lastEditDate;
+    }
+
+    public Integer getQuestionId() {
 		return questionId;
 	}
 

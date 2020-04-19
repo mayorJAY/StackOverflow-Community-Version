@@ -1,5 +1,6 @@
 package com.example.josycom.flowoverstack.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -45,6 +46,7 @@ public class SearchActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private TextView mErrorMessageTextView;
     private SearchRepository mSearchRepository;
+    private SearchAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class SearchActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.pb_fetch_data);
         mErrorMessageTextView = findViewById(R.id.tv_error);
         mSearchRepository = new SearchRepository();
+        searchAdapter = new SearchAdapter();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
@@ -85,6 +88,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
 
+        // What happens when the search button is clicked
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,29 +97,22 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     mSearchInput = Objects.requireNonNull(textInputEditText.getText()).toString();
                     textInputEditText.setText("");
-                    //hideData();
-                    //mProgressBar.setVisibility(View.VISIBLE);
                     makeSearch();
                 }
             }
         });
     }
 
+    // Gets the ViewModel, Observes the Question LiveData and delivers it to the Recyclerview
     private void makeSearch() {
-        final SearchAdapter searchAdapter = new SearchAdapter();
-        SearchViewModel searchViewModel = new ViewModelProvider(this, new CustomSearchViewModelFactory(mSearchInput)).get(SearchViewModel.class);
-
-            searchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
+        SearchViewModel searchViewModel = new ViewModelProvider(this,
+                new CustomSearchViewModelFactory(mSearchInput)).get(SearchViewModel.class);
+        searchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
                 @Override
                 public void onChanged(List<Question> questions) {
-                    //if (mSearchRepository.getShouldShowData()) {
-                        //showData();
                         mQuestions = questions;
                         searchAdapter.setQuestions(questions);
                         mRecyclerView.setAdapter(searchAdapter);
-                    //} else {
-                        //showError();
-                   // }
                 }
             });
             searchAdapter.setOnClickListener(mOnClickListener);
@@ -140,7 +137,10 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
 
-        mSearchRepository.clearDisposable();
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

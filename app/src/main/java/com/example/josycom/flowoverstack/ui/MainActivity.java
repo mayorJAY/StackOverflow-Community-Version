@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.example.josycom.flowoverstack.R;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
-    FragmentTransaction mFragmentTransaction;
+    private FragmentTransaction mFragmentTransaction;
+    private boolean isFragmentDisplayed = false;
+    private final String STATE_FRAGMENT = "state_of_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +25,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (findViewById(R.id.fragment_container) != null){
-            QuestionsByActivityFragment questionsByActivityFragment = new QuestionsByActivityFragment();
-            mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-            mFragmentTransaction.add(R.id.fragment_container, questionsByActivityFragment).commit();
+        if (savedInstanceState != null) {
+            isFragmentDisplayed = savedInstanceState.getBoolean(STATE_FRAGMENT);
+        }
+
+        if (!isFragmentDisplayed) {
+            if (findViewById(R.id.fragment_container) != null) {
+                QuestionsByActivityFragment questionsByActivityFragment = new QuestionsByActivityFragment();
+                mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                mFragmentTransaction.add(R.id.fragment_container, questionsByActivityFragment).commit();
+                isFragmentDisplayed = true;
+            }
         }
     }
 
@@ -43,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_search) {
             startActivity(new Intent(this, SearchActivity.class));
             return true;
-        } else if (id == R.id.action_filter_by_creation){
+        } else if (id == R.id.action_filter_by_creation) {
             if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Creation")){
                 QuestionsByCreationFragment questionsByCreationFragment = new QuestionsByCreationFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -56,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
                 item.setTitle(R.string.action_filter_by_creation);
             }
             return true;
-        } else if (id == R.id.action_filter_by_hot){
-            if (findViewById(R.id.fragment_container) != null){
+        } else if (id == R.id.action_filter_by_hot) {
+            if (findViewById(R.id.fragment_container) != null) {
                 QuestionsByHotFragment questionsByHotFragment = new QuestionsByHotFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 mFragmentTransaction.replace(R.id.fragment_container, questionsByHotFragment).commit();
             }
-        } else if (id == R.id.action_filter_by_vote){
+        } else if (id == R.id.action_filter_by_vote) {
             if (findViewById(R.id.fragment_container) != null){
                 QuestionsByVoteFragment questionsByVoteFragment = new QuestionsByVoteFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -70,5 +80,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_FRAGMENT, isFragmentDisplayed);
     }
 }

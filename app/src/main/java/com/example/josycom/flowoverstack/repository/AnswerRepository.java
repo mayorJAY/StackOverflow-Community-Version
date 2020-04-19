@@ -36,23 +36,23 @@ public class AnswerRepository {
 
     private void getAnswersToQuestion() {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
-//        Call<AnswerResponse> call = apiService.getAnswersToQuestion(questionId, order, sortCondition, site, filter);
-//        call.enqueue(new Callback<AnswerResponse>() {
-//            @Override
-//            public void onResponse(Call<AnswerResponse> call, Response<AnswerResponse> response) {
-//                AnswerResponse answerResponse = response.body();
-//                if (answerResponse != null) {
-//                    mAnswers.setValue(answerResponse.getItems());
-//                } else {
-//                    Log.d("AnswerRepository", "No answer yet");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<AnswerResponse> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
+        Call<AnswerResponse> call = apiService.getAnswersToQuestion(questionId, order, sortCondition, site, filter);
+        call.enqueue(new Callback<AnswerResponse>() {
+            @Override
+            public void onResponse(Call<AnswerResponse> call, Response<AnswerResponse> response) {
+                AnswerResponse answerResponse = response.body();
+                if (answerResponse != null) {
+                    mAnswers.setValue(answerResponse.getItems());
+                } else {
+                    Log.d("AnswerRepository", "No answer yet");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AnswerResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     public LiveData<List<Answer>> getAnswers() {
