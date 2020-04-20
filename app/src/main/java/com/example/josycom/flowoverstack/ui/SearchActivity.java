@@ -46,20 +46,24 @@ public class SearchActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private TextView mErrorMessageTextView;
     private SearchRepository mSearchRepository;
-    private SearchAdapter searchAdapter;
+    private SearchAdapter mSearchAdapter;
+    private SearchViewModel mSearchViewModel;
+    private boolean isRecyclerviewDisplayed = false;
+    private final String STATE_RECYCLERVIEW = "state_of_recyclerview";
+    private TextInputEditText mTextInputEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        final TextInputEditText textInputEditText = findViewById(R.id.text_input_editText);
+        mTextInputEditText = findViewById(R.id.text_input_editText);
         final MaterialButton materialButton = findViewById(R.id.search_button);
         mRecyclerView = findViewById(R.id.rv_search_results);
         mProgressBar = findViewById(R.id.pb_fetch_data);
         mErrorMessageTextView = findViewById(R.id.tv_error);
         mSearchRepository = new SearchRepository();
-        searchAdapter = new SearchAdapter();
+        mSearchAdapter = new SearchAdapter();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
@@ -88,16 +92,19 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
 
+        if (savedInstanceState != null) {
+            isRecyclerviewDisplayed = savedInstanceState.getBoolean(STATE_RECYCLERVIEW);
+        }
+
         // What happens when the search button is clicked
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Objects.requireNonNull(textInputEditText.getText()).toString().isEmpty()) {
-                    textInputEditText.setError("Type a search query");
+                if (Objects.requireNonNull(mTextInputEditText.getText()).toString().isEmpty()) {
+                    mTextInputEditText.setError("Type a search query");
                 } else {
-                    mSearchInput = Objects.requireNonNull(textInputEditText.getText()).toString();
-                    textInputEditText.setText("");
-                    makeSearch();
+                    mSearchInput = Objects.requireNonNull(mTextInputEditText.getText()).toString();
+                    mTextInputEditText.setText("");
                 }
             }
         });
@@ -105,17 +112,16 @@ public class SearchActivity extends AppCompatActivity {
 
     // Gets the ViewModel, Observes the Question LiveData and delivers it to the Recyclerview
     private void makeSearch() {
-        SearchViewModel searchViewModel = new ViewModelProvider(this,
-                new CustomSearchViewModelFactory(mSearchInput)).get(SearchViewModel.class);
-        searchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
+        mSearchViewModel = new ViewModelProvider(this, new CustomSearchViewModelFactory(mSearchInput)).get(SearchViewModel.class);
+        mSearchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
                 @Override
                 public void onChanged(List<Question> questions) {
                         mQuestions = questions;
-                        searchAdapter.setQuestions(questions);
-                        mRecyclerView.setAdapter(searchAdapter);
+                        mSearchAdapter.setQuestions(questions);
                 }
             });
-            searchAdapter.setOnClickListener(mOnClickListener);
+            mRecyclerView.setAdapter(mSearchAdapter);
+            mSearchAdapter.setOnClickListener(mOnClickListener);
     }
 
     public void showData() {
@@ -142,5 +148,6 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_RECYCLERVIEW, isRecyclerviewDisplayed);
     }
 }
