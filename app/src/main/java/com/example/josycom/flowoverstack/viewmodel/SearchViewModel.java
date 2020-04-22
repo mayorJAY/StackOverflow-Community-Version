@@ -15,11 +15,11 @@ public class SearchViewModel extends ViewModel {
     private SearchRepository mSearchRepository;
     private MutableLiveData<String> mSearchLiveData = new MutableLiveData<>();
     private LiveData<List<Question>> mQuestionLiveData = Transformations.switchMap(mSearchLiveData, (query) -> {
-        return mSearchRepository.getQuestions();
+        return mSearchRepository.getQuestions(query);
     });
 
-    SearchViewModel() {
-        mSearchRepository = new SearchRepository();
+    SearchViewModel(SearchRepository searchRepository) {
+        this.mSearchRepository = searchRepository;
     }
 
     public LiveData<List<Question>> getQuestionLiveData() {

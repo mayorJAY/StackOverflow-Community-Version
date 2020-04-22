@@ -1,7 +1,6 @@
 package com.example.josycom.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,7 +39,6 @@ public class AnswerActivity extends AppCompatActivity {
         TextView nameQuestionTextView = findViewById(R.id.tv_name_question_detail);
         ImageView avatarQuestionImageView = findViewById(R.id.iv_avatar_question_detail);
         RecyclerView answersRecyclerView = findViewById(R.id.rv_answers);
-        TextView answersCountTextView = findViewById(R.id.tv_answers_count_detail);
 
         answersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAnswerAdapter = new AnswerAdapter();
@@ -51,7 +49,6 @@ public class AnswerActivity extends AppCompatActivity {
         fullQuestionTextView.setText(Jsoup.parse(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)).text());
         dateQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         nameQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
-        answersCountTextView.setText(String.valueOf(mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ANSWERS_COUNT, 0)));
         int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
         String avatarAddress = mIntent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
         String ownerQuestionLink = mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);

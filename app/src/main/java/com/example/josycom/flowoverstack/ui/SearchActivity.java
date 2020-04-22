@@ -45,9 +45,6 @@ public class SearchActivity extends AppCompatActivity {
     private List<Question> mQuestions;
     private ProgressBar mProgressBar;
     private TextView mErrorMessageTextView;
-    private SearchRepository mSearchRepository;
-    private SearchAdapter mSearchAdapter;
-    private SearchViewModel mSearchViewModel;
     private boolean isRecyclerviewDisplayed = false;
     private final String STATE_RECYCLERVIEW = "state_of_recyclerview";
     private TextInputEditText mTextInputEditText;
@@ -62,8 +59,6 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_search_results);
         mProgressBar = findViewById(R.id.pb_fetch_data);
         mErrorMessageTextView = findViewById(R.id.tv_error);
-        mSearchRepository = new SearchRepository();
-        mSearchAdapter = new SearchAdapter();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
@@ -105,6 +100,7 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     mSearchInput = Objects.requireNonNull(mTextInputEditText.getText()).toString();
                     mTextInputEditText.setText("");
+                    makeSearch();
                 }
             }
         });
@@ -112,16 +108,19 @@ public class SearchActivity extends AppCompatActivity {
 
     // Gets the ViewModel, Observes the Question LiveData and delivers it to the Recyclerview
     private void makeSearch() {
-        mSearchViewModel = new ViewModelProvider(this, new CustomSearchViewModelFactory(mSearchInput)).get(SearchViewModel.class);
+        final SearchAdapter searchAdapter = new SearchAdapter();
+        SearchViewModel mSearchViewModel = new ViewModelProvider(this,
+                new CustomSearchViewModelFactory(new SearchRepository())).get(SearchViewModel.class);
+        mSearchViewModel.setQuery(mSearchInput);
         mSearchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
                 @Override
                 public void onChanged(List<Question> questions) {
                         mQuestions = questions;
-                        mSearchAdapter.setQuestions(questions);
+                        searchAdapter.setQuestions(questions);
                 }
             });
-            mRecyclerView.setAdapter(mSearchAdapter);
-            mSearchAdapter.setOnClickListener(mOnClickListener);
+            mRecyclerView.setAdapter(searchAdapter);
+            searchAdapter.setOnClickListener(mOnClickListener);
     }
 
     public void showData() {

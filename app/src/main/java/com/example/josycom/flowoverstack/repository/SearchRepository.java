@@ -23,20 +23,14 @@ import retrofit2.Response;
 
 public class SearchRepository {
 
-    private String inTitle;
+    //private String inTitle;
     private MutableLiveData<List<Question>> mQuestions = new MutableLiveData<>();
-    //private final CompositeDisposable disposable = new CompositeDisposable();
-    //private Boolean shouldShowData = true;
 
-    public SearchRepository(String inTitle) {
-        this.inTitle = inTitle;
-        getQuestionsWithTextInTitle();
+    public SearchRepository() {
+        //getQuestionsWithTextInTitle();
     }
 
-    public SearchRepository(){
-    }
-
-    private void getQuestionsWithTextInTitle() {
+    private void getQuestionsWithTextInTitle(String inTitle) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
         Call<QuestionsResponse> call = apiService.getQuestionsWithTextInTitle(inTitle);
         call.enqueue(new Callback<QuestionsResponse>() {
@@ -44,7 +38,7 @@ public class SearchRepository {
             public void onResponse(Call<QuestionsResponse> call, Response<QuestionsResponse> response) {
                 QuestionsResponse questionsResponse = response.body();
                 if (questionsResponse != null) {
-                    mQuestions.setValue(questionsResponse.getItems());
+                    mQuestions.postValue(questionsResponse.getItems());
                     //shouldShowData = true;
                 } else {
                     Log.d("SearchRepository", "No matching question");
@@ -60,7 +54,8 @@ public class SearchRepository {
         });
     }
 
-    public LiveData<List<Question>> getQuestions() {
+    public LiveData<List<Question>> getQuestions(String inTitle) {
+        getQuestionsWithTextInTitle(inTitle);
         return mQuestions;
     }
 
