@@ -10,6 +10,7 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class QuestionsByCreationFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
+    private SwipeRefreshLayout mSwipeContainer;
 
     public QuestionsByCreationFragment() {
         // Required empty public constructor
@@ -52,6 +54,8 @@ public class QuestionsByCreationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_questions_by_creation, container, false);
         mRecyclerView = view.findViewById(R.id.creation_recycler_view);
+        mSwipeContainer = view.findViewById(R.id.creationSwipeContainer);
+        mSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
 
         mOnClickListener = new View.OnClickListener() {
             @Override
@@ -99,5 +103,12 @@ public class QuestionsByCreationFragment extends Fragment {
         });
         mRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                questionViewModel.refresh();
+                mSwipeContainer.setRefreshing(false);
+            }
+        });
     }
 }

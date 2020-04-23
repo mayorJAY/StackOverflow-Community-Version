@@ -22,7 +22,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     private final String site;
     private final String filter;
 
-    QuestionDataSource(int page, int pageSize, String order, String sortCondition, String site, String filter){
+    public QuestionDataSource(int page, int pageSize, String order, String sortCondition, String site, String filter){
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;

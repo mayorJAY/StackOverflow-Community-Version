@@ -5,7 +5,11 @@ import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;
 
 import com.example.josycom.flowoverstack.model.Question;
+import com.example.josycom.flowoverstack.model.QuestionDataSource;
+import com.example.josycom.flowoverstack.model.QuestionDataSourceFactory;
 import com.example.josycom.flowoverstack.repository.QuestionRepository;
+
+import java.util.Objects;
 
 public class QuestionViewModel extends ViewModel {
 
@@ -18,5 +22,9 @@ public class QuestionViewModel extends ViewModel {
 
     public LiveData<PagedList<Question>> getQuestionPagedList() {
         return mQuestionPagedList;
+    }
+
+    public void refresh() {
+        Objects.requireNonNull(QuestionDataSourceFactory.questionLiveDataSource.getValue()).invalidate();
     }
 }

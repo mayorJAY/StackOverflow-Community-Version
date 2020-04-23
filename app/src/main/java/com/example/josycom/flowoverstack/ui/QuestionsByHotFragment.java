@@ -10,6 +10,7 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class QuestionsByHotFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
+    private SwipeRefreshLayout mSwipeContainer;
 
     public QuestionsByHotFragment() {
         // Required empty public constructor
@@ -52,6 +54,8 @@ public class QuestionsByHotFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_questions_by_hot, container, false);
         mRecyclerView = view.findViewById(R.id.hot_recycler_view);
+        mSwipeContainer = view.findViewById(R.id.hotSwipeContainer);
+        mSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
 
         mOnClickListener = new View.OnClickListener() {
             @Override
@@ -60,6 +64,7 @@ public class QuestionsByHotFragment extends Fragment {
                 int position = viewHolder.getAdapterPosition();
                 Intent answerActivityIntent = new Intent(getContext(), AnswerActivity.class);
                 Question currentQuestion = mQuestions.get(position);
+                assert currentQuestion != null;
                 Owner questionOwner = currentQuestion.getOwner();
 
                 answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
@@ -99,5 +104,12 @@ public class QuestionsByHotFragment extends Fragment {
         });
         mRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                questionViewModel.refresh();
+                mSwipeContainer.setRefreshing(false);
+            }
+        });
     }
 }

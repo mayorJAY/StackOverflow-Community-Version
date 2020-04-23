@@ -11,7 +11,7 @@ public class QuestionDataSourceFactory extends DataSource.Factory<Integer, Quest
     private final String sortCondition;
     private final String site;
     private final String filter;
-    public MutableLiveData<QuestionDataSource> questionLiveDataSource = new MutableLiveData<>();
+    public static MutableLiveData<QuestionDataSource> questionLiveDataSource = new MutableLiveData<>();
 
     public QuestionDataSourceFactory(int page, int pageSize, String order, String sortCondition, String site, String filter){
         this.page = page;

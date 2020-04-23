@@ -11,8 +11,8 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +25,6 @@ import com.example.josycom.flowoverstack.util.DateUtil;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
-
-import java.util.Objects;
 
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
@@ -45,7 +43,7 @@ public class QuestionsByActivityFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
-    private Parcelable listState;
+    private SwipeRefreshLayout mSwipeContainer;
 
     public QuestionsByActivityFragment() {
         // Required empty public constructor
@@ -57,6 +55,8 @@ public class QuestionsByActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_questions_by_activity, container, false);
         mRecyclerView = view.findViewById(R.id.activity_recycler_view);
+        mSwipeContainer = view.findViewById(R.id.activitySwipeContainer);
+        mSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
 
         mOnClickListener = new View.OnClickListener() {
             @Override
@@ -65,6 +65,7 @@ public class QuestionsByActivityFragment extends Fragment {
                 int position = viewHolder.getAdapterPosition();
                 Intent answerActivityIntent = new Intent(getContext(), AnswerActivity.class);
                 Question currentQuestion = mQuestions.get(position);
+                assert currentQuestion != null;
                 Owner questionOwner = currentQuestion.getOwner();
 
                 answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
@@ -84,7 +85,7 @@ public class QuestionsByActivityFragment extends Fragment {
         return view;
     }
 
-    private void handleRecyclerView(){
+    private void handleRecyclerView() {
         final QuestionAdapter questionAdapter = new QuestionAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -104,6 +105,13 @@ public class QuestionsByActivityFragment extends Fragment {
         });
         mRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                questionViewModel.refresh();
+                mSwipeContainer.setRefreshing(false);
+            }
+        });
     }
 
     @Override
