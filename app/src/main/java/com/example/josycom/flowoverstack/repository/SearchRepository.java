@@ -10,25 +10,15 @@ import com.example.josycom.flowoverstack.model.QuestionsResponse;
 import com.example.josycom.flowoverstack.network.ApiService;
 import com.example.josycom.flowoverstack.network.RestApiClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchRepository {
 
-    //private String inTitle;
     private MutableLiveData<List<Question>> mQuestions = new MutableLiveData<>();
-
-    public SearchRepository() {
-        //getQuestionsWithTextInTitle();
-    }
 
     private void getQuestionsWithTextInTitle(String inTitle) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
@@ -67,7 +57,7 @@ public class SearchRepository {
 //    private void handleResults(List<QuestionsResponse> questionsResponses) {
 //        if (questionsResponses != null && questionsResponses.size() != 0) {
 //            List<Question> questions = new ArrayList<>();
-//            for (int i = 0; i <= questionsResponses.size(); i++){
+//            for (int i = 0; i <= questionsResponses.size(); i++) {
 //                questions.add(questionsResponses.get(i).getItems().get(0));
 //            }
 //            mQuestions.setValue(questions);

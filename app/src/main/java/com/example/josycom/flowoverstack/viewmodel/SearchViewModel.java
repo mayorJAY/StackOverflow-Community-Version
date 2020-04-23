@@ -18,8 +18,8 @@ public class SearchViewModel extends ViewModel {
         return mSearchRepository.getQuestions(query);
     });
 
-    SearchViewModel(SearchRepository searchRepository) {
-        this.mSearchRepository = searchRepository;
+    public SearchViewModel() {
+        mSearchRepository = new SearchRepository();
     }
 
     public LiveData<List<Question>> getQuestionLiveData() {

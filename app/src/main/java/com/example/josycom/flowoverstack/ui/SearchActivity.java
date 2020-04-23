@@ -1,6 +1,5 @@
 package com.example.josycom.flowoverstack.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,9 +17,7 @@ import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.SearchAdapter;
 import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
-import com.example.josycom.flowoverstack.repository.SearchRepository;
 import com.example.josycom.flowoverstack.util.DateUtil;
-import com.example.josycom.flowoverstack.viewmodel.CustomSearchViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.SearchViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -45,9 +42,8 @@ public class SearchActivity extends AppCompatActivity {
     private List<Question> mQuestions;
     private ProgressBar mProgressBar;
     private TextView mErrorMessageTextView;
-    private boolean isRecyclerviewDisplayed = false;
-    private final String STATE_RECYCLERVIEW = "state_of_recyclerview";
     private TextInputEditText mTextInputEditText;
+    private SearchViewModel mSearchViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +83,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
 
-        if (savedInstanceState != null) {
-            isRecyclerviewDisplayed = savedInstanceState.getBoolean(STATE_RECYCLERVIEW);
-        }
-
         // What happens when the search button is clicked
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,23 +96,22 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         });
+        final SearchAdapter searchAdapter = new SearchAdapter();
+        mSearchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        mSearchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
+            @Override
+            public void onChanged(List<Question> questions) {
+                mQuestions = questions;
+                searchAdapter.setQuestions(questions);
+            }
+        });
+        mRecyclerView.setAdapter(searchAdapter);
+        searchAdapter.setOnClickListener(mOnClickListener);
     }
 
     // Gets the ViewModel, Observes the Question LiveData and delivers it to the Recyclerview
     private void makeSearch() {
-        final SearchAdapter searchAdapter = new SearchAdapter();
-        SearchViewModel mSearchViewModel = new ViewModelProvider(this,
-                new CustomSearchViewModelFactory(new SearchRepository())).get(SearchViewModel.class);
         mSearchViewModel.setQuery(mSearchInput);
-        mSearchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
-                @Override
-                public void onChanged(List<Question> questions) {
-                        mQuestions = questions;
-                        searchAdapter.setQuestions(questions);
-                }
-            });
-            mRecyclerView.setAdapter(searchAdapter);
-            searchAdapter.setOnClickListener(mOnClickListener);
     }
 
     public void showData() {
@@ -142,11 +133,5 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_RECYCLERVIEW, isRecyclerviewDisplayed);
     }
 }
