@@ -93,6 +93,10 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     mSearchInput = Objects.requireNonNull(mTextInputEditText.getText()).toString();
                     mTextInputEditText.setText("");
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    if (inputMethodManager != null) {
+                        inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
+                    }
                     makeSearch();
                 }
             }
