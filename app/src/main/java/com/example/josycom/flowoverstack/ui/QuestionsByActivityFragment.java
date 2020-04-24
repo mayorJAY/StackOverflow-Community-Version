@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,6 +26,7 @@ import com.example.josycom.flowoverstack.util.DateUtil;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
@@ -40,7 +42,7 @@ import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUEST
  */
 public class QuestionsByActivityFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
     private SwipeRefreshLayout mSwipeContainer;
@@ -57,6 +59,26 @@ public class QuestionsByActivityFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.activity_recycler_view);
         mSwipeContainer = view.findViewById(R.id.activitySwipeContainer);
         mSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
+        FloatingActionButton fab = view.findViewById(R.id.activity_scroll_up_fab);
+        fab.setVisibility(View.INVISIBLE);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    fab.setVisibility(View.VISIBLE);
+                } else {
+                    fab.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRecyclerView.scrollToPosition(0);
+            }
+        });
 
         mOnClickListener = new View.OnClickListener() {
             @Override
