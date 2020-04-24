@@ -62,7 +62,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
 
     static class QuestionViewHolder extends RecyclerView.ViewHolder{
         ImageView mAvatarView;
-        TextView mTitleQuestionText, mViewCounterText, mDateText, mNameText, mAnswersCountText, mTagsText;
+        TextView mTitleQuestionText, mViewCounterText, mDateText, mNameText, mAnswersCountText, mVotesCountText, mTagsText;
 
        QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +72,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
             mDateText = itemView.findViewById(R.id.tv_date_item);
             mNameText = itemView.findViewById(R.id.tv_name_item);
             mAnswersCountText = itemView.findViewById(R.id.tv_answers_count_item);
+            mVotesCountText = itemView.findViewById(R.id.tv_votes_count_item);
             mTagsText = itemView.findViewById(R.id.tv_tags_list_item);
 
             itemView.setTag(this);
@@ -88,10 +89,11 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
                         .placeholder(R.drawable.loading)
                         .into(mAvatarView);
                 mTitleQuestionText.setText(Jsoup.parse(question.getTitle()).text());
-                mViewCounterText.setText(question.getViewCount().toString());
+                mViewCounterText.setText(String.valueOf(question.getViewCount()));
                 mDateText.setText(DateUtil.toNormalDate(question.getCreationDate()));
                 mNameText.setText(owner.getDisplayName());
-                mAnswersCountText.setText(question.getAnswerCount().toString());
+                mAnswersCountText.setText(String.valueOf(question.getAnswerCount()));
+                mVotesCountText.setText(String.valueOf(question.getScore()));
                 mTagsText.setText(updateTagsTextView(tagList));
             } else {
                 Toast.makeText(itemView.getContext(), "No item found", Toast.LENGTH_SHORT).show();
