@@ -89,6 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
+        android:visibility="invisible"
         android:backgroundTint="@color/colorPrimaryLight"
         android:src="@drawable/ic_action_scroll_up"
         app:tint="@color/colorPrimaryText"

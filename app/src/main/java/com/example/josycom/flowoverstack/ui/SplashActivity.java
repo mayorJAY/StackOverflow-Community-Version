@@ -19,12 +19,7 @@ public class SplashActivity extends AppCompatActivity {
         //SplashScreen handler
         Handler handler = new Handler();
         long splashTime = 5000L;
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                goToMainActivity();
-            }
-        }, splashTime);
+        handler.postDelayed(this::goToMainActivity, splashTime);
     }
 
     //Launch MainActivity

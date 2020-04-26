@@ -4,9 +4,6 @@ import com.example.josycom.flowoverstack.model.AnswerResponse;
 import com.example.josycom.flowoverstack.model.QuestionsResponse;
 import com.example.josycom.flowoverstack.util.StringConstants;
 
-import java.util.List;
-
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

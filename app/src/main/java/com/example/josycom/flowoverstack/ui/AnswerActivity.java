@@ -1,7 +1,6 @@
 package com.example.josycom.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,19 +13,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.AnswerAdapter;
-import com.example.josycom.flowoverstack.model.Answer;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.AnswerViewModel;
 import com.example.josycom.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
 
 import org.jsoup.Jsoup;
 
-import java.util.List;
+import java.util.Objects;
 
 public class AnswerActivity extends AppCompatActivity {
 
     private AnswerAdapter mAnswerAdapter;
-    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +40,10 @@ public class AnswerActivity extends AppCompatActivity {
         answersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAnswerAdapter = new AnswerAdapter();
 
-        mIntent = getIntent();
+        Intent mIntent = getIntent();
 
-        questionTitleTextView.setText(Jsoup.parse(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE)).text());
-        fullQuestionTextView.setText(Jsoup.parse(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)).text());
+        questionTitleTextView.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE))).text());
+        fullQuestionTextView.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT))).text());
         dateQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         nameQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
         int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
@@ -63,12 +60,7 @@ public class AnswerActivity extends AppCompatActivity {
                         StringConstants.SORT_BY_ACTIVITY,
                         StringConstants.SITE,
                         StringConstants.ANSWER_FILTER)).get(AnswerViewModel.class);
-        answerViewModel.getAnswersLiveData().observe(this, new Observer<List<Answer>>() {
-            @Override
-            public void onChanged(List<Answer> answers) {
-                mAnswerAdapter.setAnswers(answers);
-            }
-        });
+        answerViewModel.getAnswersLiveData().observe(this, answers -> mAnswerAdapter.setAnswers(answers));
         answersRecyclerView.setAdapter(mAnswerAdapter);
     }
 }

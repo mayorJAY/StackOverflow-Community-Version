@@ -10,6 +10,8 @@ import com.example.josycom.flowoverstack.model.QuestionsResponse;
 import com.example.josycom.flowoverstack.network.ApiService;
 import com.example.josycom.flowoverstack.network.RestApiClient;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,7 +27,7 @@ public class SearchRepository {
         Call<QuestionsResponse> call = apiService.getQuestionsWithTextInTitle(inTitle);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
-            public void onResponse(Call<QuestionsResponse> call, Response<QuestionsResponse> response) {
+            public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse questionsResponse = response.body();
                 if (questionsResponse != null) {
                     mQuestions.postValue(questionsResponse.getItems());
@@ -37,7 +39,7 @@ public class SearchRepository {
             }
 
             @Override
-            public void onFailure(Call<QuestionsResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
                 //shouldShowData = false;
                 t.printStackTrace();
             }

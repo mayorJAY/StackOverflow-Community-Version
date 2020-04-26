@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -72,35 +71,27 @@ public class QuestionsByCreationFragment extends Fragment {
                 }
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRecyclerView.scrollToPosition(0);
-            }
-        });
+        fab.setOnClickListener(v -> mRecyclerView.scrollToPosition(0));
 
-        mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
-                int position = viewHolder.getAdapterPosition();
-                Intent answerActivityIntent = new Intent(getContext(), AnswerActivity.class);
-                Question currentQuestion = mQuestions.get(position);
-                assert currentQuestion != null;
-                Owner questionOwner = currentQuestion.getOwner();
+        mOnClickListener = v -> {
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
+            int position = viewHolder.getAdapterPosition();
+            Intent answerActivityIntent = new Intent(getContext(), AnswerActivity.class);
+            Question currentQuestion = mQuestions.get(position);
+            assert currentQuestion != null;
+            Owner questionOwner = currentQuestion.getOwner();
 
-                answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_NAME, questionOwner.getDisplayName());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_DATE,
-                        DateUtil.toNormalDate(currentQuestion.getCreationDate()));
-                answerActivityIntent.putExtra(EXTRA_QUESTION_FULL_TEXT, currentQuestion.getBody());
-                answerActivityIntent.putExtra(EXTRA_AVATAR_ADDRESS, questionOwner.getProfileImage());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.getAnswerCount());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_ID, currentQuestion.getQuestionId());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_NAME, questionOwner.getDisplayName());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_DATE,
+                    DateUtil.toNormalDate(currentQuestion.getCreationDate()));
+            answerActivityIntent.putExtra(EXTRA_QUESTION_FULL_TEXT, currentQuestion.getBody());
+            answerActivityIntent.putExtra(EXTRA_AVATAR_ADDRESS, questionOwner.getProfileImage());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.getAnswerCount());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_ID, currentQuestion.getQuestionId());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
 
-                startActivity(answerActivityIntent);
-            }
+            startActivity(answerActivityIntent);
         };
         handleRecyclerView();
         return view;
@@ -117,21 +108,15 @@ public class QuestionsByCreationFragment extends Fragment {
                 StringConstants.SORT_BY_CREATION,
                 StringConstants.SITE,
                 StringConstants.QUESTION_FILTER)).get(QuestionViewModel.class);
-        questionViewModel.getQuestionPagedList().observe(getViewLifecycleOwner(), new Observer<PagedList<Question>>() {
-            @Override
-            public void onChanged(PagedList<Question> questions) {
-                mQuestions = questions;
-                questionAdapter.submitList(questions);
-            }
+        questionViewModel.getQuestionPagedList().observe(getViewLifecycleOwner(), questions -> {
+            mQuestions = questions;
+            questionAdapter.submitList(questions);
         });
         mRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
-        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                questionViewModel.refresh();
-                mSwipeContainer.setRefreshing(false);
-            }
+        mSwipeContainer.setOnRefreshListener(() -> {
+            questionViewModel.refresh();
+            mSwipeContainer.setRefreshing(false);
         });
     }
 }

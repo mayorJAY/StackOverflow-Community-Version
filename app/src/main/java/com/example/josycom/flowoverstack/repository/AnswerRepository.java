@@ -10,6 +10,8 @@ import com.example.josycom.flowoverstack.model.AnswerResponse;
 import com.example.josycom.flowoverstack.network.ApiService;
 import com.example.josycom.flowoverstack.network.RestApiClient;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,7 +41,7 @@ public class AnswerRepository {
         Call<AnswerResponse> call = apiService.getAnswersToQuestion(questionId, order, sortCondition, site, filter);
         call.enqueue(new Callback<AnswerResponse>() {
             @Override
-            public void onResponse(Call<AnswerResponse> call, Response<AnswerResponse> response) {
+            public void onResponse(@NotNull Call<AnswerResponse> call, @NotNull Response<AnswerResponse> response) {
                 AnswerResponse answerResponse = response.body();
                 if (answerResponse != null) {
                     mAnswers.setValue(answerResponse.getItems());
@@ -49,7 +51,7 @@ public class AnswerRepository {
             }
 
             @Override
-            public void onFailure(Call<AnswerResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<AnswerResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
             }
         });

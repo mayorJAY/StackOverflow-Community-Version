@@ -1,9 +1,7 @@
 package com.example.josycom.flowoverstack.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -66,71 +64,54 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         fab.setVisibility(View.INVISIBLE);
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > 0) {
-                    fab.setVisibility(View.VISIBLE);
-                } else {
-                    fab.setVisibility(View.INVISIBLE);
-                }
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > 0) {
+                fab.setVisibility(View.VISIBLE);
+            } else {
+                fab.setVisibility(View.INVISIBLE);
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nestedScrollView.scrollTo(0, 0);
-            }
-        });
+        fab.setOnClickListener(v -> nestedScrollView.scrollTo(0, 0));
 
-        View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
-                int position = viewHolder.getAdapterPosition();
-                Intent answerActivityIntent = new Intent(getApplicationContext(), AnswerActivity.class);
-                Question currentQuestion = mQuestions.get(position);
-                Owner questionOwner = currentQuestion.getOwner();
+        View.OnClickListener mOnClickListener = v -> {
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
+            int position = viewHolder.getAdapterPosition();
+            Intent answerActivityIntent = new Intent(getApplicationContext(), AnswerActivity.class);
+            Question currentQuestion = mQuestions.get(position);
+            Owner questionOwner = currentQuestion.getOwner();
 
-                answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_NAME, questionOwner.getDisplayName());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_DATE,
-                        DateUtil.toNormalDate(currentQuestion.getCreationDate()));
-                answerActivityIntent.putExtra(EXTRA_QUESTION_FULL_TEXT, currentQuestion.getBody());
-                answerActivityIntent.putExtra(EXTRA_AVATAR_ADDRESS, questionOwner.getProfileImage());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.getAnswerCount());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_ID, currentQuestion.getQuestionId());
-                answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_NAME, questionOwner.getDisplayName());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_DATE,
+                    DateUtil.toNormalDate(currentQuestion.getCreationDate()));
+            answerActivityIntent.putExtra(EXTRA_QUESTION_FULL_TEXT, currentQuestion.getBody());
+            answerActivityIntent.putExtra(EXTRA_AVATAR_ADDRESS, questionOwner.getProfileImage());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.getAnswerCount());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_ID, currentQuestion.getQuestionId());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
 
-                startActivity(answerActivityIntent);
-            }
+            startActivity(answerActivityIntent);
         };
 
         // What happens when the search button is clicked
-        materialButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Objects.requireNonNull(mTextInputEditText.getText()).toString().isEmpty()) {
-                    mTextInputEditText.setError("Type a search query");
-                } else {
-                    mSearchInput = Objects.requireNonNull(mTextInputEditText.getText()).toString();
-                    mTextInputEditText.setText("");
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    if (inputMethodManager != null) {
-                        inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
-                    }
-                    makeSearch();
+        materialButton.setOnClickListener(v -> {
+            if (Objects.requireNonNull(mTextInputEditText.getText()).toString().isEmpty()) {
+                mTextInputEditText.setError("Type a search query");
+            } else {
+                mSearchInput = Objects.requireNonNull(mTextInputEditText.getText()).toString();
+                mTextInputEditText.setText("");
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null) {
+                    inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 }
+                makeSearch();
             }
         });
         final SearchAdapter searchAdapter = new SearchAdapter();
         mSearchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        mSearchViewModel.getQuestionLiveData().observe(this, new Observer<List<Question>>() {
-            @Override
-            public void onChanged(List<Question> questions) {
-                mQuestions = questions;
-                searchAdapter.setQuestions(questions);
-            }
+        mSearchViewModel.getQuestionLiveData().observe(this, questions -> {
+            mQuestions = questions;
+            searchAdapter.setQuestions(questions);
         });
         mRecyclerView.setAdapter(searchAdapter);
         searchAdapter.setOnClickListener(mOnClickListener);

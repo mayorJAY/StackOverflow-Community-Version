@@ -5,7 +5,6 @@ import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 import com.example.josycom.flowoverstack.model.Question;
-import com.example.josycom.flowoverstack.model.QuestionDataSource;
 import com.example.josycom.flowoverstack.model.QuestionDataSourceFactory;
 
 public class QuestionRepository {
@@ -29,7 +28,6 @@ public class QuestionRepository {
 
     private void init() {
         QuestionDataSourceFactory factory = new QuestionDataSourceFactory(page, pageSize, order, sortCondition, site, filter);
-        LiveData<QuestionDataSource> dataSource = factory.questionLiveDataSource;
         PagedList.Config pageConfig = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
                 .setPageSize(pageSize)

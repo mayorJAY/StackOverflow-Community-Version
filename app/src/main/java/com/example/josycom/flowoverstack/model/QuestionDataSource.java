@@ -7,6 +7,8 @@ import com.example.josycom.flowoverstack.network.ApiService;
 import com.example.josycom.flowoverstack.network.RestApiClient;
 import com.example.josycom.flowoverstack.util.StringConstants;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,7 +24,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     private final String site;
     private final String filter;
 
-    public QuestionDataSource(int page, int pageSize, String order, String sortCondition, String site, String filter){
+    QuestionDataSource(int page, int pageSize, String order, String sortCondition, String site, String filter){
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;
@@ -37,7 +39,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(page, pageSize, order, sortCondition, site, filter);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
-            public void onResponse(Call<QuestionsResponse> call, Response<QuestionsResponse> response) {
+            public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null) {
                     List<Question> responseItems = apiResponse.getItems();
@@ -46,7 +48,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             }
 
             @Override
-            public void onFailure(Call<QuestionsResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -57,7 +59,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
-            public void onResponse(Call<QuestionsResponse> call, Response<QuestionsResponse> response) {
+            public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null){
                     List<Question> responseItems = apiResponse.getItems();
@@ -72,7 +74,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             }
 
             @Override
-            public void onFailure(Call<QuestionsResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
 
             }
         });
@@ -84,7 +86,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
-            public void onResponse(Call<QuestionsResponse> call, Response<QuestionsResponse> response) {
+            public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null){
                     List<Question> responseItems = apiResponse.getItems();
@@ -93,7 +95,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             }
 
             @Override
-            public void onFailure(Call<QuestionsResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
 
             }
         });
