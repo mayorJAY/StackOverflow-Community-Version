@@ -1,6 +1,8 @@
 package com.example.josycom.flowoverstack.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -21,6 +23,7 @@ import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.DateUtil;
 import com.example.josycom.flowoverstack.viewmodel.SearchViewModel;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
@@ -39,7 +42,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private String mSearchInput;
-    private View.OnClickListener mOnClickListener;
     private List<Question> mQuestions;
     private ProgressBar mProgressBar;
     private TextView mErrorMessageTextView;
@@ -56,12 +58,32 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_search_results);
         mProgressBar = findViewById(R.id.pb_fetch_data);
         mErrorMessageTextView = findViewById(R.id.tv_error);
+        FloatingActionButton fab = findViewById(R.id.search_scroll_up_fab);
+        NestedScrollView nestedScrollView = findViewById(R.id.search_nested_scrollview);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mOnClickListener = new View.OnClickListener() {
+        fab.setVisibility(View.INVISIBLE);
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > 0) {
+                    fab.setVisibility(View.VISIBLE);
+                } else {
+                    fab.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nestedScrollView.scrollTo(0, 0);
+            }
+        });
+
+        View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();

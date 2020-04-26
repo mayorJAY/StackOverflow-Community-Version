@@ -42,7 +42,7 @@ import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUEST
  */
 public class QuestionsByActivityFragment extends Fragment {
 
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
     private SwipeRefreshLayout mSwipeContainer;
