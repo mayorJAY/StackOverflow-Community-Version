@@ -9,6 +9,7 @@ import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.model.QuestionsResponse;
 import com.example.josycom.flowoverstack.network.ApiService;
 import com.example.josycom.flowoverstack.network.RestApiClient;
+import com.example.josycom.flowoverstack.util.StringConstants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,27 +22,29 @@ import retrofit2.Response;
 public class SearchRepository {
 
     private MutableLiveData<List<Question>> mQuestions = new MutableLiveData<>();
+    private MutableLiveData<String> networkState = new MutableLiveData<>();
 
     private void getQuestionsWithTextInTitle(String inTitle) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
+        networkState.postValue(StringConstants.LOADING);
         Call<QuestionsResponse> call = apiService.getQuestionsWithTextInTitle(inTitle);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
             public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse questionsResponse = response.body();
                 if (questionsResponse != null) {
+                    networkState.postValue(StringConstants.LOADED);
                     mQuestions.postValue(questionsResponse.getItems());
-                    //shouldShowData = true;
                 } else {
                     Log.d("SearchRepository", "No matching question");
-                    //shouldShowData = false;
+                    networkState.postValue(StringConstants.NO_MATCHING_RESULT);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
-                //shouldShowData = false;
                 t.printStackTrace();
+                networkState.postValue(StringConstants.FAILED);
             }
         });
     }
@@ -51,6 +54,9 @@ public class SearchRepository {
         return mQuestions;
     }
 
+    public LiveData<String> getNetworkState() {
+        return networkState;
+    }
 //        disposable.add(observable
 //        .subscribeOn(Schedulers.io())
 //        .observeOn(AndroidSchedulers.mainThread())
@@ -70,10 +76,6 @@ public class SearchRepository {
 
 //    private void handleError(Throwable t) {
 //        t.printStackTrace();
-//    }
-
-//    public Boolean getShouldShowData() {
-//        return shouldShowData;
 //    }
 
 //    public void clearDisposable() {

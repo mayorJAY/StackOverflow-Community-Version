@@ -4,7 +4,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="error">Something is going wrong! Try again please</string>
+    <string name="error">Something is not right! Please check your network</string>
     <string name="action_search">Search</string>
     <string name="action_filter_by_activity">Filter by Activity</string>
     <string name="action_filter_by_creation">Filter by Creation</string>

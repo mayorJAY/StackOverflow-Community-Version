@@ -27,4 +27,13 @@ public interface StringConstants {
     String EXTRA_QUESTION_ANSWERS_COUNT = "question_answers";
     String EXTRA_QUESTION_FULL_TEXT = "question_full_text";
     String EXTRA_QUESTION_OWNER_LINK = "question_owner_link";
+
+    String LOADING = "loading";
+    String LOADED = "loaded";
+    String LOADING_MORE = "loading_more";
+    String LOADED_MORE = "loaded_more";
+    String LOADING_SEARCH = "loading_search";
+    String LOADED_SEARCH = "loaded_search";
+    String FAILED = "failed";
+    String NO_MATCHING_RESULT = "no_matching_result";
 }

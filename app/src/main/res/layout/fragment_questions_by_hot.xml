@@ -11,6 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/hot_pb_fetch_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/hot_tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:text="@string/error"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:visibility="invisible"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hot_recycler_view"
             android:layout_width="match_parent"

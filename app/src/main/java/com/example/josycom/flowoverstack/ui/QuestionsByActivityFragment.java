@@ -15,6 +15,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.QuestionAdapter;
@@ -44,6 +46,8 @@ public class QuestionsByActivityFragment extends Fragment {
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
     private SwipeRefreshLayout mSwipeContainer;
+    private ProgressBar mProgressBar;
+    private TextView mErrorMessageTextView;
 
     public QuestionsByActivityFragment() {
         // Required empty public constructor
@@ -55,6 +59,8 @@ public class QuestionsByActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_questions_by_activity, container, false);
         mRecyclerView = view.findViewById(R.id.activity_recycler_view);
+        mProgressBar = view.findViewById(R.id.activity_pb_fetch_data);
+        mErrorMessageTextView = view.findViewById(R.id.activity_tv_error);
         mSwipeContainer = view.findViewById(R.id.activitySwipeContainer);
         mSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
         FloatingActionButton fab = view.findViewById(R.id.activity_scroll_up_fab);
@@ -108,6 +114,23 @@ public class QuestionsByActivityFragment extends Fragment {
                 StringConstants.SORT_BY_ACTIVITY,
                 StringConstants.SITE,
                 StringConstants.QUESTION_FILTER)).get(QuestionViewModel.class);
+
+        questionViewModel.getNetworkState().observe(getViewLifecycleOwner(), s -> {
+            switch (s) {
+                case StringConstants.LOADING:
+                    onLoading();
+                    break;
+                case StringConstants.LOADED:
+                    onLoaded();
+                    break;
+                case StringConstants.LOADING_MORE:
+                    onLoadingMore();
+                    break;
+                case StringConstants.FAILED:
+                    onError();
+                    break;
+            }
+        });
         questionViewModel.getQuestionPagedList().observe(getViewLifecycleOwner(), questions -> {
             mQuestions = questions;
             questionAdapter.submitList(questions);
@@ -120,8 +143,27 @@ public class QuestionsByActivityFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+    private void onLoaded() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void onError() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void onLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void onLoadingMore() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
     }
 }

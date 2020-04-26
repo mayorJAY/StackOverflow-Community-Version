@@ -2,6 +2,7 @@ package com.example.josycom.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import com.example.josycom.flowoverstack.adapters.SearchAdapter;
 import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.DateUtil;
+import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.SearchViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,8 +56,8 @@ public class SearchActivity extends AppCompatActivity {
         mTextInputEditText = findViewById(R.id.text_input_editText);
         final MaterialButton materialButton = findViewById(R.id.search_button);
         mRecyclerView = findViewById(R.id.rv_search_results);
-        mProgressBar = findViewById(R.id.pb_fetch_data);
-        mErrorMessageTextView = findViewById(R.id.tv_error);
+        mProgressBar = findViewById(R.id.search_pb_fetch_data);
+        mErrorMessageTextView = findViewById(R.id.search_tv_error);
         FloatingActionButton fab = findViewById(R.id.search_scroll_up_fab);
         NestedScrollView nestedScrollView = findViewById(R.id.search_nested_scrollview);
 
@@ -99,18 +101,41 @@ public class SearchActivity extends AppCompatActivity {
                 mTextInputEditText.setError("Type a search query");
             } else {
                 mSearchInput = Objects.requireNonNull(mTextInputEditText.getText()).toString();
-                mTextInputEditText.setText("");
+                mTextInputEditText.getText().clear();
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 if (inputMethodManager != null) {
                     inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 }
+                onLoading();
                 makeSearch();
             }
         });
         final SearchAdapter searchAdapter = new SearchAdapter();
         mSearchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+
+//        mSearchViewModel.getNetworkState().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(String s) {
+//                switch (s) {
+//                    case StringConstants.LOADING:
+//                        onLoading();
+//                        break;
+//                    case StringConstants.LOADED:
+//                        onLoaded();
+//                        break;
+//                    case StringConstants.FAILED:
+//                        onError();
+//                        break;
+//                }
+//            }
+//        });
         mSearchViewModel.getQuestionLiveData().observe(this, questions -> {
             mQuestions = questions;
+            if (questions != null) {
+                onLoaded();
+            } else {
+                onError();
+            }
             searchAdapter.setQuestions(questions);
         });
         mRecyclerView.setAdapter(searchAdapter);
@@ -122,20 +147,28 @@ public class SearchActivity extends AppCompatActivity {
         mSearchViewModel.setQuery(mSearchInput);
     }
 
-    public void showData() {
+    private void onLoaded() {
         mProgressBar.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mErrorMessageTextView.setVisibility(View.INVISIBLE);
     }
 
-    public void showError() {
+    private void onError() {
         mProgressBar.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
         mErrorMessageTextView.setVisibility(View.VISIBLE);
     }
 
-    public void hideData() {
+    private void onLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void onLoadingMore() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
     }
 
     @Override

@@ -15,9 +15,11 @@ public class SearchViewModel extends ViewModel {
     private SearchRepository mSearchRepository;
     private MutableLiveData<String> mSearchLiveData = new MutableLiveData<>();
     private LiveData<List<Question>> mQuestionLiveData = Transformations.switchMap(mSearchLiveData, (query) -> mSearchRepository.getQuestions(query));
+    private LiveData<String> networkState;
 
     public SearchViewModel() {
         mSearchRepository = new SearchRepository();
+        networkState = mSearchRepository.getNetworkState();
     }
 
     public LiveData<List<Question>> getQuestionLiveData() {
@@ -26,5 +28,9 @@ public class SearchViewModel extends ViewModel {
 
     public void setQuery(String query) {
         mSearchLiveData.setValue(query);
+    }
+
+    public LiveData<String> getNetworkState() {
+        return networkState;
     }
 }

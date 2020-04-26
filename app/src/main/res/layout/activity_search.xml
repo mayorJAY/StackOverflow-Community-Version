@@ -59,20 +59,23 @@
         app:layout_constraintTop_toBottomOf="@id/text_input_layout">
 
         <ProgressBar
-            android:id="@+id/pb_fetch_data"
+            android:id="@+id/search_pb_fetch_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
         <TextView
-            android:id="@+id/tv_error"
+            android:id="@+id/search_tv_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_margin="8dp"
             android:text="@string/error"
-            android:textSize="25sp"
-            android:visibility="invisible" />
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:visibility="invisible"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_results"
