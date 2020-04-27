@@ -137,22 +137,15 @@ public class SearchActivity extends AppCompatActivity {
         mSearchViewModel.setQuery(mSearchInput);
     }
 
-    private void onLoaded() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
-    }
-
-    private void onError() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageTextView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setText(R.string.error);
-    }
-
     private void onLoading() {
         mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void onLoaded() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
         mErrorMessageTextView.setVisibility(View.INVISIBLE);
     }
 
@@ -163,8 +156,10 @@ public class SearchActivity extends AppCompatActivity {
         mErrorMessageTextView.setText(R.string.no_matching_result);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private void onError() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageTextView.setVisibility(View.VISIBLE);
+        mErrorMessageTextView.setText(R.string.error);
     }
 }
