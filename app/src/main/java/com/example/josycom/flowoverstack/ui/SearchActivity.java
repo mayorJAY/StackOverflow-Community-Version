@@ -2,7 +2,6 @@ package com.example.josycom.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -106,43 +105,34 @@ public class SearchActivity extends AppCompatActivity {
                 if (inputMethodManager != null) {
                     inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 }
-                onLoading();
                 makeSearch();
             }
         });
         final SearchAdapter searchAdapter = new SearchAdapter();
         mSearchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
-//        mSearchViewModel.getNetworkState().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(String s) {
-//                switch (s) {
-//                    case StringConstants.LOADING:
-//                        onLoading();
-//                        break;
-//                    case StringConstants.LOADED:
-//                        onLoaded();
-//                        break;
-//                    case StringConstants.FAILED:
-//                        onError();
-//                        break;
-//                }
-//            }
-//        });
-        mSearchViewModel.getQuestionLiveData().observe(this, questions -> {
-            mQuestions = questions;
-            if (questions != null) {
-                onLoaded();
-            } else {
-                onError();
+        mSearchViewModel.getResponseLiveData().observe(this, searchResponse -> {
+            switch (searchResponse.networkState) {
+                case StringConstants.LOADING:
+                    onLoading();
+                    break;
+                case StringConstants.LOADED:
+                    onLoaded();
+                    mQuestions = searchResponse.questions;
+                    searchAdapter.setQuestions(searchResponse.questions);
+                    break;
+                case StringConstants.NO_MATCHING_RESULT:
+                    onNoMatchingResult();
+                    break;
+                case StringConstants.FAILED:
+                    onError();
+                    break;
             }
-            searchAdapter.setQuestions(questions);
         });
         mRecyclerView.setAdapter(searchAdapter);
         searchAdapter.setOnClickListener(mOnClickListener);
     }
 
-    // Gets the ViewModel, Observes the Question LiveData and delivers it to the Recyclerview
     private void makeSearch() {
         mSearchViewModel.setQuery(mSearchInput);
     }
@@ -157,6 +147,7 @@ public class SearchActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
         mErrorMessageTextView.setVisibility(View.VISIBLE);
+        mErrorMessageTextView.setText(R.string.error);
     }
 
     private void onLoading() {
@@ -165,10 +156,11 @@ public class SearchActivity extends AppCompatActivity {
         mErrorMessageTextView.setVisibility(View.INVISIBLE);
     }
 
-    private void onLoadingMore() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+    private void onNoMatchingResult() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageTextView.setVisibility(View.VISIBLE);
+        mErrorMessageTextView.setText(R.string.no_matching_result);
     }
 
     @Override

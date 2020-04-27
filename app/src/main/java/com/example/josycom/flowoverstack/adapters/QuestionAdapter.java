@@ -102,6 +102,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
 
         private String updateTagsTextView(List<String> tagList){
             StringBuilder builder = new StringBuilder();
+            builder.append("Tags: ");
             for (int i = 0; i < tagList.size(); i++){
                 builder.append(tagList.get(i));
                 if (i != tagList.size() - 1){

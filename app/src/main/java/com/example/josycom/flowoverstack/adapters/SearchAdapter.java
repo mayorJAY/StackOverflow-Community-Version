@@ -79,7 +79,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
 
         void bind(Question question) {
-            if (question != null){
+            if (question != null) {
                 Owner owner = question.getOwner();
                 String profileImage = owner.getProfileImage();
                 List<String> tagList = question.getTags();
@@ -94,14 +94,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 mAnswersCountText.setText(String.valueOf(question.getAnswerCount()));
                 mVotesCountText.setText(String.valueOf(question.getScore()));
                 mTagsText.setText(updateTagsTextView(tagList));
-            } else {
-                Toast.makeText(itemView.getContext(), "No item found", Toast.LENGTH_SHORT).show();
             }
         }
 
         private String updateTagsTextView(List<String> tagList){
             StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < tagList.size(); i++){
+            builder.append("Tags: ");
+            for (int i = 0; i < tagList.size(); i++) {
                 builder.append(tagList.get(i));
                 if (i != tagList.size() - 1){
                     builder.append(", ");

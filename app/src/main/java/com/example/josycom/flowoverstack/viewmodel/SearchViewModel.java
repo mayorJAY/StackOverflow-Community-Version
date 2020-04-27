@@ -5,32 +5,25 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.josycom.flowoverstack.model.Question;
+import com.example.josycom.flowoverstack.model.SearchResponse;
 import com.example.josycom.flowoverstack.repository.SearchRepository;
 
-import java.util.List;
 
 public class SearchViewModel extends ViewModel {
 
     private SearchRepository mSearchRepository;
     private MutableLiveData<String> mSearchLiveData = new MutableLiveData<>();
-    private LiveData<List<Question>> mQuestionLiveData = Transformations.switchMap(mSearchLiveData, (query) -> mSearchRepository.getQuestions(query));
-    private LiveData<String> networkState;
+    private LiveData<SearchResponse> mResponseLiveData = Transformations.switchMap(mSearchLiveData, (query) -> mSearchRepository.getResponse(query));
 
     public SearchViewModel() {
         mSearchRepository = new SearchRepository();
-        networkState = mSearchRepository.getNetworkState();
     }
 
-    public LiveData<List<Question>> getQuestionLiveData() {
-        return mQuestionLiveData;
+    public LiveData<SearchResponse> getResponseLiveData() {
+        return mResponseLiveData;
     }
 
     public void setQuery(String query) {
         mSearchLiveData.setValue(query);
-    }
-
-    public LiveData<String> getNetworkState() {
-        return networkState;
     }
 }
