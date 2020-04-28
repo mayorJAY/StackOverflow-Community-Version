@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="@string/action_search"
+                android:textColor="@color/colorPrimaryText"
                 app:layout_constraintBaseline_toBaselineOf="@id/text_input_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

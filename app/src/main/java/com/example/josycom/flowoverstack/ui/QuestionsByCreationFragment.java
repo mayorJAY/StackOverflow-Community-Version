@@ -123,9 +123,6 @@ public class QuestionsByCreationFragment extends Fragment {
                 case StringConstants.LOADED:
                     onLoaded();
                     break;
-                case StringConstants.LOADING_MORE:
-                    onLoadingMore();
-                    break;
                 case StringConstants.FAILED:
                     onError();
                     break;
@@ -158,12 +155,6 @@ public class QuestionsByCreationFragment extends Fragment {
     private void onLoading() {
         mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
-    }
-
-    private void onLoadingMore() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
         mErrorMessageTextView.setVisibility(View.INVISIBLE);
     }
 }

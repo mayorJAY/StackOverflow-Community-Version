@@ -10,7 +10,7 @@
         android:id="@+id/tv_answer_body_item"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="@string/tv_example_answer_item"
         android:textColor="#000"
         android:textSize="14sp"

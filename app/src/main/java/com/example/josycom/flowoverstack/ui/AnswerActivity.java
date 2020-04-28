@@ -1,6 +1,7 @@
 package com.example.josycom.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,18 +16,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.AnswerAdapter;
+import com.example.josycom.flowoverstack.model.Answer;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.AnswerViewModel;
 import com.example.josycom.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
 
 import org.jsoup.Jsoup;
 
+import java.util.List;
 import java.util.Objects;
 
 public class AnswerActivity extends AppCompatActivity {
 
     private AnswerAdapter mAnswerAdapter;
     private String mOwnerQuestionLink;
+    private TextView noAnswerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class AnswerActivity extends AppCompatActivity {
         TextView nameQuestionTextView = findViewById(R.id.tv_name_question_detail);
         ImageView avatarQuestionImageView = findViewById(R.id.iv_avatar_question_detail);
         RecyclerView answersRecyclerView = findViewById(R.id.rv_answers);
+        noAnswerText = findViewById(R.id.tv_no_answer);
 
         answersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAnswerAdapter = new AnswerAdapter();
@@ -63,7 +68,16 @@ public class AnswerActivity extends AppCompatActivity {
                         StringConstants.SORT_BY_ACTIVITY,
                         StringConstants.SITE,
                         StringConstants.ANSWER_FILTER)).get(AnswerViewModel.class);
-        answerViewModel.getAnswersLiveData().observe(this, answers -> mAnswerAdapter.setAnswers(answers));
+        answerViewModel.getAnswersLiveData().observe(this, new Observer<List<Answer>>() {
+            @Override
+            public void onChanged(List<Answer> answers) {
+                if (answers.size() == 0) {
+                    noAnswerText.setVisibility(View.VISIBLE);
+                } else {
+                    mAnswerAdapter.setAnswers(answers);
+                }
+            }
+        });
         answersRecyclerView.setAdapter(mAnswerAdapter);
     }
 

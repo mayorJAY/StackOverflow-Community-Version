@@ -65,7 +65,6 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
-        networkState.postValue(StringConstants.LOADING_MORE);
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
@@ -97,7 +96,6 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
-        networkState.postValue(StringConstants.LOADING_MORE);
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
