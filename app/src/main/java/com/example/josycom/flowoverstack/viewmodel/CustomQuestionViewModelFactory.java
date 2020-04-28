@@ -13,7 +13,7 @@ public class CustomQuestionViewModelFactory implements ViewModelProvider.Factory
     private String site;
     private String filter;
 
-    public CustomQuestionViewModelFactory(int page, int pageSize, String order, String sortCondition, String site, String filter){
+    public CustomQuestionViewModelFactory(int page, int pageSize, String order, String sortCondition, String site, String filter) {
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;
@@ -21,6 +21,7 @@ public class CustomQuestionViewModelFactory implements ViewModelProvider.Factory
         this.site = site;
         this.filter = filter;
     }
+
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {

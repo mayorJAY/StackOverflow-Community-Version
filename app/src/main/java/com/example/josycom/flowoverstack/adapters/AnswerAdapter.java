@@ -19,6 +19,7 @@ import java.util.List;
 public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerViewHolder> {
 
     private List<Answer> mAnswers;
+
     @NonNull
     @Override
     public AnswerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,7 +29,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
 
     @Override
     public void onBindViewHolder(@NonNull AnswerViewHolder holder, int position) {
-        if (mAnswers != null){
+        if (mAnswers != null) {
             Answer currentAnswer = mAnswers.get(position);
             holder.bind(currentAnswer);
         }
@@ -41,7 +42,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
 
     @Override
     public int getItemCount() {
-        if (mAnswers != null){
+        if (mAnswers != null) {
             return mAnswers.size();
         } else {
             return 0;
@@ -59,7 +60,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
             answerScore = itemView.findViewById(R.id.tv_votes_item);
         }
 
-        void bind(Answer answer){
+        void bind(Answer answer) {
             answerScore.setText(String.valueOf(answer.getScore()));
             answerName.setText(answer.getOwner().getDisplayName());
             answerDate.setText(DateUtil.toNormalDate(answer.getCreationDate()));

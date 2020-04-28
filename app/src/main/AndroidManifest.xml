@@ -11,11 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SearchActivity"
+        <activity
+            android:name=".ui.SearchActivity"
             android:label="Search"
             android:parentActivityName=".ui.MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
 
         </activity>
         <activity
@@ -35,8 +37,8 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
     </application>

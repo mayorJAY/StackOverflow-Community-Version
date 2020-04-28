@@ -2,10 +2,11 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="4dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="4dp"
     tools:context=".ui.AnswerActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,36 +35,48 @@
                 android:id="@+id/tv_asked_question_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tv_asked_detail"
-                android:textSize="14sp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:text="@string/tv_asked_detail"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_question_detail" />
 
             <TextView
                 android:id="@+id/tv_date_question_detail"
-                android:text="@string/tv_example_date_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#000"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:text="@string/tv_example_date_item"
+                android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/tv_asked_question_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_question_detail" />
+
+            <TextView
+                android:id="@+id/tv_asked_by_question_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/by"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_asked_question_detail" />
 
             <TextView
                 android:id="@+id/tv_name_question_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:textSize="14sp"
-                android:text="@string/tv_example_name_item"
                 android:maxLines="3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_question_detail" />
+                android:text="@string/tv_example_name_item"
+                android:textSize="14sp"
+                android:onClick="openProfileOnWeb"
+                android:textColor="#3B6AA8"
+                app:layout_constraintStart_toEndOf="@+id/tv_asked_by_question_detail"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date_question_detail" />
 
             <ImageButton
                 android:id="@+id/iv_avatar_question_detail"
@@ -71,9 +84,9 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toStartOf="@+id/tv_name_question_detail"
-                app:layout_constraintTop_toBottomOf="@+id/tv_question_detail"
-                android:contentDescription="@string/avatar_description" />
+                android:contentDescription="@string/avatar_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_question_detail" />
 
             <TextView
                 android:id="@+id/tv_full_question_detail"
@@ -82,30 +95,31 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="16sp"
                 android:text="@string/tv_example_question_item"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_avatar_question_detail" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_question_detail" />
 
             <View
                 android:id="@+id/v_divider"
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:background="#000"
                 android:layout_marginTop="8dp"
+                android:background="#000"
                 app:layout_constraintTop_toBottomOf="@+id/tv_full_question_detail" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_answers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            tools:listitem="@layout/answer_item"/>
+            tools:listitem="@layout/answer_item" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

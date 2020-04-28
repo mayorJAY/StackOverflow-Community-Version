@@ -103,7 +103,7 @@ public class QuestionsByVoteFragment extends Fragment {
         return view;
     }
 
-    private void handleRecyclerView(){
+    private void handleRecyclerView() {
         final QuestionAdapter questionAdapter = new QuestionAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -14,9 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    private final String STATE_FRAGMENT = "state_of_fragment";
     private FragmentTransaction mFragmentTransaction;
     private boolean isFragmentDisplayed = false;
-    private final String STATE_FRAGMENT = "state_of_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, SearchActivity.class));
             return true;
         } else if (id == R.id.action_filter_by_creation) {
-            if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Creation")){
+            if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Creation")) {
                 QuestionsByCreationFragment questionsByCreationFragment = new QuestionsByCreationFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 mFragmentTransaction.replace(R.id.fragment_container, questionsByCreationFragment).commit();
                 item.setTitle(R.string.action_filter_by_activity);
-            } else if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Activity")){
+            } else if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Activity")) {
                 QuestionsByActivityFragment questionsByActivityFragment = new QuestionsByActivityFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 mFragmentTransaction.replace(R.id.fragment_container, questionsByActivityFragment).commit();
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 mFragmentTransaction.replace(R.id.fragment_container, questionsByHotFragment).commit();
             }
         } else if (id == R.id.action_filter_by_vote) {
-            if (findViewById(R.id.fragment_container) != null){
+            if (findViewById(R.id.fragment_container) != null) {
                 QuestionsByVoteFragment questionsByVoteFragment = new QuestionsByVoteFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 mFragmentTransaction.replace(R.id.fragment_container, questionsByVoteFragment).commit();

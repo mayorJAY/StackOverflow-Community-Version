@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import java.util.Objects;
 public class AnswerActivity extends AppCompatActivity {
 
     private AnswerAdapter mAnswerAdapter;
+    private String mOwnerQuestionLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class AnswerActivity extends AppCompatActivity {
         nameQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
         int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
         String avatarAddress = mIntent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
-        String ownerQuestionLink = mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
+        mOwnerQuestionLink = mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
         Glide.with(this)
                 .load(avatarAddress)
                 .placeholder(R.drawable.loading)
@@ -63,4 +66,13 @@ public class AnswerActivity extends AppCompatActivity {
         answerViewModel.getAnswersLiveData().observe(this, answers -> mAnswerAdapter.setAnswers(answers));
         answersRecyclerView.setAdapter(mAnswerAdapter);
     }
+
+    public void openProfileOnWeb(View view) {
+        Uri webPage = Uri.parse(mOwnerQuestionLink);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
 }

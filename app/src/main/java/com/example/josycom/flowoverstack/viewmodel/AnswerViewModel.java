@@ -12,7 +12,7 @@ public class AnswerViewModel extends ViewModel {
 
     private LiveData<List<Answer>> mAnswersLiveData;
 
-    AnswerViewModel(int questionId, String order, String sortCondition, String site, String filter){
+    AnswerViewModel(int questionId, String order, String sortCondition, String site, String filter) {
         AnswerRepository answerRepository = new AnswerRepository(questionId, order, sortCondition, site, filter);
         mAnswersLiveData = answerRepository.getAnswers();
     }

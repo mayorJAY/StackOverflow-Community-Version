@@ -40,7 +40,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
         }
     };
 
-    public QuestionAdapter(){
+    public QuestionAdapter() {
         super(DIFF_CALLBACK);
     }
 
@@ -48,8 +48,8 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_item, parent, false);
-            return new QuestionViewHolder(itemView);
-        }
+        return new QuestionViewHolder(itemView);
+    }
 
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
@@ -60,11 +60,11 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
         mOnClickListener = onClickListener;
     }
 
-    static class QuestionViewHolder extends RecyclerView.ViewHolder{
+    static class QuestionViewHolder extends RecyclerView.ViewHolder {
         ImageView mAvatarView;
         TextView mTitleQuestionText, mViewCounterText, mDateText, mNameText, mAnswersCountText, mVotesCountText, mTagsText;
 
-       QuestionViewHolder(@NonNull View itemView) {
+        QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
             mAvatarView = itemView.findViewById(R.id.iv_avatar_item);
             mTitleQuestionText = itemView.findViewById(R.id.tv_question_item);
@@ -80,7 +80,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
         }
 
         void bind(Question question) {
-            if (question != null){
+            if (question != null) {
                 Owner owner = question.getOwner();
                 String profileImage = owner.getProfileImage();
                 List<String> tagList = question.getTags();
@@ -100,12 +100,12 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
             }
         }
 
-        private String updateTagsTextView(List<String> tagList){
+        private String updateTagsTextView(List<String> tagList) {
             StringBuilder builder = new StringBuilder();
             builder.append("Tags: ");
-            for (int i = 0; i < tagList.size(); i++){
+            for (int i = 0; i < tagList.size(); i++) {
                 builder.append(tagList.get(i));
-                if (i != tagList.size() - 1){
+                if (i != tagList.size() - 1) {
                     builder.append(", ");
                 }
             }

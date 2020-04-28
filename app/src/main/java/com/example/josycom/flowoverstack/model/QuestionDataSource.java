@@ -26,7 +26,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     private final String filter;
     private MutableLiveData<String> networkState;
 
-    QuestionDataSource(int page, int pageSize, String order, String sortCondition, String site, String filter){
+    QuestionDataSource(int page, int pageSize, String order, String sortCondition, String site, String filter) {
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;
@@ -61,6 +61,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             }
         });
     }
+
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
@@ -74,7 +75,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
                     networkState.postValue(StringConstants.LOADED);
                     List<Question> responseItems = apiResponse.getItems();
                     int key;
-                    if (params.key > 1){
+                    if (params.key > 1) {
                         key = params.key - 1;
                     } else {
                         key = 0;

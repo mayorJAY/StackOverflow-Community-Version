@@ -22,8 +22,9 @@ import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
 
-    private List<Question> mQuestions;
     private static View.OnClickListener mOnClickListener;
+    private List<Question> mQuestions;
+
     @NonNull
     @Override
     public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,7 +34,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     @Override
     public void onBindViewHolder(@NonNull SearchAdapter.SearchViewHolder holder, int position) {
-        if (mQuestions != null){
+        if (mQuestions != null) {
             Question currentQuestion = mQuestions.get(position);
             holder.bind(currentQuestion);
         }
@@ -97,12 +98,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             }
         }
 
-        private String updateTagsTextView(List<String> tagList){
+        private String updateTagsTextView(List<String> tagList) {
             StringBuilder builder = new StringBuilder();
             builder.append("Tags: ");
             for (int i = 0; i < tagList.size(); i++) {
                 builder.append(tagList.get(i));
-                if (i != tagList.size() - 1){
+                if (i != tagList.size() - 1) {
                     builder.append(", ");
                 }
             }

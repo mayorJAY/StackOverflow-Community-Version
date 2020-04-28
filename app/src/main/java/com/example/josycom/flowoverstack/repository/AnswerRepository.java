@@ -27,7 +27,7 @@ public class AnswerRepository {
     private final String filter;
     private MutableLiveData<List<Answer>> mAnswers = new MutableLiveData<>();
 
-    public AnswerRepository(int questionId, String order, String sortCondition, String site, String filter){
+    public AnswerRepository(int questionId, String order, String sortCondition, String site, String filter) {
         this.questionId = questionId;
         this.order = order;
         this.sortCondition = sortCondition;

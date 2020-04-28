@@ -24,7 +24,7 @@ public class RestApiClient {
             .client(client.build());
     private static Retrofit retrofit = builder.build();
 
-    public static <T> T getApiService(Class<T> type){
+    public static <T> T getApiService(Class<T> type) {
         return retrofit.create(type);
     }
 }
