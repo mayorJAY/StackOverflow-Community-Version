@@ -53,17 +53,17 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_search) {
             startActivity(new Intent(this, SearchActivity.class));
             return true;
-        } else if (id == R.id.action_filter_by_creation) {
-            if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Creation")) {
+        } else if (id == R.id.action_filter_by_recency) {
+            if (findViewById(R.id.fragment_container) != null && item.getTitle().equals(getString(R.string.action_filter_by_recency))) {
                 QuestionsByCreationFragment questionsByCreationFragment = new QuestionsByCreationFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 mFragmentTransaction.replace(R.id.fragment_container, questionsByCreationFragment).commit();
                 item.setTitle(R.string.action_filter_by_activity);
-            } else if (findViewById(R.id.fragment_container) != null && item.getTitle().equals("Filter by Activity")) {
+            } else if (findViewById(R.id.fragment_container) != null && item.getTitle().equals(getString(R.string.action_filter_by_activity))) {
                 QuestionsByActivityFragment questionsByActivityFragment = new QuestionsByActivityFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 mFragmentTransaction.replace(R.id.fragment_container, questionsByActivityFragment).commit();
-                item.setTitle(R.string.action_filter_by_creation);
+                item.setTitle(R.string.action_filter_by_recency);
             }
             return true;
         } else if (id == R.id.action_filter_by_hot) {
