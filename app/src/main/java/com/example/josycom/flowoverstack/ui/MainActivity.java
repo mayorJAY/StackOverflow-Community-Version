@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_search) {
             startActivity(new Intent(this, SearchActivity.class));
+            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
             return true;
         } else if (id == R.id.action_filter_by_recency) {
             if (findViewById(R.id.fragment_container) != null && item.getTitle().equals(getString(R.string.action_filter_by_recency))) {
