@@ -4,7 +4,8 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="error">Something is not right! Please check your network or Swipe down to refresh</string>
+    <string name="question_error_message">Something is not right! Please check your network or Swipe down to refresh</string>
+    <string name="search_error_message">Something is not right! Please check your network</string>
     <string name="action_search">Search</string>
     <string name="action_filter_by_activity">Filter by Activity</string>
     <string name="action_filter_by_recency">Filter by Recency</string>

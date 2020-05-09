@@ -50,29 +50,4 @@ public class SearchRepository {
         getQuestionsWithTextInTitle(inTitle);
         return mResponse;
     }
-
-//        disposable.add(observable
-//        .subscribeOn(Schedulers.io())
-//        .observeOn(AndroidSchedulers.mainThread())
-//        .subscribe(this::handleResults, this::handleError));
-
-//    private void handleResults(List<QuestionsResponse> questionsResponses) {
-//        if (questionsResponses != null && questionsResponses.size() != 0) {
-//            List<Question> questions = new ArrayList<>();
-//            for (int i = 0; i <= questionsResponses.size(); i++) {
-//                questions.add(questionsResponses.get(i).getItems().get(0));
-//            }
-//            mQuestions.setValue(questions);
-//        } else {
-//            Log.d("SearchRepository", "No matching question");
-//        }
-//    }
-
-//    private void handleError(Throwable t) {
-//        t.printStackTrace();
-//    }
-
-//    public void clearDisposable() {
-//        disposable.clear();
-//    }
 }

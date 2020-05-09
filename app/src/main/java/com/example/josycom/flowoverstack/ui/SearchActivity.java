@@ -160,6 +160,6 @@ public class SearchActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
         mErrorMessageTextView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setText(R.string.error);
+        mErrorMessageTextView.setText(R.string.search_error_message);
     }
 }
