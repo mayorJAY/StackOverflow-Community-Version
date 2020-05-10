@@ -138,12 +138,9 @@ public class QuestionsByActivityFragment extends Fragment {
         });
         mRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
-        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                questionViewModel.refresh();
-                mSwipeContainer.setRefreshing(false);
-            }
+        mSwipeContainer.setOnRefreshListener(() -> {
+            questionViewModel.refresh();
+            mSwipeContainer.setRefreshing(false);
         });
     }
 

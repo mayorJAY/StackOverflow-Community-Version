@@ -88,4 +88,10 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_FRAGMENT, isFragmentDisplayed);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
 }
