@@ -46,18 +46,18 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null) {
-                    networkState.postValue(StringConstants.LOADED);
+                    networkState.setValue(StringConstants.LOADED);
                     List<Question> responseItems = apiResponse.getItems();
                     callback.onResult(responseItems, null, page + 1);
                 } else {
-                    networkState.postValue(StringConstants.FAILED);
+                    networkState.setValue(StringConstants.FAILED);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
-                networkState.postValue(StringConstants.FAILED);
+                networkState.setValue(StringConstants.FAILED);
             }
         });
     }
@@ -71,7 +71,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null) {
-                    networkState.postValue(StringConstants.LOADED);
+                    networkState.setValue(StringConstants.LOADED);
                     List<Question> responseItems = apiResponse.getItems();
                     int key;
                     if (params.key > 1) {
@@ -81,14 +81,14 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
                     }
                     callback.onResult(responseItems, key);
                 } else {
-                    networkState.postValue(StringConstants.FAILED);
+                    networkState.setValue(StringConstants.FAILED);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
-                networkState.postValue(StringConstants.FAILED);
+                networkState.setValue(StringConstants.FAILED);
             }
         });
     }
@@ -102,18 +102,18 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null) {
-                    networkState.postValue(StringConstants.LOADED);
+                    networkState.setValue(StringConstants.LOADED);
                     List<Question> responseItems = apiResponse.getItems();
                     callback.onResult(responseItems, params.key + 1);
                 } else {
-                    networkState.postValue(StringConstants.FAILED);
+                    networkState.setValue(StringConstants.FAILED);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
-                networkState.postValue(StringConstants.FAILED);
+                networkState.setValue(StringConstants.FAILED);
             }
         });
     }
