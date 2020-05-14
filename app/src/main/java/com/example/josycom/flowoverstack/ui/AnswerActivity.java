@@ -1,6 +1,7 @@
 package com.example.josycom.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +50,7 @@ public class AnswerActivity extends AppCompatActivity {
         Intent mIntent = getIntent();
 
         questionTitleTextView.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE))).text());
-        fullQuestionTextView.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT))).text());
+        fullQuestionTextView.setText(HtmlCompat.fromHtml(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)), 0));
         dateQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         nameQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
         int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
