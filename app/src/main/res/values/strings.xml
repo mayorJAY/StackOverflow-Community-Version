@@ -10,7 +10,7 @@
     <string name="action_filter_by_activity">Filter by Activity</string>
     <string name="action_filter_by_recency">Filter by Recency</string>
     <string name="action_filter_by_hot">Filter by Hot</string>
-    <string name="action_filter_by_vote">Filter by Vote</string>
+    <string name="action_filter_by_vote">Filter by Votes</string>
     <string name="avatar_description">User image</string>
     <string name="tv_example_question_item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
     <string name="tv_example_date_item">11.10.2019</string>
@@ -31,4 +31,8 @@
     <string name="by">By:</string>
     <string name="no_answers_yet">No Answers Yet</string>
     <string name="app_logo">App logo</string>
+    <string name="active_questions">Active Questions</string>
+    <string name="recent_questions">Recent Questions</string>
+    <string name="hot_questions">Hot Questions</string>
+    <string name="voted_questions">Voted Questions</string>
 </resources>
