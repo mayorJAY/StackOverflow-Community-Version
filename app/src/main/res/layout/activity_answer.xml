@@ -18,13 +18,12 @@
 
             <TextView
                 android:id="@+id/tv_question_detail"
-                style="@style/TextAppearance.AppCompat.Title.Inverse"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
                 android:text="@string/tv_example_question_item"
-                android:textColor="#000"
+                android:textColor="@color/blackText"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +33,8 @@
                 android:id="@+id/tv_asked_question_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:text="@string/tv_asked_detail"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,8 +44,8 @@
                 android:id="@+id/tv_date_question_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:text="@string/tv_example_date_item"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/tv_asked_question_detail"
@@ -73,7 +72,7 @@
                 android:text="@string/tv_example_name_item"
                 android:textSize="14sp"
                 android:onClick="openProfileOnWeb"
-                android:textColor="#3B6AA8"
+                android:textColor="@color/blueText"
                 app:layout_constraintStart_toEndOf="@+id/tv_asked_by_question_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_date_question_detail" />
 
@@ -105,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginTop="8dp"
-                android:background="#000"
+                android:background="@color/blackText"
                 app:layout_constraintTop_toBottomOf="@+id/tv_full_question_detail" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -116,6 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/no_answers_yet"
             android:textSize="24sp"
             android:gravity="center"

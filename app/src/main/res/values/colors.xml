@@ -4,4 +4,6 @@
 <color name="colorPrimaryLight">#5f7b50</color>
 <color name="colorPrimaryDark">#0f2600</color>
 <color name="colorPrimaryText">#ffffff</color>
+<color name="blackText">#000000</color>
+<color name="blueText">#3B6AA8</color>
 </resources>
