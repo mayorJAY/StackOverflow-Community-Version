@@ -51,11 +51,6 @@ public class QuestionsByCreationFragment extends Fragment {
     private ProgressBar mProgressBar;
     private TextView mErrorMessageTextView;
 
-    public QuestionsByCreationFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

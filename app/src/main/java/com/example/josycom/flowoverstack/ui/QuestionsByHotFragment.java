@@ -51,11 +51,6 @@ public class QuestionsByHotFragment extends Fragment {
     private ProgressBar mProgressBar;
     private TextView mErrorMessageTextView;
 
-    public QuestionsByHotFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -31,9 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (!isFragmentDisplayed) {
             if (findViewById(R.id.fragment_container) != null) {
-                QuestionsByActivityFragment questionsByActivityFragment = new QuestionsByActivityFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                mFragmentTransaction.add(R.id.fragment_container, questionsByActivityFragment).commit();
+                mFragmentTransaction.add(R.id.fragment_container, new QuestionsByActivityFragment()).commit();
                 isFragmentDisplayed = true;
             }
         }
@@ -56,28 +55,24 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_filter_by_recency) {
             if (findViewById(R.id.fragment_container) != null && item.getTitle().equals(getString(R.string.action_filter_by_recency))) {
-                QuestionsByCreationFragment questionsByCreationFragment = new QuestionsByCreationFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                mFragmentTransaction.replace(R.id.fragment_container, questionsByCreationFragment).commit();
+                mFragmentTransaction.replace(R.id.fragment_container, new QuestionsByCreationFragment()).commit();
                 item.setTitle(R.string.action_filter_by_activity);
             } else if (findViewById(R.id.fragment_container) != null && item.getTitle().equals(getString(R.string.action_filter_by_activity))) {
-                QuestionsByActivityFragment questionsByActivityFragment = new QuestionsByActivityFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                mFragmentTransaction.replace(R.id.fragment_container, questionsByActivityFragment).commit();
+                mFragmentTransaction.replace(R.id.fragment_container, new QuestionsByActivityFragment()).commit();
                 item.setTitle(R.string.action_filter_by_recency);
             }
             return true;
         } else if (id == R.id.action_filter_by_hot) {
             if (findViewById(R.id.fragment_container) != null) {
-                QuestionsByHotFragment questionsByHotFragment = new QuestionsByHotFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                mFragmentTransaction.replace(R.id.fragment_container, questionsByHotFragment).commit();
+                mFragmentTransaction.replace(R.id.fragment_container, new QuestionsByHotFragment()).commit();
             }
         } else if (id == R.id.action_filter_by_vote) {
             if (findViewById(R.id.fragment_container) != null) {
-                QuestionsByVoteFragment questionsByVoteFragment = new QuestionsByVoteFragment();
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                mFragmentTransaction.replace(R.id.fragment_container, questionsByVoteFragment).commit();
+                mFragmentTransaction.replace(R.id.fragment_container, new QuestionsByVoteFragment()).commit();
             }
         }
         return super.onOptionsItemSelected(item);
