@@ -10,8 +10,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
         android:text="@string/voted_questions"
         android:textSize="22sp"
         android:textStyle="bold" />
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:text="@string/question_error_message"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:backgroundTint="@color/colorPrimaryLight"
                 android:contentDescription="@string/scroll_up_button"
                 android:src="@drawable/ic_action_scroll_up"

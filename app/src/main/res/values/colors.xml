@@ -6,4 +6,5 @@
 <color name="colorPrimaryText">#ffffff</color>
 <color name="blackText">#000000</color>
 <color name="blueText">#3B6AA8</color>
+<color name="colorViewLine">#dadada</color>
 </resources>

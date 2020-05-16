@@ -12,13 +12,12 @@
     <string name="action_filter_by_hot">Filter by Hot</string>
     <string name="action_filter_by_vote">Filter by Votes</string>
     <string name="avatar_description">User image</string>
-    <string name="tv_example_question_item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
+    <string name="example_question">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
     <string name="tv_example_date_item">11.10.2019</string>
     <string name="tv_example_counter_item">12</string>
     <string name="tv_example_name_item">John Doe</string>
     <string name="tv_asked_detail">Asked:</string>
     <string name="tv_answers_count_text_item">Answers:</string>
-    <string name="tv_example_answer_item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
     <string name="tv_score_text_item">Score</string>
     <string name="tv_date_answer_text_item">Answered:</string>
     <string name="view_indicator_image">view indicator image</string>
