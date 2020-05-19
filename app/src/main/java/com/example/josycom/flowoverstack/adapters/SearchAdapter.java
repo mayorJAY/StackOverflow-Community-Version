@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,7 +60,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     static class SearchViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mAvatarView;
-        TextView mTitleQuestionText, mViewCounterText, mDateText, mNameText, mAnswersCountText, mVotesCountText, mTagsText;
+        TextView mTitleQuestionText, mViewCounterText, mDateText, mAnswersCountText, mVotesCountText, mTagsText;
 
         SearchViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,7 +69,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             mTitleQuestionText = itemView.findViewById(R.id.tv_question_item);
             mViewCounterText = itemView.findViewById(R.id.tv_counter_item);
             mDateText = itemView.findViewById(R.id.tv_date_item);
-            mNameText = itemView.findViewById(R.id.tv_name_item);
             mAnswersCountText = itemView.findViewById(R.id.tv_answers_count_item);
             mVotesCountText = itemView.findViewById(R.id.tv_votes_count_item);
             mTagsText = itemView.findViewById(R.id.tv_tags_list_item);
@@ -91,7 +89,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 mTitleQuestionText.setText(Jsoup.parse(question.getTitle()).text());
                 mViewCounterText.setText(String.valueOf(question.getViewCount()));
                 mDateText.setText(DateUtil.toNormalDate(question.getCreationDate()));
-                mNameText.setText(owner.getDisplayName());
                 mAnswersCountText.setText(String.valueOf(question.getAnswerCount()));
                 mVotesCountText.setText(String.valueOf(question.getScore()));
                 mTagsText.setText(updateTagsTextView(tagList));
@@ -100,7 +97,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
         private String updateTagsTextView(List<String> tagList) {
             StringBuilder builder = new StringBuilder();
-            builder.append("Tags: ");
             for (int i = 0; i < tagList.size(); i++) {
                 builder.append(tagList.get(i));
                 if (i != tagList.size() - 1) {

@@ -23,7 +23,6 @@
     <string name="view_indicator_image">view indicator image</string>
     <string name="tv_votes_count_text">Votes:</string>
     <string name="tv_asked_text">Asked:</string>
-    <string name="tv_tags_placeholder">Tags</string>
     <string name="search_stack_overflow">Search Stack Overflow</string>
     <string name="no_matching_result">Oops! No Matching Result. Rephrase your search query or Use fewer words</string>
     <string name="scroll_up_button">scroll up button</string>

@@ -2,31 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/padding_small">
-
-    <ImageView
-        android:id="@+id/iv_avatar_item"
-        android:layout_width="70dp"
-        android:layout_height="100dp"
-        android:contentDescription="@string/avatar_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/tv_name_item"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:text="@string/tv_example_name_item"
-        android:maxLines="1"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/iv_avatar_item"
-        app:layout_constraintTop_toBottomOf="@+id/iv_avatar_item"
-        app:layout_constraintVertical_bias="0.0" />
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_question_item"
@@ -35,54 +11,21 @@
         android:layout_marginEnd="@dimen/margin_small"
         android:text="@string/example_question"
         android:textColor="@color/blackText"
+        android:maxLines="3"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/iv_avatar_item"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_views_item"
-        android:layout_width="15dp"
-        android:layout_height="20dp"
+        android:id="@+id/iv_avatar_item"
+        android:layout_width="70dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_small"
-        android:contentDescription="@string/view_indicator_image"
-        android:src="@drawable/iv_views"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
-
-    <TextView
-        android:id="@+id/tv_counter_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_example_counter_item"
-        android:textColor="@color/blackText"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_views_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
-
-    <TextView
-        android:id="@+id/tv_asked_text_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_asked_text"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_views_item" />
-
-    <TextView
-        android:id="@+id/tv_date_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_example_date_item"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/tv_asked_text_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_counter_item"
-        app:layout_constraintVertical_bias="0.0" />
+        android:contentDescription="@string/avatar_description"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_question_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_answers_count_text_item"
@@ -92,7 +35,7 @@
         android:text="@string/tv_answers_count_text_item"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date_item" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
 
     <TextView
         android:id="@+id/tv_answers_count_item"
@@ -103,17 +46,80 @@
         android:text="@string/tv_example_counter_item"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/tv_answers_count_text_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date_item" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
+
+    <ImageView
+        android:id="@+id/iv_views_item"
+        android:layout_width="15dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/view_indicator_image"
+        android:src="@drawable/ic_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
 
     <TextView
-        android:id="@+id/tv_votes_count_text_item"
+        android:id="@+id/tv_counter_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/tv_example_counter_item"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_views_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
+
+    <ImageView
+        android:id="@+id/tag"
+        android:layout_width="15dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/view_indicator_image"
+        android:src="@drawable/ic_tag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_views_item" />
+
+    <TextView
+        android:id="@+id/tv_tags_list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_votes_count_text"
+        android:layout_marginStart="@dimen/margin_small"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
+        app:layout_constraintStart_toEndOf="@+id/tag"
+        app:layout_constraintTop_toBottomOf="@+id/iv_views_item" />
+
+    <TextView
+        android:id="@+id/tv_asked_text_item"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:text="@string/tv_asked_text"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_date_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
+
+    <TextView
+        android:id="@+id/tv_date_item"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/tv_example_date_item"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_item"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/tv_votes_count_text_item"
+        android:layout_width="15dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:contentDescription="@string/view_indicator_image"
+        android:src="@drawable/ic_vote"
+        app:layout_constraintTop_toBottomOf="@+id/tv_asked_text_item"
+        app:layout_constraintStart_toStartOf="@+id/tv_asked_text_item"/>
 
     <TextView
         android:id="@+id/tv_votes_count_item"
@@ -123,25 +129,38 @@
         android:layout_marginTop="@dimen/margin_small"
         android:text="@string/tv_example_counter_item"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/tv_votes_count_text_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
-
-    <TextView
-        android:id="@+id/tv_tags_list_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_small"
-        android:text="@string/tv_tags_placeholder"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_votes_count_text_item" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_asked_text_item"
+        app:layout_constraintStart_toEndOf="@+id/tv_votes_count_text_item"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorViewLine"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_votes_count_text_item"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/margin_small"-->
+    <!--        android:text="@string/tv_votes_count_text"-->
+    <!--        android:textSize="14sp"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/tv_votes_count_item"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_asked_text_item" />-->
+
+
+    <!--    <TextView-->
+<!--        android:id="@+id/tv_name_item"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="@dimen/margin_medium"-->
+<!--        android:text="@string/tv_example_name_item"-->
+<!--        android:maxLines="1"-->
+<!--        android:textSize="14sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/iv_avatar_item"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/iv_avatar_item"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
