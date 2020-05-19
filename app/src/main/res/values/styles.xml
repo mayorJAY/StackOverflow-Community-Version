@@ -26,7 +26,9 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="Widget.FlowOverStack.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="hintTextAppearance">@style/TextAppearance.FlowOverStack.TextInputLayout.HintText</item>
+        <item name="hintTextAppearance">
+            @style/TextAppearance.FlowOverStack.TextInputLayout.HintText
+        </item>
         <item name="hintTextColor">@color/colorPrimaryLight</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="boxStrokeColor">@color/colorPrimary</item>
@@ -39,7 +41,21 @@
     <style name="Widget.FlowOverStack.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="backgroundTint">@color/colorPrimaryLight</item>
-        <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/search_button_state_list_anim</item>
+        <item name="android:stateListAnimator" tools:ignore="NewApi">
+            @animator/search_button_state_list_anim
+        </item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>

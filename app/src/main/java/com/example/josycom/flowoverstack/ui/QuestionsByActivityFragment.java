@@ -28,8 +28,6 @@ import com.example.josycom.flowoverstack.viewmodel.CustomQuestionViewModelFactor
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_DATE;
@@ -95,7 +93,7 @@ public class QuestionsByActivityFragment extends Fragment {
             answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
 
             startActivity(answerActivityIntent);
-            Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+            requireActivity().overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         };
         handleRecyclerView();
         return view;

@@ -28,6 +28,6 @@ public interface ApiService {
             @Query("site") String site,
             @Query(value = "filter", encoded = true) String filter);
 
-    @GET("/2.2/search?order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT")
+    @GET("/2.2/search?pagesize=100&order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT")
     Call<QuestionsResponse> getQuestionsWithTextInTitle(@Query("intitle") String inTitle);
 }

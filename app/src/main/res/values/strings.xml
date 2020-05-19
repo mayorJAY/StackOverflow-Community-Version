@@ -34,4 +34,8 @@
     <string name="recent_questions">Recent Questions</string>
     <string name="hot_questions">Hot Questions</string>
     <string name="voted_questions">Voted Questions</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
