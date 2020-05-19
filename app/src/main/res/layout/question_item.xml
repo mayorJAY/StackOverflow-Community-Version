@@ -49,11 +49,11 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
 
     <ImageView
-        android:id="@+id/iv_views_item"
+        android:id="@+id/iv_view_icon"
         android:layout_width="15dp"
         android:layout_height="20dp"
         android:layout_marginTop="@dimen/margin_small"
-        android:contentDescription="@string/view_indicator_image"
+        android:contentDescription="@string/view_indicator_icon"
         android:src="@drawable/ic_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
@@ -66,18 +66,18 @@
         android:layout_marginTop="@dimen/margin_small"
         android:text="@string/tv_example_counter_item"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_views_item"
+        app:layout_constraintStart_toEndOf="@+id/iv_view_icon"
         app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
 
     <ImageView
-        android:id="@+id/tag"
+        android:id="@+id/iv_tag_icon"
         android:layout_width="15dp"
         android:layout_height="20dp"
         android:layout_marginTop="@dimen/margin_small"
-        android:contentDescription="@string/view_indicator_image"
+        android:contentDescription="@string/tag_icon"
         android:src="@drawable/ic_tag"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_views_item" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_view_icon" />
 
     <TextView
         android:id="@+id/tv_tags_list_item"
@@ -86,8 +86,8 @@
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/tag"
-        app:layout_constraintTop_toBottomOf="@+id/iv_views_item" />
+        app:layout_constraintStart_toEndOf="@+id/iv_tag_icon"
+        app:layout_constraintTop_toBottomOf="@+id/iv_view_icon" />
 
     <TextView
         android:id="@+id/tv_asked_text_item"
@@ -111,12 +111,12 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
 
     <ImageView
-        android:id="@+id/tv_votes_count_text_item"
+        android:id="@+id/iv_vote_icon"
         android:layout_width="15dp"
         android:layout_height="20dp"
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"
-        android:contentDescription="@string/view_indicator_image"
+        android:contentDescription="@string/vote_icon"
         android:src="@drawable/ic_vote"
         app:layout_constraintStart_toStartOf="@+id/tv_asked_text_item"
         app:layout_constraintTop_toBottomOf="@+id/tv_asked_text_item" />
@@ -129,7 +129,7 @@
         android:layout_marginTop="@dimen/margin_small"
         android:text="@string/tv_example_counter_item"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/tv_votes_count_text_item"
+        app:layout_constraintStart_toEndOf="@+id/iv_vote_icon"
         app:layout_constraintTop_toBottomOf="@+id/tv_asked_text_item" />
 
     <View
