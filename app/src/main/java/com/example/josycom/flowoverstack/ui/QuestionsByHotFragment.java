@@ -10,23 +10,22 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.QuestionAdapter;
+import com.example.josycom.flowoverstack.databinding.FragmentQuestionsByHotBinding;
 import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.DateUtil;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.jetbrains.annotations.NotNull;
 
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
@@ -42,37 +41,30 @@ import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUEST
  */
 public class QuestionsByHotFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
+    private FragmentQuestionsByHotBinding mFragmentQuestionsByHotBinding;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
-    private SwipeRefreshLayout mSwipeContainer;
-    private ProgressBar mProgressBar;
-    private TextView mErrorMessageTextView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_questions_by_hot, container, false);
-        mRecyclerView = view.findViewById(R.id.hot_recycler_view);
-        mProgressBar = view.findViewById(R.id.hot_pb_fetch_data);
-        mErrorMessageTextView = view.findViewById(R.id.hot_tv_error);
-        mSwipeContainer = view.findViewById(R.id.hotSwipeContainer);
-        mSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
-        FloatingActionButton fab = view.findViewById(R.id.hot_scroll_up_fab);
-        fab.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByHotBinding = FragmentQuestionsByHotBinding.inflate(inflater, container, false);
+        mFragmentQuestionsByHotBinding.hotSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
+        mFragmentQuestionsByHotBinding.hotScrollUpFab.setVisibility(View.INVISIBLE);
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mFragmentQuestionsByHotBinding.hotRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
-                    fab.setVisibility(View.VISIBLE);
+                    mFragmentQuestionsByHotBinding.hotScrollUpFab.setVisibility(View.VISIBLE);
                 } else {
-                    fab.setVisibility(View.INVISIBLE);
+                    mFragmentQuestionsByHotBinding.hotScrollUpFab.setVisibility(View.INVISIBLE);
                 }
             }
         });
-        fab.setOnClickListener(v -> mRecyclerView.scrollToPosition(0));
+        mFragmentQuestionsByHotBinding.hotScrollUpFab.setOnClickListener(v ->
+                mFragmentQuestionsByHotBinding.hotRecyclerView.scrollToPosition(0));
 
         mOnClickListener = v -> {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
@@ -96,13 +88,13 @@ public class QuestionsByHotFragment extends Fragment {
             requireActivity().overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         };
         handleRecyclerView();
-        return view;
+        return mFragmentQuestionsByHotBinding.getRoot();
     }
 
     private void handleRecyclerView() {
         final QuestionAdapter questionAdapter = new QuestionAdapter();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mFragmentQuestionsByHotBinding.hotRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mFragmentQuestionsByHotBinding.hotRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         QuestionViewModel questionViewModel = new ViewModelProvider(this, new CustomQuestionViewModelFactory(StringConstants.FIRST_PAGE,
                 StringConstants.PAGE_SIZE,
@@ -128,29 +120,29 @@ public class QuestionsByHotFragment extends Fragment {
             mQuestions = questions;
             questionAdapter.submitList(questions);
         });
-        mRecyclerView.setAdapter(questionAdapter);
+        mFragmentQuestionsByHotBinding.hotRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
-        mSwipeContainer.setOnRefreshListener(() -> {
+        mFragmentQuestionsByHotBinding.hotSwipeContainer.setOnRefreshListener(() -> {
             questionViewModel.refresh();
-            mSwipeContainer.setRefreshing(false);
+            mFragmentQuestionsByHotBinding.hotSwipeContainer.setRefreshing(false);
         });
     }
 
     private void onLoaded() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByHotBinding.hotPbFetchData.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByHotBinding.hotRecyclerView.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByHotBinding.hotTvError.setVisibility(View.INVISIBLE);
     }
 
     private void onError() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageTextView.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByHotBinding.hotPbFetchData.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByHotBinding.hotRecyclerView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByHotBinding.hotTvError.setVisibility(View.VISIBLE);
     }
 
     private void onLoading() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByHotBinding.hotPbFetchData.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByHotBinding.hotRecyclerView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByHotBinding.hotTvError.setVisibility(View.INVISIBLE);
     }
 }

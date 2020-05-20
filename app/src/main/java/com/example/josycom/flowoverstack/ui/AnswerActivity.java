@@ -4,19 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.AnswerAdapter;
+import com.example.josycom.flowoverstack.databinding.ActivityAnswerBinding;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.AnswerViewModel;
 import com.example.josycom.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
@@ -27,39 +25,31 @@ import java.util.Objects;
 
 public class AnswerActivity extends AppCompatActivity {
 
+    private ActivityAnswerBinding mActivityAnswerBinding;
     private AnswerAdapter mAnswerAdapter;
     private String mOwnerQuestionLink;
-    private TextView noAnswerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_answer);
+        mActivityAnswerBinding = ActivityAnswerBinding.inflate(getLayoutInflater());
+        setContentView(mActivityAnswerBinding.getRoot());
 
-        TextView questionTitleTextView = findViewById(R.id.tv_question_detail);
-        TextView fullQuestionTextView = findViewById(R.id.tv_full_question_detail);
-        TextView dateQuestionTextView = findViewById(R.id.tv_date_question_detail);
-        TextView nameQuestionTextView = findViewById(R.id.tv_name_question_detail);
-        ImageView avatarQuestionImageView = findViewById(R.id.iv_avatar_question_detail);
-        RecyclerView answersRecyclerView = findViewById(R.id.rv_answers);
-        noAnswerText = findViewById(R.id.tv_no_answer);
-
-        answersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mActivityAnswerBinding.rvAnswers.setLayoutManager(new LinearLayoutManager(this));
         mAnswerAdapter = new AnswerAdapter();
 
         Intent mIntent = getIntent();
-
-        questionTitleTextView.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE))).text());
-        fullQuestionTextView.setText(HtmlCompat.fromHtml(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)), 0));
-        dateQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
-        nameQuestionTextView.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
+        mActivityAnswerBinding.tvQuestionDetail.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE))).text());
+        mActivityAnswerBinding.tvFullQuestionDetail.setText(HtmlCompat.fromHtml(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)), 0));
+        mActivityAnswerBinding.tvDateQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
+        mActivityAnswerBinding.tvNameQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
         int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
         String avatarAddress = mIntent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
         mOwnerQuestionLink = mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
         Glide.with(this)
                 .load(avatarAddress)
                 .placeholder(R.drawable.loading)
-                .into(avatarQuestionImageView);
+                .into(mActivityAnswerBinding.ivAvatarQuestionDetail);
 
         AnswerViewModel answerViewModel = new ViewModelProvider(this,
                 new CustomAnswerViewModelFactory(questionId,
@@ -69,12 +59,12 @@ public class AnswerActivity extends AppCompatActivity {
                         StringConstants.ANSWER_FILTER)).get(AnswerViewModel.class);
         answerViewModel.getAnswersLiveData().observe(this, answers -> {
             if (answers.size() == 0) {
-                noAnswerText.setVisibility(View.VISIBLE);
+                mActivityAnswerBinding.tvNoAnswerQuestionDetail.setVisibility(View.VISIBLE);
             } else {
                 mAnswerAdapter.setAnswers(answers);
             }
         });
-        answersRecyclerView.setAdapter(mAnswerAdapter);
+        mActivityAnswerBinding.rvAnswers.setAdapter(mAnswerAdapter);
     }
 
     public void openProfileOnWeb(View view) {

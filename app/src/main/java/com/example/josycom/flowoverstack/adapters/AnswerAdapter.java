@@ -1,14 +1,12 @@
 package com.example.josycom.flowoverstack.adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.josycom.flowoverstack.R;
+import com.example.josycom.flowoverstack.databinding.AnswerItemBinding;
 import com.example.josycom.flowoverstack.model.Answer;
 import com.example.josycom.flowoverstack.util.DateUtil;
 
@@ -23,8 +21,8 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
     @NonNull
     @Override
     public AnswerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.answer_item, parent, false);
-        return new AnswerViewHolder(view);
+        AnswerItemBinding answerItemBinding = AnswerItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new AnswerViewHolder(answerItemBinding);
     }
 
     @Override
@@ -50,21 +48,18 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
     }
 
     static class AnswerViewHolder extends RecyclerView.ViewHolder {
-        TextView answerBody, answerDate, answerName, answerScore;
+        private AnswerItemBinding mAnswerItemBinding;
 
-        AnswerViewHolder(@NonNull View itemView) {
-            super(itemView);
-            answerBody = itemView.findViewById(R.id.tv_answer_body_item);
-            answerDate = itemView.findViewById(R.id.tv_date_answer_item);
-            answerName = itemView.findViewById(R.id.tv_name_answer_item);
-            answerScore = itemView.findViewById(R.id.tv_votes_item);
+        AnswerViewHolder(AnswerItemBinding answerItemBinding) {
+            super(answerItemBinding.getRoot());
+            this.mAnswerItemBinding = answerItemBinding;
         }
 
         void bind(Answer answer) {
-            answerScore.setText(String.valueOf(answer.getScore()));
-            answerName.setText(answer.getOwner().getDisplayName());
-            answerDate.setText(DateUtil.toNormalDate(answer.getCreationDate()));
-            answerBody.setText(Jsoup.parse(answer.getBody()).text());
+            mAnswerItemBinding.tvVotesItem.setText(String.valueOf(answer.getScore()));
+            mAnswerItemBinding.tvAnswerNameItem.setText(answer.getOwner().getDisplayName());
+            mAnswerItemBinding.tvAnswerDateItem.setText(DateUtil.toNormalDate(answer.getCreationDate()));
+            mAnswerItemBinding.tvAnswerBodyItem.setText(Jsoup.parse(answer.getBody()).text());
         }
     }
 }

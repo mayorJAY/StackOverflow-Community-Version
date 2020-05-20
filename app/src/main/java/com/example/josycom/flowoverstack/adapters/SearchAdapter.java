@@ -1,16 +1,16 @@
 package com.example.josycom.flowoverstack.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.josycom.flowoverstack.R;
+import com.example.josycom.flowoverstack.databinding.QuestionItemBinding;
 import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.DateUtil;
@@ -27,8 +27,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     @NonNull
     @Override
     public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_item, parent, false);
-        return new SearchViewHolder(view);
+        QuestionItemBinding questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new SearchViewHolder(questionItemBinding);
     }
 
     @Override
@@ -59,22 +59,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     static class SearchViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView mAvatarView;
-        TextView mTitleQuestionText, mViewCounterText, mDateText, mAnswersCountText, mVotesCountText, mTagsText;
+        private QuestionItemBinding mQuestionItemBinding;
 
-        SearchViewHolder(@NonNull View itemView) {
-            super(itemView);
+        SearchViewHolder(QuestionItemBinding questionItemBinding) {
+            super(questionItemBinding.getRoot());
+            this.mQuestionItemBinding = questionItemBinding;
 
-            mAvatarView = itemView.findViewById(R.id.iv_avatar_item);
-            mTitleQuestionText = itemView.findViewById(R.id.tv_question_item);
-            mViewCounterText = itemView.findViewById(R.id.tv_counter_item);
-            mDateText = itemView.findViewById(R.id.tv_date_item);
-            mAnswersCountText = itemView.findViewById(R.id.tv_answers_count_item);
-            mVotesCountText = itemView.findViewById(R.id.tv_votes_count_item);
-            mTagsText = itemView.findViewById(R.id.tv_tags_list_item);
-
-            itemView.setTag(this);
-            itemView.setOnClickListener(mOnClickListener);
+            mQuestionItemBinding.getRoot().setTag(this);
+            mQuestionItemBinding.getRoot().setOnClickListener(mOnClickListener);
         }
 
         void bind(Question question) {
@@ -82,16 +74,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 Owner owner = question.getOwner();
                 String profileImage = owner.getProfileImage();
                 List<String> tagList = question.getTags();
-                Glide.with(itemView.getContext())
+                Glide.with(mQuestionItemBinding.getRoot().getContext())
                         .load(profileImage)
                         .placeholder(R.drawable.loading)
-                        .into(mAvatarView);
-                mTitleQuestionText.setText(Jsoup.parse(question.getTitle()).text());
-                mViewCounterText.setText(String.valueOf(question.getViewCount()));
-                mDateText.setText(DateUtil.toNormalDate(question.getCreationDate()));
-                mAnswersCountText.setText(String.valueOf(question.getAnswerCount()));
-                mVotesCountText.setText(String.valueOf(question.getScore()));
-                mTagsText.setText(updateTagsTextView(tagList));
+                        .into(mQuestionItemBinding.ivAvatarItem);
+                mQuestionItemBinding.tvQuestionItem.setText(Jsoup.parse(question.getTitle()).text());
+                mQuestionItemBinding.tvViewsCountItem.setText(String.valueOf(question.getViewCount()));
+                mQuestionItemBinding.tvDateItem.setText(DateUtil.toNormalDate(question.getCreationDate()));
+                mQuestionItemBinding.tvAnswersCountItem.setText(String.valueOf(question.getAnswerCount()));
+                mQuestionItemBinding.tvVotesCountItem.setText(String.valueOf(question.getScore()));
+                mQuestionItemBinding.tvTagsListItem.setText(updateTagsTextView(tagList));
+            } else {
+                Log.d("TAG", "No item found");
             }
         }
 

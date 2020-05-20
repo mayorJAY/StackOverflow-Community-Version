@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.josycom.flowoverstack.R;
+import com.example.josycom.flowoverstack.databinding.ActivityMainBinding;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(activityMainBinding.getRoot());
+        setSupportActionBar(activityMainBinding.toolbar);
 
         if (savedInstanceState != null) {
             isFragmentDisplayed = savedInstanceState.getBoolean(STATE_FRAGMENT);

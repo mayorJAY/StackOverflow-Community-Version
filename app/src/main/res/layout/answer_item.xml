@@ -19,18 +19,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_date_answer_text_item"
+        android:id="@+id/tv_answer_date_text_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
         android:text="@string/tv_date_answer_text_item"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_date_answer_item"
+        app:layout_constraintEnd_toStartOf="@+id/tv_answer_date_item"
         app:layout_constraintTop_toBottomOf="@+id/tv_answer_body_item" />
 
     <TextView
-        android:id="@+id/tv_date_answer_item"
+        android:id="@+id/tv_answer_date_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
@@ -46,18 +46,18 @@
         android:layout_marginEnd="@dimen/margin_medium"
         android:text="@string/by"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_date_answer_text_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date_answer_text_item" />
+        app:layout_constraintStart_toStartOf="@+id/tv_answer_date_text_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_answer_date_text_item" />
 
     <TextView
-        android:id="@+id/tv_name_answer_item"
+        android:id="@+id/tv_answer_name_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_medium"
         android:text="@string/tv_example_name_item"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tv_by_text_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date_answer_item" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_answer_date_item" />
 
     <ImageView
         android:id="@+id/iv_vote_icon"
@@ -86,6 +86,6 @@
         android:layout_marginTop="@dimen/margin_small"
         android:background="#dadada"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name_answer_item" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_answer_name_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

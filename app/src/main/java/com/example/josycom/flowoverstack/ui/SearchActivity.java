@@ -13,19 +13,15 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.SearchAdapter;
+import com.example.josycom.flowoverstack.databinding.ActivitySearchBinding;
 import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.DateUtil;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.SearchViewModel;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,40 +37,30 @@ import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUEST
 
 public class SearchActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
+    private ActivitySearchBinding mActivitySearchBinding;
     private String mSearchInput;
     private List<Question> mQuestions;
-    private ProgressBar mProgressBar;
-    private TextView mErrorMessageTextView;
-    private TextInputEditText mTextInputEditText;
     private SearchViewModel mSearchViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        mActivitySearchBinding = ActivitySearchBinding.inflate(getLayoutInflater());
+        setContentView(mActivitySearchBinding.getRoot());
 
-        mTextInputEditText = findViewById(R.id.text_input_editText);
-        final MaterialButton materialButton = findViewById(R.id.search_button);
-        mRecyclerView = findViewById(R.id.rv_search_results);
-        mProgressBar = findViewById(R.id.search_pb_fetch_data);
-        mErrorMessageTextView = findViewById(R.id.search_tv_error);
-        FloatingActionButton fab = findViewById(R.id.search_scroll_up_fab);
-        NestedScrollView nestedScrollView = findViewById(R.id.search_nested_scrollview);
+        mActivitySearchBinding.rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
+        mActivitySearchBinding.rvSearchResults.setHasFixedSize(true);
+        mActivitySearchBinding.rvSearchResults.setItemAnimator(new DefaultItemAnimator());
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        fab.setVisibility(View.INVISIBLE);
-        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+        mActivitySearchBinding.searchScrollUpFab.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.searchNestedScrollview.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > 0) {
-                fab.setVisibility(View.VISIBLE);
+                mActivitySearchBinding.searchScrollUpFab.setVisibility(View.VISIBLE);
             } else {
-                fab.setVisibility(View.INVISIBLE);
+                mActivitySearchBinding.searchScrollUpFab.setVisibility(View.INVISIBLE);
             }
         });
-        fab.setOnClickListener(v -> nestedScrollView.scrollTo(0, 0));
+        mActivitySearchBinding.searchScrollUpFab.setOnClickListener(v -> mActivitySearchBinding.searchNestedScrollview.scrollTo(0, 0));
 
         View.OnClickListener mOnClickListener = v -> {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
@@ -98,11 +84,11 @@ public class SearchActivity extends AppCompatActivity {
         };
 
         // What happens when the search button is clicked
-        materialButton.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(Objects.requireNonNull(mTextInputEditText.getText()).toString())) {
-                mTextInputEditText.setError("Type a search query");
+        mActivitySearchBinding.searchButton.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(Objects.requireNonNull(mActivitySearchBinding.searchTextInputEditText.getText()).toString())) {
+                mActivitySearchBinding.searchTextInputEditText.setError("Type a search query");
             } else {
-                mSearchInput = Objects.requireNonNull(mTextInputEditText.getText()).toString();
+                mSearchInput = Objects.requireNonNull(mActivitySearchBinding.searchTextInputEditText.getText()).toString();
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 if (inputMethodManager != null) {
                     inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
@@ -131,7 +117,7 @@ public class SearchActivity extends AppCompatActivity {
                     break;
             }
         });
-        mRecyclerView.setAdapter(searchAdapter);
+        mActivitySearchBinding.rvSearchResults.setAdapter(searchAdapter);
         searchAdapter.setOnClickListener(mOnClickListener);
     }
 
@@ -140,29 +126,29 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void onLoading() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.searchPbFetchData.setVisibility(View.VISIBLE);
+        mActivitySearchBinding.rvSearchResults.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.searchTvError.setVisibility(View.INVISIBLE);
     }
 
     private void onLoaded() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.searchPbFetchData.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.rvSearchResults.setVisibility(View.VISIBLE);
+        mActivitySearchBinding.searchTvError.setVisibility(View.INVISIBLE);
     }
 
     private void onNoMatchingResult() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageTextView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setText(R.string.no_matching_result);
+        mActivitySearchBinding.searchPbFetchData.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.rvSearchResults.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.searchTvError.setVisibility(View.VISIBLE);
+        mActivitySearchBinding.searchTvError.setText(R.string.no_matching_result);
     }
 
     private void onError() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageTextView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setText(R.string.search_error_message);
+        mActivitySearchBinding.searchPbFetchData.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.rvSearchResults.setVisibility(View.INVISIBLE);
+        mActivitySearchBinding.searchTvError.setVisibility(View.VISIBLE);
+        mActivitySearchBinding.searchTvError.setText(R.string.search_error_message);
     }
 
     @Override

@@ -10,23 +10,22 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.adapters.QuestionAdapter;
+import com.example.josycom.flowoverstack.databinding.FragmentQuestionsByActivityBinding;
 import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.DateUtil;
 import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
 import com.example.josycom.flowoverstack.viewmodel.QuestionViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.jetbrains.annotations.NotNull;
 
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
 import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
@@ -42,37 +41,30 @@ import static com.example.josycom.flowoverstack.util.StringConstants.EXTRA_QUEST
  */
 public class QuestionsByActivityFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
+    private FragmentQuestionsByActivityBinding mFragmentQuestionsByActivityBinding;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
-    private SwipeRefreshLayout mSwipeContainer;
-    private ProgressBar mProgressBar;
-    private TextView mErrorMessageTextView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_questions_by_activity, container, false);
-        mRecyclerView = view.findViewById(R.id.activity_recycler_view);
-        mProgressBar = view.findViewById(R.id.activity_pb_fetch_data);
-        mErrorMessageTextView = view.findViewById(R.id.activity_tv_error);
-        mSwipeContainer = view.findViewById(R.id.activitySwipeContainer);
-        mSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
-        FloatingActionButton fab = view.findViewById(R.id.activity_scroll_up_fab);
-        fab.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByActivityBinding = FragmentQuestionsByActivityBinding.inflate(inflater, container, false);
+        mFragmentQuestionsByActivityBinding.activitySwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
+        mFragmentQuestionsByActivityBinding.activityScrollUpFab.setVisibility(View.INVISIBLE);
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mFragmentQuestionsByActivityBinding.activityRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
-                    fab.setVisibility(View.VISIBLE);
+                    mFragmentQuestionsByActivityBinding.activityScrollUpFab.setVisibility(View.VISIBLE);
                 } else {
-                    fab.setVisibility(View.INVISIBLE);
+                    mFragmentQuestionsByActivityBinding.activityScrollUpFab.setVisibility(View.INVISIBLE);
                 }
             }
         });
-        fab.setOnClickListener(v -> mRecyclerView.scrollToPosition(0));
+        mFragmentQuestionsByActivityBinding.activityScrollUpFab.setOnClickListener(v ->
+                mFragmentQuestionsByActivityBinding.activityRecyclerView.scrollToPosition(0));
 
         mOnClickListener = v -> {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
@@ -96,14 +88,14 @@ public class QuestionsByActivityFragment extends Fragment {
             requireActivity().overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         };
         handleRecyclerView();
-        return view;
+        return mFragmentQuestionsByActivityBinding.getRoot();
     }
 
     private void handleRecyclerView() {
         final QuestionAdapter questionAdapter = new QuestionAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mFragmentQuestionsByActivityBinding.activityRecyclerView.setLayoutManager(linearLayoutManager);
+        mFragmentQuestionsByActivityBinding.activityRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         QuestionViewModel questionViewModel = new ViewModelProvider(this, new CustomQuestionViewModelFactory(StringConstants.FIRST_PAGE,
                 StringConstants.PAGE_SIZE,
@@ -129,29 +121,29 @@ public class QuestionsByActivityFragment extends Fragment {
             mQuestions = questions;
             questionAdapter.submitList(questions);
         });
-        mRecyclerView.setAdapter(questionAdapter);
+        mFragmentQuestionsByActivityBinding.activityRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
-        mSwipeContainer.setOnRefreshListener(() -> {
+        mFragmentQuestionsByActivityBinding.activitySwipeContainer.setOnRefreshListener(() -> {
             questionViewModel.refresh();
-            mSwipeContainer.setRefreshing(false);
+            mFragmentQuestionsByActivityBinding.activitySwipeContainer.setRefreshing(false);
         });
     }
 
     private void onLoaded() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByActivityBinding.activityPbFetchData.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByActivityBinding.activityRecyclerView.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByActivityBinding.activityTvError.setVisibility(View.INVISIBLE);
     }
 
     private void onError() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageTextView.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByActivityBinding.activityPbFetchData.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByActivityBinding.activityRecyclerView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByActivityBinding.activityTvError.setVisibility(View.VISIBLE);
     }
 
     private void onLoading() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByActivityBinding.activityPbFetchData.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByActivityBinding.activityRecyclerView.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByActivityBinding.activityTvError.setVisibility(View.INVISIBLE);
     }
 }

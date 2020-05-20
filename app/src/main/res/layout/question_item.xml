@@ -59,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
 
     <TextView
-        android:id="@+id/tv_counter_item"
+        android:id="@+id/tv_views_count_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small"
