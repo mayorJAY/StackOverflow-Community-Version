@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -98,7 +99,7 @@ public class SearchActivity extends AppCompatActivity {
 
         // What happens when the search button is clicked
         materialButton.setOnClickListener(v -> {
-            if (Objects.requireNonNull(mTextInputEditText.getText()).toString().isEmpty()) {
+            if (TextUtils.isEmpty(Objects.requireNonNull(mTextInputEditText.getText()).toString())) {
                 mTextInputEditText.setError("Type a search query");
             } else {
                 mSearchInput = Objects.requireNonNull(mTextInputEditText.getText()).toString();
