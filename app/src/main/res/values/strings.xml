@@ -32,4 +32,5 @@
     <string name="voted_questions">Voted Questions</string>
     <string name="vote_icon">vote icon</string>
     <string name="tag_icon">tag icon</string>
+    <string name="type_a_search_query">Type a search query</string>
 </resources>

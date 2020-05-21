@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 
 import com.example.josycom.flowoverstack.R;
+import com.example.josycom.flowoverstack.util.StringConstants;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -18,8 +19,7 @@ public class SplashActivity extends AppCompatActivity {
 
         //SplashScreen handler
         Handler handler = new Handler();
-        long splashTime = 5000L;
-        handler.postDelayed(this::goToMainActivity, splashTime);
+        handler.postDelayed(this::goToMainActivity, StringConstants.SPLASH_TIME);
     }
 
     //Launch MainActivity

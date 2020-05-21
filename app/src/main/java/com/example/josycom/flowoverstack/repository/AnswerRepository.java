@@ -9,6 +9,7 @@ import com.example.josycom.flowoverstack.model.Answer;
 import com.example.josycom.flowoverstack.model.AnswerResponse;
 import com.example.josycom.flowoverstack.network.ApiService;
 import com.example.josycom.flowoverstack.network.RestApiClient;
+import com.example.josycom.flowoverstack.util.StringConstants;
 import com.example.josycom.flowoverstack.util.ThreadExecutor;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +49,7 @@ public class AnswerRepository {
                     if (answerResponse != null) {
                         mAnswers.setValue(answerResponse.getItems());
                     } else {
-                        Log.d("AnswerRepository", "No answer yet");
+                        Log.d(StringConstants.ANSWER_REPOSITORY_TAG, StringConstants.NO_ANSWER_YET);
                     }
                 }
 

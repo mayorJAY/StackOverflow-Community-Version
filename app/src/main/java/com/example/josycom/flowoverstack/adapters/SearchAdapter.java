@@ -14,6 +14,7 @@ import com.example.josycom.flowoverstack.databinding.QuestionItemBinding;
 import com.example.josycom.flowoverstack.model.Owner;
 import com.example.josycom.flowoverstack.model.Question;
 import com.example.josycom.flowoverstack.util.DateUtil;
+import com.example.josycom.flowoverstack.util.StringConstants;
 
 import org.jsoup.Jsoup;
 
@@ -85,7 +86,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 mQuestionItemBinding.tvVotesCountItem.setText(String.valueOf(question.getScore()));
                 mQuestionItemBinding.tvTagsListItem.setText(updateTagsTextView(tagList));
             } else {
-                Log.d("TAG", "No item found");
+                Log.d(StringConstants.SEARCH_ADAPTER_TAG, StringConstants.NO_QUESTION_FOUND);
             }
         }
 

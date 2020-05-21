@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.example.josycom.flowoverstack.R;
 import com.example.josycom.flowoverstack.databinding.ActivityMainBinding;
+import com.example.josycom.flowoverstack.util.StringConstants;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
-    private final String STATE_FRAGMENT = "state_of_fragment";
     private FragmentTransaction mFragmentTransaction;
     private boolean isFragmentDisplayed = false;
 
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(activityMainBinding.toolbar);
 
         if (savedInstanceState != null) {
-            isFragmentDisplayed = savedInstanceState.getBoolean(STATE_FRAGMENT);
+            isFragmentDisplayed = savedInstanceState.getBoolean(StringConstants.STATE_FRAGMENT);
         }
 
         if (!isFragmentDisplayed) {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_FRAGMENT, isFragmentDisplayed);
+        outState.putBoolean(StringConstants.STATE_FRAGMENT, isFragmentDisplayed);
     }
 
     @Override

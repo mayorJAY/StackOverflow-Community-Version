@@ -86,7 +86,7 @@ public class SearchActivity extends AppCompatActivity {
         // What happens when the search button is clicked
         mActivitySearchBinding.searchButton.setOnClickListener(v -> {
             if (TextUtils.isEmpty(Objects.requireNonNull(mActivitySearchBinding.searchTextInputEditText.getText()).toString())) {
-                mActivitySearchBinding.searchTextInputEditText.setError("Type a search query");
+                mActivitySearchBinding.searchTextInputEditText.setError(getString(R.string.type_a_search_query));
             } else {
                 mSearchInput = Objects.requireNonNull(mActivitySearchBinding.searchTextInputEditText.getText()).toString();
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);

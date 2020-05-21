@@ -9,6 +9,7 @@ public interface StringConstants {
 
     int FIRST_PAGE = 1;
     int PAGE_SIZE = 50;
+    long SPLASH_TIME = 5000L;
     String ORDER_DESCENDING = "desc";
 
     String QUESTION_FILTER = "!9Z(-wwYGT";
@@ -30,10 +31,16 @@ public interface StringConstants {
 
     String LOADING = "loading";
     String LOADED = "loaded";
-    String LOADING_MORE = "loading_more";
-    String LOADED_MORE = "loaded_more";
-    String LOADING_SEARCH = "loading_search";
-    String LOADED_SEARCH = "loaded_search";
     String FAILED = "failed";
-    String NO_MATCHING_RESULT = "no_matching_result";
+    String NO_MATCHING_RESULT = "No matching result";
+
+    String STATE_FRAGMENT = "state_of_fragment";
+
+    String QUESTION_ADAPTER_TAG = "Question Adapter Tag";
+    String SEARCH_ADAPTER_TAG = "Search Adapter Tag";
+    String ANSWER_REPOSITORY_TAG = "Answer Repository Tag";
+    String SEARCH_REPOSITORY_TAG = "Search Repository Tag";
+
+    String NO_QUESTION_FOUND = "No question item found";
+    String NO_ANSWER_YET = "No Answers Yet";
 }
