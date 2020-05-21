@@ -22,7 +22,6 @@ import retrofit2.Response;
 public class SearchRepository {
 
     private MutableLiveData<SearchResponse> mResponse = new MutableLiveData<>();
-    private ThreadExecutor threadExecutor = new ThreadExecutor();
 
     private void getQuestionsWithTextInTitle(String inTitle) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
@@ -49,7 +48,7 @@ public class SearchRepository {
     }
 
     public MutableLiveData<SearchResponse> getResponse(String inTitle) {
-        threadExecutor.mExecutor.execute(() -> getQuestionsWithTextInTitle(inTitle));
+        ThreadExecutor.mExecutor.execute(() -> getQuestionsWithTextInTitle(inTitle));
         return mResponse;
     }
 }

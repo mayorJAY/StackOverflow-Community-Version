@@ -27,7 +27,6 @@ public class AnswerRepository {
     private final String site;
     private final String filter;
     private MutableLiveData<List<Answer>> mAnswers = new MutableLiveData<>();
-    private ThreadExecutor threadExecutor = new ThreadExecutor();
 
     public AnswerRepository(int questionId, String order, String sortCondition, String site, String filter) {
         this.questionId = questionId;
@@ -39,7 +38,7 @@ public class AnswerRepository {
     }
 
     private void getAnswersToQuestion() {
-        threadExecutor.mExecutor.execute(() -> {
+        ThreadExecutor.mExecutor.execute(() -> {
             ApiService apiService = RestApiClient.getApiService(ApiService.class);
             Call<AnswerResponse> call = apiService.getAnswersToQuestion(questionId, order, sortCondition, site, filter);
             call.enqueue(new Callback<AnswerResponse>() {
