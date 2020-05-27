@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">FlowOver Stack</string>
-    <string name="action_settings">Settings</string>
 
     <string name="question_error_message">Something is not right! Please check your network or Swipe down to refresh</string>
     <string name="search_error_message">Something is not right! Please check your network</string>
@@ -33,4 +32,5 @@
     <string name="vote_icon">vote icon</string>
     <string name="tag_icon">tag icon</string>
     <string name="type_a_search_query">Type a search query</string>
+    <string name="search_description">Search</string>
 </resources>
