@@ -1,6 +1,5 @@
 package com.josycom.mayorjay.flowoverstack.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.josycom.mayorjay.flowoverstack.databinding.QuestionItemBinding;
 import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
 
 import org.jsoup.Jsoup;
 
@@ -85,8 +83,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 mQuestionItemBinding.tvAnswersCountItem.setText(String.valueOf(question.getAnswerCount()));
                 mQuestionItemBinding.tvVotesCountItem.setText(String.valueOf(question.getScore()));
                 mQuestionItemBinding.tvTagsListItem.setText(updateTagsTextView(tagList));
-            } else {
-                Log.d(StringConstants.SEARCH_ADAPTER_TAG, StringConstants.NO_QUESTION_FOUND);
             }
         }
 

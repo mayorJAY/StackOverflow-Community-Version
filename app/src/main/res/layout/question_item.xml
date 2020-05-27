@@ -9,7 +9,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_small"
-        android:maxLines="3"
         android:text="@string/example_question"
         android:textColor="@color/blackText"
         android:textSize="20sp"

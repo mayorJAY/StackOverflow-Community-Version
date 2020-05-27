@@ -33,4 +33,5 @@
     <string name="tag_icon">tag icon</string>
     <string name="type_a_search_query">Type a search query</string>
     <string name="search_description">Search</string>
+    <string name="read_more">Read More</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.josycom.mayorjay.flowoverstack.repository;
 
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -34,7 +33,6 @@ public class SearchRepository {
                 if (Objects.requireNonNull(questionsResponse).getItems().size() != 0) {
                     mResponse.setValue(new SearchResponse(StringConstants.LOADED, questionsResponse.getItems()));
                 } else {
-                    Log.d(StringConstants.SEARCH_REPOSITORY_TAG, StringConstants.NO_MATCHING_RESULT);
                     mResponse.setValue(new SearchResponse(StringConstants.NO_MATCHING_RESULT, null));
                 }
             }

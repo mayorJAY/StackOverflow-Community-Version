@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.josycom.mayorjay.flowoverstack.ui.SearchActivity"
-            android:label="Search"
+            android:label="@string/action_search"
             android:parentActivityName="com.josycom.mayorjay.flowoverstack.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name="com.josycom.mayorjay.flowoverstack.ui.AnswerActivity"
-            android:label="Read More"
+            android:label="@string/read_more"
             android:parentActivityName="com.josycom.mayorjay.flowoverstack.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

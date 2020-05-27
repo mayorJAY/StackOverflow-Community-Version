@@ -1,6 +1,5 @@
 package com.josycom.mayorjay.flowoverstack.repository;
 
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,7 +8,6 @@ import com.josycom.mayorjay.flowoverstack.model.Answer;
 import com.josycom.mayorjay.flowoverstack.model.AnswerResponse;
 import com.josycom.mayorjay.flowoverstack.network.ApiService;
 import com.josycom.mayorjay.flowoverstack.network.RestApiClient;
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
 import com.josycom.mayorjay.flowoverstack.util.ThreadExecutor;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,8 +46,6 @@ public class AnswerRepository {
                     AnswerResponse answerResponse = response.body();
                     if (answerResponse != null) {
                         mAnswers.setValue(answerResponse.getItems());
-                    } else {
-                        Log.d(StringConstants.ANSWER_REPOSITORY_TAG, StringConstants.NO_ANSWER_YET);
                     }
                 }
 
