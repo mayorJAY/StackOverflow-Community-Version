@@ -12,3 +12,5 @@ Users can also search for a particular problem they are having by typing in any 
 * [Material Design](https://material.io/develop/android/docs/getting-started/) which is an adaptable system that guides in maintaining principles and best practices of contemporary UI
 * [View Binding](https://developer.android.com/topic/libraries/view-binding) used to easily write code that interacts with views by referencing them directly
 * [Espresso](https://developer.android.com/training/testing/espresso) used to write concise, beautiful, and reliable Android UI tests
+
+<a href='https://play.google.com/store/apps/details?id=com.josycom.mayorjay.flowoverstack&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png' width="280"/></a>
