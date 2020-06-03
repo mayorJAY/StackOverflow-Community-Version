@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "138698715536",
+    "firebase_url": "https://flowoverstack-484af.firebaseio.com",
+    "project_id": "flowoverstack-484af",
+    "storage_bucket": "flowoverstack-484af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138698715536:android:4c7287ffe6cbac6ad64315",
+        "android_client_info": {
+          "package_name": "com.josycom.mayorjay.flowoverstack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138698715536-phpumr32ftc1af20cmfjj0tcag7idsj3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgJojmGJflNkPj1rcklwkUD-8jkM74Q6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138698715536-phpumr32ftc1af20cmfjj0tcag7idsj3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

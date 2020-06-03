@@ -56,7 +56,8 @@ public class AnswerActivity extends AppCompatActivity {
                         StringConstants.ORDER_DESCENDING,
                         StringConstants.SORT_BY_ACTIVITY,
                         StringConstants.SITE,
-                        StringConstants.ANSWER_FILTER)).get(AnswerViewModel.class);
+                        StringConstants.ANSWER_FILTER,
+                        StringConstants.KEY)).get(AnswerViewModel.class);
         answerViewModel.getAnswersLiveData().observe(this, answers -> {
             if (answers.size() == 0) {
                 mActivityAnswerBinding.tvNoAnswerQuestionDetail.setVisibility(View.VISIBLE);

@@ -14,6 +14,7 @@ public interface StringConstants {
 
     String QUESTION_FILTER = "!9Z(-wwYGT";
     String ANSWER_FILTER = "!9Z(-wzu0T";
+    String KEY = "1ZLMY6ESrAkq5*odMs3zQw((";
 
     String SORT_BY_ACTIVITY = "activity";
     String SORT_BY_VOTES = "votes";

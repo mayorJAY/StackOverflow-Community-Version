@@ -102,7 +102,8 @@ public class QuestionsByActivityFragment extends Fragment {
                 StringConstants.ORDER_DESCENDING,
                 StringConstants.SORT_BY_ACTIVITY,
                 StringConstants.SITE,
-                StringConstants.QUESTION_FILTER)).get(QuestionViewModel.class);
+                StringConstants.QUESTION_FILTER,
+                StringConstants.KEY)).get(QuestionViewModel.class);
 
         questionViewModel.getNetworkState().observe(getViewLifecycleOwner(), s -> {
             switch (s) {

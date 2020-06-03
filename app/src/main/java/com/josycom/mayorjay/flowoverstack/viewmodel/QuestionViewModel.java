@@ -17,8 +17,8 @@ public class QuestionViewModel extends ViewModel {
     private LiveData<PagedList<Question>> mQuestionPagedList;
     private LiveData<String> networkState;
 
-    QuestionViewModel(int page, int pageSize, String order, String sortCondition, String site, String filter) {
-        QuestionRepository questionRepository = new QuestionRepository(page, pageSize, order, sortCondition, site, filter);
+    QuestionViewModel(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
+        QuestionRepository questionRepository = new QuestionRepository(page, pageSize, order, sortCondition, site, filter, siteKey);
         mQuestionPagedList = questionRepository.getQuestionPagedList();
         LiveData<QuestionDataSource> liveDataSource = QuestionDataSourceFactory.getQuestionLiveDataSource();
         networkState = Transformations.switchMap(liveDataSource, QuestionDataSource::getNetworkState);

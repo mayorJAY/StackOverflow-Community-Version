@@ -12,20 +12,22 @@ public class CustomQuestionViewModelFactory implements ViewModelProvider.Factory
     private String sortCondition;
     private String site;
     private String filter;
+    private final String siteKey;
 
-    public CustomQuestionViewModelFactory(int page, int pageSize, String order, String sortCondition, String site, String filter) {
+    public CustomQuestionViewModelFactory(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;
         this.sortCondition = sortCondition;
         this.site = site;
         this.filter = filter;
+        this.siteKey = siteKey;
     }
 
     @SuppressWarnings("unchecked")
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new QuestionViewModel(page, pageSize, order, sortCondition, site, filter);
+        return (T) new QuestionViewModel(page, pageSize, order, sortCondition, site, filter, siteKey);
     }
 }

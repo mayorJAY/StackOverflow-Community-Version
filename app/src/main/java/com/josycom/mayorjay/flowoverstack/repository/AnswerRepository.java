@@ -25,21 +25,23 @@ public class AnswerRepository {
     private final String sortCondition;
     private final String site;
     private final String filter;
+    private final String siteKey;
     private MutableLiveData<List<Answer>> mAnswers = new MutableLiveData<>();
 
-    public AnswerRepository(int questionId, String order, String sortCondition, String site, String filter) {
+    public AnswerRepository(int questionId, String order, String sortCondition, String site, String filter, String siteKey) {
         this.questionId = questionId;
         this.order = order;
         this.sortCondition = sortCondition;
         this.site = site;
         this.filter = filter;
+        this.siteKey = siteKey;
         getAnswersToQuestion();
     }
 
     private void getAnswersToQuestion() {
         ThreadExecutor.mExecutor.execute(() -> {
             ApiService apiService = RestApiClient.getApiService(ApiService.class);
-            Call<AnswerResponse> call = apiService.getAnswersToQuestion(questionId, order, sortCondition, site, filter);
+            Call<AnswerResponse> call = apiService.getAnswersToQuestion(questionId, order, sortCondition, site, filter, siteKey);
             call.enqueue(new Callback<AnswerResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AnswerResponse> call, @NotNull Response<AnswerResponse> response) {

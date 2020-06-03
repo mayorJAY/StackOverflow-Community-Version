@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -8,8 +9,8 @@ android {
         applicationId "com.josycom.mayorjay.flowoverstack"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -20,8 +21,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -51,7 +52,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     // glide
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
 
     // Logging
     implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
@@ -73,11 +74,18 @@ dependencies {
     // SwipeRefreshLayout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
+    // Firebase analytics
+    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+
+    // Firebase crashlytics
+    apply plugin: 'com.google.firebase.crashlytics'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+
     // Unit tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'androidx.test:core:1.2.0'
     testImplementation 'org.robolectric:robolectric:4.3.1'
-    testImplementation "org.mockito:mockito-core:2.19.0"
+    testImplementation "org.mockito:mockito-core:2.23.0"
     testImplementation "com.squareup.okhttp3:mockwebserver:4.0.0"
 
     // Instrumentation tests
