@@ -102,7 +102,7 @@ public class QuestionsByCreationFragment extends Fragment {
                 StringConstants.SORT_BY_CREATION,
                 StringConstants.SITE,
                 StringConstants.QUESTION_FILTER,
-                StringConstants.KEY)).get(QuestionViewModel.class);
+                StringConstants.API_KEY)).get(QuestionViewModel.class);
 
         questionViewModel.getNetworkState().observe(getViewLifecycleOwner(), s -> {
             switch (s) {
