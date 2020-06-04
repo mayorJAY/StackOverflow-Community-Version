@@ -32,4 +32,5 @@ public interface ApiService {
 
     @GET("/2.2/search?pagesize=100&order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT&key=1ZLMY6ESrAkq5*odMs3zQw((")
     Call<QuestionsResponse> getQuestionsWithTextInTitle(@Query("intitle") String inTitle);
+
 }
