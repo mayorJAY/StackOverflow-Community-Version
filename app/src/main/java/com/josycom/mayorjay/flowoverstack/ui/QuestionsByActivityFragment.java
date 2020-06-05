@@ -34,6 +34,7 @@ import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUES
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_ID;
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_NAME;
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_OWNER_LINK;
+import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_OWNER_REPUTATION;
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_TITLE;
 
 /**
@@ -76,6 +77,7 @@ public class QuestionsByActivityFragment extends Fragment {
 
             answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
             answerActivityIntent.putExtra(EXTRA_QUESTION_NAME, questionOwner.getDisplayName());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_REPUTATION, questionOwner.getReputation());
             answerActivityIntent.putExtra(EXTRA_QUESTION_DATE,
                     DateUtil.toNormalDate(currentQuestion.getCreationDate()));
             answerActivityIntent.putExtra(EXTRA_QUESTION_FULL_TEXT, currentQuestion.getBody());
