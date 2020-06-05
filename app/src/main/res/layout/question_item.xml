@@ -57,8 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/avatar_description"
-                android:scaleType="fitXY"
-                android:src="@drawable/mbobiosio" />
+                android:scaleType="fitXY" />
         </androidx.cardview.widget.CardView>
 
         <TextView
