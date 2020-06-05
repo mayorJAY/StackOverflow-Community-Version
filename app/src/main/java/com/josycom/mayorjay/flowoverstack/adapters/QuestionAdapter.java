@@ -104,7 +104,6 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
                     mQuestionItemBinding.tvVotesCountItem.setText(mContext.getString(R.string.plus_score).concat(String.valueOf(question.getScore())));
                 }
                 mQuestionItemBinding.tvTagsListItem.setText(updateTagsTextView(tagList));
-
             }
         }
 
