@@ -1,6 +1,8 @@
 package com.josycom.mayorjay.flowoverstack.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import org.jsoup.Jsoup;
 import java.util.List;
 
 public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.QuestionViewHolder> {
+    private static Context mContext;
 
     private static View.OnClickListener mOnClickListener;
 
@@ -46,6 +49,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         QuestionItemBinding questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        mContext = parent.getContext();
         return new QuestionViewHolder(questionItemBinding);
     }
 
@@ -81,9 +85,26 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
                 mQuestionItemBinding.tvQuestionItem.setText(Jsoup.parse(question.getTitle()).text());
                 mQuestionItemBinding.tvViewsCountItem.setText(String.valueOf(question.getViewCount()));
                 mQuestionItemBinding.tvDateItem.setText(DateUtil.toNormalDate(question.getCreationDate()));
-                mQuestionItemBinding.tvAnswersCountItem.setText(String.valueOf(question.getAnswerCount()));
-                mQuestionItemBinding.tvVotesCountItem.setText(String.valueOf(question.getScore()));
+
+                if (question.getIsAnswered()) {
+                    mQuestionItemBinding.answered.setVisibility(View.VISIBLE);
+                } else {
+                    mQuestionItemBinding.answered.setVisibility(View.GONE);
+                }
+
+                int answers = question.getAnswerCount();
+                Resources resources = mContext.getResources();
+                String answerCount = resources.getQuantityString(R.plurals.answers, answers, answers);
+
+                mQuestionItemBinding.tvAnswersCountItem.setText(answerCount);
+                //mQuestionItemBinding.tvAnswersCountItem.setText(String.valueOf(question.getAnswerCount()).concat(" ").concat(mContext.getString(R.string.answers_description)));
+                if (question.getScore() < 0) {
+                    mQuestionItemBinding.tvVotesCountItem.setText(String.valueOf(question.getScore()));
+                } else {
+                    mQuestionItemBinding.tvVotesCountItem.setText(mContext.getString(R.string.plus_score).concat(String.valueOf(question.getScore())));
+                }
                 mQuestionItemBinding.tvTagsListItem.setText(updateTagsTextView(tagList));
+
             }
         }
 

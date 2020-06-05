@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.adapters.AnswerAdapter;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityAnswerBinding;
+import com.josycom.mayorjay.flowoverstack.util.AppUtils;
 import com.josycom.mayorjay.flowoverstack.util.StringConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.AnswerViewModel;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
@@ -28,6 +30,7 @@ public class AnswerActivity extends AppCompatActivity {
     private ActivityAnswerBinding mActivityAnswerBinding;
     private AnswerAdapter mAnswerAdapter;
     private String mOwnerQuestionLink;
+    int reputation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,10 @@ public class AnswerActivity extends AppCompatActivity {
         mActivityAnswerBinding.tvFullQuestionDetail.setText(HtmlCompat.fromHtml(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)), 0));
         mActivityAnswerBinding.tvDateQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         mActivityAnswerBinding.tvNameQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
+
+        mActivityAnswerBinding.tvVotesCountItem.setText("+100");
+
+
         int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
         String avatarAddress = mIntent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
         mOwnerQuestionLink = mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
@@ -69,11 +76,12 @@ public class AnswerActivity extends AppCompatActivity {
     }
 
     public void openProfileOnWeb(View view) {
-        Uri webPage = Uri.parse(mOwnerQuestionLink);
+        AppUtils.directLinkToBrowser(this, mOwnerQuestionLink);
+        /*Uri webPage = Uri.parse(mOwnerQuestionLink);
         Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }
+        }*/
     }
 
     @Override
