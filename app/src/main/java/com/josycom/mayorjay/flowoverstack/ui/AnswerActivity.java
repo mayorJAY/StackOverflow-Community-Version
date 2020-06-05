@@ -46,9 +46,12 @@ public class AnswerActivity extends AppCompatActivity {
         mActivityAnswerBinding.tvFullQuestionDetail.setText(HtmlCompat.fromHtml(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)), 0));
         mActivityAnswerBinding.tvDateQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         mActivityAnswerBinding.tvNameQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
-
-        mActivityAnswerBinding.tvVotesCountItem.setText("+100");
-
+        int voteCount = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_VOTES_COUNT, 0);
+        if (voteCount < 0){
+            mActivityAnswerBinding.tvVotesCountItem.setText(String.valueOf(voteCount));
+        } else {
+            mActivityAnswerBinding.tvVotesCountItem.setText(getString(R.string.plus_score).concat(String.valueOf(voteCount)));
+        }
 
         int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
         String avatarAddress = mIntent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
