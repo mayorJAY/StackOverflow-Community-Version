@@ -38,6 +38,7 @@
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="4dp"
                 app:cardElevation="0dp"
+                android:onClick="openProfileOnWeb"
                 app:layout_constraintStart_toStartOf="@+id/tv_question_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_question_detail">
 
@@ -72,9 +73,21 @@
                 android:text="@string/tv_example_name_item"
                 android:textColor="@color/blueText"
                 android:textSize="@dimen/_10ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/avatar_card"
                 app:layout_constraintStart_toEndOf="@+id/avatar_card"
                 app:layout_constraintTop_toTopOf="@+id/avatar_card" />
+
+            <TextView
+                android:id="@+id/tv_votes_count_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_bg"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="@dimen/_5sdp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_9ssp"
+                app:layout_constraintStart_toStartOf="@+id/tv_name_question_detail"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_question_detail"
+                tools:text="+100" />
 
             <TextView
                 android:id="@+id/tv_full_question_detail"

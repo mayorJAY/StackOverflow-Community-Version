@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter;
 import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByActivityBinding;
 import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
+import com.josycom.mayorjay.flowoverstack.util.AppUtils;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
 import com.josycom.mayorjay.flowoverstack.util.StringConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
@@ -34,7 +36,6 @@ import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUES
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_ID;
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_NAME;
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_OWNER_LINK;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_OWNER_REPUTATION;
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_TITLE;
 
 /**
@@ -77,7 +78,6 @@ public class QuestionsByActivityFragment extends Fragment {
 
             answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
             answerActivityIntent.putExtra(EXTRA_QUESTION_NAME, questionOwner.getDisplayName());
-            answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_REPUTATION, questionOwner.getReputation());
             answerActivityIntent.putExtra(EXTRA_QUESTION_DATE,
                     DateUtil.toNormalDate(currentQuestion.getCreationDate()));
             answerActivityIntent.putExtra(EXTRA_QUESTION_FULL_TEXT, currentQuestion.getBody());

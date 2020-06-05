@@ -29,7 +29,6 @@ public interface StringConstants {
     String EXTRA_QUESTION_ANSWERS_COUNT = "question_answers";
     String EXTRA_QUESTION_FULL_TEXT = "question_full_text";
     String EXTRA_QUESTION_OWNER_LINK = "question_owner_link";
-    String EXTRA_QUESTION_OWNER_REPUTATION = "question_owner_reputation";
 
     String LOADING = "loading";
     String LOADED = "loaded";
