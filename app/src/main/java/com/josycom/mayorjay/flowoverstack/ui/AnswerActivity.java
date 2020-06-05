@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.adapters.AnswerAdapter;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityAnswerBinding;
+import com.josycom.mayorjay.flowoverstack.util.AppUtils;
 import com.josycom.mayorjay.flowoverstack.util.StringConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.AnswerViewModel;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
@@ -69,11 +70,12 @@ public class AnswerActivity extends AppCompatActivity {
     }
 
     public void openProfileOnWeb(View view) {
-        Uri webPage = Uri.parse(mOwnerQuestionLink);
+        AppUtils.directLinkToBrowser(this, mOwnerQuestionLink);
+        /*Uri webPage = Uri.parse(mOwnerQuestionLink);
         Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }
+        }*/
     }
 
     @Override
