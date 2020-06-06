@@ -21,7 +21,7 @@ FlowOver Stack requires a minimum API level of 21. Clone the repository. You wil
 API_KEY = "YOUR_API_KEY"
 ````
 
-## Contribution
+# Contribution
 All contributions are welcome. Just make a PR. It's that simple!
 
 <a href='https://play.google.com/store/apps/details?id=com.josycom.mayorjay.flowoverstack&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png' width="280"/></a>
