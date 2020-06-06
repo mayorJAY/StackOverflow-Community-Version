@@ -124,7 +124,7 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            super.onBackPressed();
+            onBackPressed();
         } else if (item.getItemId() == R.id.action_refresh) {
             loadWebFromUrl();
         } else if (item.getItemId() == R.id.action_browser) {
@@ -147,6 +147,7 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     @Override

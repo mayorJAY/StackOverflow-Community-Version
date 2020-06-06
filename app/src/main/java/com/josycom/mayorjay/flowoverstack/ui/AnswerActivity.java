@@ -1,14 +1,11 @@
 package com.josycom.mayorjay.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -30,7 +27,6 @@ public class AnswerActivity extends AppCompatActivity {
     private ActivityAnswerBinding mActivityAnswerBinding;
     private AnswerAdapter mAnswerAdapter;
     private String mOwnerQuestionLink;
-    int reputation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +39,7 @@ public class AnswerActivity extends AppCompatActivity {
 
         Intent mIntent = getIntent();
         mActivityAnswerBinding.tvQuestionDetail.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE))).text());
-        mActivityAnswerBinding.tvFullQuestionDetail.setText(HtmlCompat.fromHtml(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)), 0));
+        mActivityAnswerBinding.markDownView.setMarkDownText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT));
         mActivityAnswerBinding.tvDateQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         mActivityAnswerBinding.tvNameQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
         int voteCount = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_VOTES_COUNT, 0);
@@ -78,13 +74,9 @@ public class AnswerActivity extends AppCompatActivity {
         mActivityAnswerBinding.rvAnswers.setAdapter(mAnswerAdapter);
     }
 
+
     public void openProfileOnWeb(View view) {
         AppUtils.directLinkToBrowser(this, mOwnerQuestionLink);
-        /*Uri webPage = Uri.parse(mOwnerQuestionLink);
-        Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }*/
     }
 
     @Override
@@ -98,7 +90,11 @@ public class AnswerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (mActivityAnswerBinding.markDownView.canGoBack()) {
+            mActivityAnswerBinding.markDownView.goBack();
+        } else {
+            super.onBackPressed();
+        }
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 }
