@@ -98,7 +98,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
 
                 mQuestionItemBinding.tvAnswersCountItem.setText(answerCount);
                 //mQuestionItemBinding.tvAnswersCountItem.setText(String.valueOf(question.getAnswerCount()).concat(" ").concat(mContext.getString(R.string.answers_description)));
-                if (question.getScore() < 0) {
+                if (question.getScore() <= 0) {
                     mQuestionItemBinding.tvVotesCountItem.setText(String.valueOf(question.getScore()));
                 } else {
                     mQuestionItemBinding.tvVotesCountItem.setText(mContext.getString(R.string.plus_score).concat(String.valueOf(question.getScore())));

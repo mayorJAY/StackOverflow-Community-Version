@@ -43,7 +43,7 @@ public class AnswerActivity extends AppCompatActivity {
         mActivityAnswerBinding.tvDateQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         mActivityAnswerBinding.tvNameQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
         int voteCount = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_VOTES_COUNT, 0);
-        if (voteCount < 0){
+        if (voteCount <= 0){
             mActivityAnswerBinding.tvVotesCountItem.setText(String.valueOf(voteCount));
         } else {
             mActivityAnswerBinding.tvVotesCountItem.setText(getString(R.string.plus_score).concat(String.valueOf(voteCount)));
