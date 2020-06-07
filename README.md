@@ -1,6 +1,6 @@
 # FlowOver Stack
 
-An Android StackOverflow client application implemented using the MVVM pattern, Retrofit2, LiveData, ViewModel, Repository pattern, View Binding. Users can get to view Questions which have been asked on Stack Overflow; picking a particular Question makes the user view it in details as well as the Answers provided. These Questions can be filtered by any of these four categories; Active, Recent, Hot or Voted.
+An Android StackOverflow client application implemented using the MVVM pattern, Retrofit2, LiveData, ViewModel, Repository pattern, View Binding. Users can get to view Questions which have been asked on Stack Overflow; picking a particular Question makes the user view it in details as well as the Answers provided. These Questions can be filtered by any of these four categories; Active, Recent, Hot or Voted. Questions that have an accepted Answer are easily identified.
 Users can also search for a particular problem they are having by typing in any search query of choice. Questions are curated based on the search query and presented to the user; again, the user can pick a particular Question to view the provided Answers.
 # Libraries Used
 
