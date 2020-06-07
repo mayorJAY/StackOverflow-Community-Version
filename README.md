@@ -1,6 +1,6 @@
 # FlowOver Stack
 
-An Android StackOveflow client application implemented using the MVVM pattern, Retrofit2, LiveData, ViewModel, Repository pattern, View Binding. Users can get to view Questions which have been asked on Stack  Overflow; picking a particular Question makes the user view it in details as well as the Answers provided. These Questions can be filtered by any of these four categories; Active, Recent, Hot or Voted.
+An Android StackOverflow client application implemented using the MVVM pattern, Retrofit2, LiveData, ViewModel, Repository pattern, View Binding. Users can get to view Questions which have been asked on Stack Overflow; picking a particular Question makes the user view it in details as well as the Answers provided. These Questions can be filtered by any of these four categories; Active, Recent, Hot or Voted.
 Users can also search for a particular problem they are having by typing in any search query of choice. Questions are curated based on the search query and presented to the user; again, the user can pick a particular Question to view the provided Answers.
 # Libraries Used
 
@@ -12,7 +12,7 @@ Users can also search for a particular problem they are having by typing in any 
 * [Material Design](https://material.io/develop/android/docs/getting-started/) which is an adaptable system that guides in maintaining principles and best practices of contemporary UI
 * [View Binding](https://developer.android.com/topic/libraries/view-binding) used to easily write code that interacts with views by referencing them directly
 * [Espresso](https://developer.android.com/training/testing/espresso) used to write concise, beautiful, and reliable Android UI tests
-* [MarkdownView](https://github.com/mukeshsolanki/MarkdownView-Android) which is a simple library that helps to display Markdown text or files on Android as a html page just like Github
+* [MarkdownView](https://github.com/mukeshsolanki/MarkdownView-Android) which is a simple library that helps to display Markdown text or files on Android as a HTML page just like GitHub
 # Installation
 
 FlowOver Stack requires a minimum API level of 21. Clone the repository. You will need an API key from [Stack Exchange API](https://api.stackexchange.com/) to receive a higher request quota. Locate the StringConstants.java file and edit the following line to add your API key:
