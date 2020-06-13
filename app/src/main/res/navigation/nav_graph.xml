@@ -27,7 +27,7 @@
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_activity_dest_to_search_dest"
-            app:destination="@id/search_dest" />
+            app:destination="@id/search_dest"/>
     </fragment>
 
     <fragment
