@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(activityMainBinding.toolbar);
 
         if (savedInstanceState != null) {
-            isFragmentDisplayed = savedInstanceState.getBoolean(StringConstants.STATE_FRAGMENT);
+            isFragmentDisplayed = savedInstanceState.getBoolean(StringConstants.FRAGMENT_STATE);
         }
 
         if (!isFragmentDisplayed) {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(StringConstants.STATE_FRAGMENT, isFragmentDisplayed);
+        outState.putBoolean(StringConstants.FRAGMENT_STATE, isFragmentDisplayed);
     }
 
     @Override

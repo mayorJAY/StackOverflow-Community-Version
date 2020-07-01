@@ -35,9 +35,10 @@ import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUES
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_NAME;
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_OWNER_LINK;
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_TITLE;
+import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_VOTES_COUNT;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This fragment houses the Hot Questions
  */
 public class QuestionsByHotFragment extends Fragment {
 
@@ -82,6 +83,7 @@ public class QuestionsByHotFragment extends Fragment {
             answerActivityIntent.putExtra(EXTRA_AVATAR_ADDRESS, questionOwner.getProfileImage());
             answerActivityIntent.putExtra(EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.getAnswerCount());
             answerActivityIntent.putExtra(EXTRA_QUESTION_ID, currentQuestion.getQuestionId());
+            answerActivityIntent.putExtra(EXTRA_QUESTION_VOTES_COUNT, currentQuestion.getScore());
             answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
 
             startActivity(answerActivityIntent);

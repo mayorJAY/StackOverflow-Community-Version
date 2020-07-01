@@ -1,12 +1,10 @@
 package com.josycom.mayorjay.flowoverstack.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.adapters.AnswerAdapter;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityAnswerBinding;
+import com.josycom.mayorjay.flowoverstack.util.AppUtils;
 import com.josycom.mayorjay.flowoverstack.util.StringConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.AnswerViewModel;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
@@ -40,9 +39,16 @@ public class AnswerActivity extends AppCompatActivity {
 
         Intent mIntent = getIntent();
         mActivityAnswerBinding.tvQuestionDetail.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE))).text());
-        mActivityAnswerBinding.tvFullQuestionDetail.setText(HtmlCompat.fromHtml(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT)), 0));
+        mActivityAnswerBinding.markDownView.setMarkDownText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT));
         mActivityAnswerBinding.tvDateQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
         mActivityAnswerBinding.tvNameQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
+        int voteCount = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_VOTES_COUNT, 0);
+        if (voteCount <= 0){
+            mActivityAnswerBinding.tvVotesCountItem.setText(String.valueOf(voteCount));
+        } else {
+            mActivityAnswerBinding.tvVotesCountItem.setText(getString(R.string.plus_score).concat(String.valueOf(voteCount)));
+        }
+
         int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
         String avatarAddress = mIntent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
         mOwnerQuestionLink = mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
@@ -68,12 +74,9 @@ public class AnswerActivity extends AppCompatActivity {
         mActivityAnswerBinding.rvAnswers.setAdapter(mAnswerAdapter);
     }
 
+
     public void openProfileOnWeb(View view) {
-        Uri webPage = Uri.parse(mOwnerQuestionLink);
-        Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
+        AppUtils.directLinkToBrowser(this, mOwnerQuestionLink);
     }
 
     @Override
@@ -87,7 +90,11 @@ public class AnswerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (mActivityAnswerBinding.markDownView.canGoBack()) {
+            mActivityAnswerBinding.markDownView.goBack();
+        } else {
+            super.onBackPressed();
+        }
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 }

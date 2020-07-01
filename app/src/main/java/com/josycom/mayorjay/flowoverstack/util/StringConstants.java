@@ -29,11 +29,13 @@ public interface StringConstants {
     String EXTRA_QUESTION_ANSWERS_COUNT = "question_answers";
     String EXTRA_QUESTION_FULL_TEXT = "question_full_text";
     String EXTRA_QUESTION_OWNER_LINK = "question_owner_link";
+    String EXTRA_QUESTION_VOTES_COUNT = "question_votes";
+    String WEBVIEW_EXTRA_OBJECT = "key.EXTRA_OBJC";
 
     String LOADING = "loading";
     String LOADED = "loaded";
     String FAILED = "failed";
     String NO_MATCHING_RESULT = "No matching result";
 
-    String STATE_FRAGMENT = "state_of_fragment";
+    String FRAGMENT_STATE = "fragment_state";
 }

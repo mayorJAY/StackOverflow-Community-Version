@@ -1,139 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/question_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:elevation="4dp"
+    app:cardCornerRadius="4dp"
+    app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/tv_question_item"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:text="@string/example_question"
-        android:textColor="@color/blackText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_avatar_item"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_avatar_item"
-        android:layout_width="70dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:contentDescription="@string/avatar_description"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_question_item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_answers_count_text_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_answers_count_text_item"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
-
-    <TextView
-        android:id="@+id/tv_answers_count_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_example_counter_item"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/tv_answers_count_text_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
-
-    <ImageView
-        android:id="@+id/iv_view_icon"
-        android:layout_width="15dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:contentDescription="@string/view_indicator_icon"
-        android:src="@drawable/ic_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
-
-    <TextView
-        android:id="@+id/tv_views_count_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_example_counter_item"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_view_icon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answers_count_text_item" />
-
-    <ImageView
-        android:id="@+id/iv_tag_icon"
-        android:layout_width="15dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:contentDescription="@string/tag_icon"
-        android:src="@drawable/ic_tag"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_view_icon" />
-
-    <TextView
-        android:id="@+id/tv_tags_list_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_tag_icon"
-        app:layout_constraintTop_toBottomOf="@+id/iv_view_icon" />
-
-    <TextView
-        android:id="@+id/tv_asked_text_item"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:text="@string/tv_asked_text"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_date_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
-
-    <TextView
-        android:id="@+id/tv_date_item"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_example_date_item"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_item" />
-
-    <ImageView
-        android:id="@+id/iv_vote_icon"
-        android:layout_width="15dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:contentDescription="@string/vote_icon"
-        android:src="@drawable/ic_vote"
-        app:layout_constraintStart_toStartOf="@+id/tv_asked_text_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_asked_text_item" />
-
-    <TextView
-        android:id="@+id/tv_votes_count_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:text="@string/tv_example_counter_item"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_vote_icon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_asked_text_item" />
-
-    <View
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorViewLine"
-        app:layout_constraintBottom_toBottomOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/answered"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginStart="8dp"
+            android:tint="@color/colorPrimary"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_date_item"
+            app:layout_constraintStart_toEndOf="@+id/tv_date_item"
+            app:layout_constraintTop_toTopOf="@+id/tv_date_item"
+            app:srcCompat="@drawable/ic_baseline_verified_answer"
+            android:contentDescription="@string/answered_icon" />
+
+        <TextView
+            android:id="@+id/tv_question_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/search_stack_overflow"
+            android:textColor="@color/blackText"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintEnd_toStartOf="@+id/avatar_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/avatar_card"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_avatar_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/avatar_description"
+                android:scaleType="fitXY" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_answers_count_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_votes_count_item"
+            app:layout_constraintStart_toEndOf="@+id/tv_votes_count_item"
+            app:layout_constraintTop_toTopOf="@+id/tv_votes_count_item"
+            tools:text="12000 answers" />
+
+        <ImageView
+            android:id="@+id/iv_view_icon"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/view_indicator_icon"
+            android:src="@drawable/ic_view"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_answers_count_item"
+            app:layout_constraintStart_toEndOf="@+id/tv_answers_count_item"
+            app:layout_constraintTop_toTopOf="@+id/tv_answers_count_item" />
+
+        <TextView
+            android:id="@+id/tv_views_count_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_votes_count_item"
+            app:layout_constraintStart_toEndOf="@+id/iv_view_icon"
+            app:layout_constraintTop_toTopOf="@+id/tv_votes_count_item"
+            tools:text="4650" />
+
+        <ImageView
+            android:id="@+id/iv_tag_icon"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:contentDescription="@string/tag_icon"
+            android:src="@drawable/ic_tag"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_view_icon" />
+
+        <TextView
+            android:id="@+id/tv_tags_list_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="start"
+            android:background="@drawable/tag_bg"
+            android:padding="@dimen/_3sdp"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_votes_count_item"
+            app:layout_constraintTop_toBottomOf="@+id/tv_votes_count_item"
+            tools:text="tensorflow" />
+
+        <TextView
+            android:id="@+id/tv_date_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/tv_example_date_item"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_views_count_item"
+            app:layout_constraintStart_toEndOf="@+id/tv_views_count_item"
+            app:layout_constraintTop_toTopOf="@+id/tv_views_count_item" />
+
+        <TextView
+            android:id="@+id/tv_votes_count_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/tag_bg"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="@dimen/_4sdp"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintStart_toEndOf="@+id/iv_tag_icon"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question_item"
+            tools:text="+100" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorViewLine"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
