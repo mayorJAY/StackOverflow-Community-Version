@@ -40,7 +40,7 @@ import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUES
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_VOTES_COUNT;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This fragment houses the Active Questions
  */
 public class QuestionsByActivityFragment extends Fragment {
 

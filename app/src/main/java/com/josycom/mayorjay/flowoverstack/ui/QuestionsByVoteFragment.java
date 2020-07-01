@@ -20,7 +20,6 @@ import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter;
 import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByVoteBinding;
 import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
-import com.josycom.mayorjay.flowoverstack.util.AppUtils;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
 import com.josycom.mayorjay.flowoverstack.util.StringConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
@@ -39,7 +38,7 @@ import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUES
 import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_VOTES_COUNT;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This fragment houses the Voted Questions
  */
 public class QuestionsByVoteFragment extends Fragment {
 

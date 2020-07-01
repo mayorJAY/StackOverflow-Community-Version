@@ -23,7 +23,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_bold"
                 android:text="@string/example_question"
                 android:textColor="@color/blackText"
                 android:textSize="@dimen/_11ssp"
@@ -94,20 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/avatar_card" />
-
-            <TextView
-                android:id="@+id/tv_full_question_detail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/example_question"
-                android:textSize="16sp"
-                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/avatar_card" />

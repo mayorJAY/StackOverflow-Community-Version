@@ -14,7 +14,7 @@ public interface StringConstants {
 
     String QUESTION_FILTER = "!9Z(-wwYGT";
     String ANSWER_FILTER = "!9Z(-wzu0T";
-    String API_KEY = "YOUR_API_KEY";
+    String API_KEY = "1ZLMY6ESrAkq5*odMs3zQw((";
 
     String SORT_BY_ACTIVITY = "activity";
     String SORT_BY_VOTES = "votes";
@@ -30,11 +30,12 @@ public interface StringConstants {
     String EXTRA_QUESTION_FULL_TEXT = "question_full_text";
     String EXTRA_QUESTION_OWNER_LINK = "question_owner_link";
     String EXTRA_QUESTION_VOTES_COUNT = "question_votes";
+    String WEBVIEW_EXTRA_OBJECT = "key.EXTRA_OBJC";
 
     String LOADING = "loading";
     String LOADED = "loaded";
     String FAILED = "failed";
     String NO_MATCHING_RESULT = "No matching result";
 
-    String STATE_FRAGMENT = "state_of_fragment";
+    String FRAGMENT_STATE = "fragment_state";
 }

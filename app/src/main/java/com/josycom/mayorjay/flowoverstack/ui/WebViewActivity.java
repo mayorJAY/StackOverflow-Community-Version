@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,10 +30,11 @@ import com.josycom.mayorjay.flowoverstack.util.AppUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
+
+import static com.josycom.mayorjay.flowoverstack.util.StringConstants.WEBVIEW_EXTRA_OBJECT;
 
 public class WebViewActivity extends AppCompatActivity {
-
-    private static final String EXTRA_OBJECT = "key.EXTRA_OBJC";
 
     public static void navigate(Activity activity, String url) {
         Intent i = navigateBase(activity, url);
@@ -46,13 +48,12 @@ public class WebViewActivity extends AppCompatActivity {
 
     public static Intent navigateBase(Context context, String url) {
         Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra(EXTRA_OBJECT, url);
+        intent.putExtra(WEBVIEW_EXTRA_OBJECT, url);
         return intent;
     }
 
     private String url;
     private WebView webView;
-    private Toolbar toolbar;
     private ActionBar actionBar;
     private ProgressBar progressBar;
 
@@ -62,7 +63,7 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         // get extra object
-        url = getIntent().getStringExtra(EXTRA_OBJECT);
+        url = getIntent().getStringExtra(WEBVIEW_EXTRA_OBJECT);
 
         initComponent();
         initToolbar();
@@ -77,12 +78,11 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_clear);
-        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
-//        setSupportActionBar(toolbar);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle(null);
         changeOverflowMenuIconColor(toolbar, getResources().getColor(R.color.colorPrimary));
@@ -90,6 +90,7 @@ public class WebViewActivity extends AppCompatActivity {
         setSystemBarLight(this);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void loadWebFromUrl() {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDefaultTextEncodingName("utf-8");
@@ -183,9 +184,10 @@ public class WebViewActivity extends AppCompatActivity {
     private void changeOverflowMenuIconColor(Toolbar toolbar, @ColorInt int color) {
         try {
             Drawable drawable = toolbar.getOverflowIcon();
-            drawable.mutate();
+            Objects.requireNonNull(drawable).mutate();
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

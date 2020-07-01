@@ -38,4 +38,5 @@
     <string name="answers_description">answers</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_open_in_browser">Open in Browser</string>
+    <string name="answered_icon">Answered icon</string>
 </resources>

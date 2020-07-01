@@ -11,10 +11,10 @@
         android:id="@+id/tv_hot_questions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/margin_medium"
         android:text="@string/hot_questions"
-        android:textSize="22sp"
+        android:textSize="@dimen/_14ssp"
         android:textStyle="bold" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,6 +23,7 @@
         android:layout_height="wrap_content">
 
         <FrameLayout
+            android:id="@+id/hot_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

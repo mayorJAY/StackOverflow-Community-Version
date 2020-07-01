@@ -24,7 +24,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_date_item"
             app:layout_constraintStart_toEndOf="@+id/tv_date_item"
             app:layout_constraintTop_toTopOf="@+id/tv_date_item"
-            app:srcCompat="@drawable/ic_baseline_verified_answer" />
+            app:srcCompat="@drawable/ic_baseline_verified_answer"
+            android:contentDescription="@string/answered_icon" />
 
         <TextView
             android:id="@+id/tv_question_item"
@@ -65,7 +66,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:fontFamily="@font/montserrat_light"
             android:textSize="@dimen/_9ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_votes_count_item"
             app:layout_constraintStart_toEndOf="@+id/tv_votes_count_item"
@@ -89,7 +89,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:fontFamily="@font/montserrat_light"
             android:textSize="@dimen/_9ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_votes_count_item"
             app:layout_constraintStart_toEndOf="@+id/iv_view_icon"
@@ -114,7 +113,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/montserrat_light"
             android:gravity="start"
             android:background="@drawable/tag_bg"
             android:padding="@dimen/_3sdp"
@@ -131,7 +129,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:fontFamily="@font/montserrat_light"
             android:text="@string/tv_example_date_item"
             android:textSize="@dimen/_9ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_views_count_item"

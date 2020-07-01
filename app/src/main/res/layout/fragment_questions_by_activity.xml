@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/margin_medium"
-        android:fontFamily="@font/montserrat"
         android:text="@string/active_questions"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold" />
