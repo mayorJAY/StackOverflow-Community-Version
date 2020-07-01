@@ -36,22 +36,6 @@ import static com.josycom.mayorjay.flowoverstack.util.StringConstants.WEBVIEW_EX
 
 public class WebViewActivity extends AppCompatActivity {
 
-    public static void navigate(Activity activity, String url) {
-        Intent i = navigateBase(activity, url);
-        activity.startActivity(i);
-    }
-
-    public static void navigate(Context activity, String url) {
-        Intent i = navigateBase(activity, url);
-        activity.startActivity(i);
-    }
-
-    public static Intent navigateBase(Context context, String url) {
-        Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra(WEBVIEW_EXTRA_OBJECT, url);
-        return intent;
-    }
-
     private String url;
     private WebView webView;
     private ActionBar actionBar;
@@ -210,5 +194,16 @@ public class WebViewActivity extends AppCompatActivity {
             e.printStackTrace();
             return url;
         }
+    }
+
+    public static void navigate(Activity activity, String url) {
+        Intent i = navigateBase(activity, url);
+        activity.startActivity(i);
+    }
+
+    public static Intent navigateBase(Context context, String url) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(WEBVIEW_EXTRA_OBJECT, url);
+        return intent;
     }
 }
