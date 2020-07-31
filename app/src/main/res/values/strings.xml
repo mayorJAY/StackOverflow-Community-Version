@@ -41,4 +41,5 @@
     <string name="answered_icon">Answered icon</string>
     <string name="scan_to_search">Scan to Search</string>
     <string name="type_to_search">Type to Search</string>
+    <string name="home">Home</string>
 </resources>

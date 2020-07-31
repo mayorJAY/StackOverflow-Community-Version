@@ -13,17 +13,37 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private FragmentTransaction mFragmentTransaction;
     private boolean isFragmentDisplayed = false;
+    private boolean isFabOpen = false;
+    private ActivityMainBinding mActivityMainBinding;
+    private Animation fabOpen, fabClose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(activityMainBinding.getRoot());
-        setSupportActionBar(activityMainBinding.toolbar);
+        mActivityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mActivityMainBinding.getRoot());
+        setSupportActionBar(mActivityMainBinding.toolbar);
+        fabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
+        mActivityMainBinding.searchFab.setOnClickListener(view -> fabAction());
+
+        mActivityMainBinding.scanToSearch.setOnClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Coming soon", Toast.LENGTH_SHORT).show();
+            hideFabActions();
+        });
+        mActivityMainBinding.typeToSearch.setOnClickListener(view -> {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            hideFabActions();
+        });
 
         if (savedInstanceState != null) {
             isFragmentDisplayed = savedInstanceState.getBoolean(AppConstants.FRAGMENT_STATE);
@@ -38,6 +58,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void fabAction() {
+        if (isFabOpen) {
+            hideFabActions();
+        } else {
+            showFabActions();
+        }
+    }
+
+    private void hideFabActions() {
+        mActivityMainBinding.searchFab.setImageDrawable(getDrawable(R.drawable.ic_search));
+        mActivityMainBinding.scanToSearch.startAnimation(fabClose);
+        mActivityMainBinding.scanToSearch.setClickable(false);
+        mActivityMainBinding.scanToSearch.setVisibility(View.INVISIBLE);
+        mActivityMainBinding.typeToSearch.startAnimation(fabClose);
+        mActivityMainBinding.typeToSearch.setClickable(false);
+        mActivityMainBinding.typeToSearch.setVisibility(View.INVISIBLE);
+        isFabOpen = false;
+    }
+
+    private void showFabActions() {
+        mActivityMainBinding.searchFab.setImageDrawable(getDrawable(R.drawable.ic_close));
+        mActivityMainBinding.scanToSearch.startAnimation(fabOpen);
+        mActivityMainBinding.scanToSearch.setClickable(true);
+        mActivityMainBinding.scanToSearch.setVisibility(View.VISIBLE);
+        mActivityMainBinding.typeToSearch.startAnimation(fabOpen);
+        mActivityMainBinding.typeToSearch.setClickable(true);
+        mActivityMainBinding.typeToSearch.setVisibility(View.VISIBLE);
+        isFabOpen = true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -49,11 +99,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_search) {
-            startActivity(new Intent(this, SearchActivity.class));
-            //overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
-            return true;
-        } else if (id == R.id.action_filter_by_recency) {
+        if (id == R.id.action_filter_by_recency) {
             if (findViewById(R.id.fragment_container) != null && item.getTitle().equals(getString(R.string.action_filter_by_recency))) {
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 mFragmentTransaction.replace(R.id.fragment_container, new QuestionsByCreationFragment()).commit();

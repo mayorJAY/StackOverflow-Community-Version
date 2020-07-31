@@ -132,7 +132,7 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+        //overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     @Override

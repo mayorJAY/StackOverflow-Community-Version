@@ -4,12 +4,6 @@
     tools:context="com.josycom.mayorjay.flowoverstack.ui.MainActivity">
 
     <item
-        android:id="@+id/action_search"
-        android:title="@string/action_search"
-        android:contentDescription="@string/search_description"
-        android:icon="@drawable/ic_search"
-        app:showAsAction="ifRoom"/>
-    <item
         android:id="@+id/action_filter_by_recency"
         android:title="@string/action_filter_by_recency"
         android:orderInCategory="10"
