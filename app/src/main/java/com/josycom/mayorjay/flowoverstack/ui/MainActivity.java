@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityMainBinding;
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
+import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(activityMainBinding.toolbar);
 
         if (savedInstanceState != null) {
-            isFragmentDisplayed = savedInstanceState.getBoolean(StringConstants.FRAGMENT_STATE);
+            isFragmentDisplayed = savedInstanceState.getBoolean(AppConstants.FRAGMENT_STATE);
         }
 
         if (!isFragmentDisplayed) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_search) {
             startActivity(new Intent(this, SearchActivity.class));
-            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+            //overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
             return true;
         } else if (id == R.id.action_filter_by_recency) {
             if (findViewById(R.id.fragment_container) != null && item.getTitle().equals(getString(R.string.action_filter_by_recency))) {
@@ -81,12 +81,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(StringConstants.FRAGMENT_STATE, isFragmentDisplayed);
+        outState.putBoolean(AppConstants.FRAGMENT_STATE, isFragmentDisplayed);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 }

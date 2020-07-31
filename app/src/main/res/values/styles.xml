@@ -10,10 +10,11 @@
     </style>
 
     <!-- SplashScreen theme. -->
-    <style name="AppTheme.SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowDisablePreview">true</item>
+    <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimaryLight</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

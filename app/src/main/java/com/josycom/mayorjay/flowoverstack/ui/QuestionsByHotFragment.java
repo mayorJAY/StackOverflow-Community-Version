@@ -21,21 +21,21 @@ import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByHotBind
 import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
+import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
 import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_DATE;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_FULL_TEXT;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_ID;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_NAME;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_OWNER_LINK;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_TITLE;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_VOTES_COUNT;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ANSWERS_COUNT;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_DATE;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_FULL_TEXT;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ID;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_NAME;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_OWNER_LINK;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_TITLE;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_VOTES_COUNT;
 
 /**
  * This fragment houses the Hot Questions
@@ -87,7 +87,7 @@ public class QuestionsByHotFragment extends Fragment {
             answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
 
             startActivity(answerActivityIntent);
-            requireActivity().overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+            //requireActivity().overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         };
         handleRecyclerView();
         return mFragmentQuestionsByHotBinding.getRoot();
@@ -98,23 +98,23 @@ public class QuestionsByHotFragment extends Fragment {
         mFragmentQuestionsByHotBinding.hotRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mFragmentQuestionsByHotBinding.hotRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        QuestionViewModel questionViewModel = new ViewModelProvider(this, new CustomQuestionViewModelFactory(StringConstants.FIRST_PAGE,
-                StringConstants.PAGE_SIZE,
-                StringConstants.ORDER_DESCENDING,
-                StringConstants.SORT_BY_HOT,
-                StringConstants.SITE,
-                StringConstants.QUESTION_FILTER,
-                StringConstants.API_KEY)).get(QuestionViewModel.class);
+        QuestionViewModel questionViewModel = new ViewModelProvider(this, new CustomQuestionViewModelFactory(AppConstants.FIRST_PAGE,
+                AppConstants.PAGE_SIZE,
+                AppConstants.ORDER_DESCENDING,
+                AppConstants.SORT_BY_HOT,
+                AppConstants.SITE,
+                AppConstants.QUESTION_FILTER,
+                AppConstants.API_KEY)).get(QuestionViewModel.class);
 
         questionViewModel.getNetworkState().observe(getViewLifecycleOwner(), s -> {
             switch (s) {
-                case StringConstants.LOADING:
+                case AppConstants.LOADING:
                     onLoading();
                     break;
-                case StringConstants.LOADED:
+                case AppConstants.LOADED:
                     onLoaded();
                     break;
-                case StringConstants.FAILED:
+                case AppConstants.FAILED:
                     onError();
                     break;
             }

@@ -32,7 +32,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.WEBVIEW_EXTRA_OBJECT;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.WEBVIEW_EXTRA_OBJECT;
 
 public class WebViewActivity extends AppCompatActivity {
 

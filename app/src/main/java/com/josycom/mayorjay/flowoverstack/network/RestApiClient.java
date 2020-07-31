@@ -1,6 +1,6 @@
 package com.josycom.mayorjay.flowoverstack.network;
 
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
+import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -18,7 +18,7 @@ public class RestApiClient {
             .setLenient()
             .create();
     private static Retrofit.Builder builder = new Retrofit.Builder()
-            .baseUrl(StringConstants.BASE_URL)
+            .baseUrl(AppConstants.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client.build());
