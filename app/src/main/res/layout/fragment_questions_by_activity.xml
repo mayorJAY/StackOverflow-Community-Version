@@ -31,6 +31,7 @@
                 android:id="@+id/activity_pb_fetch_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyle"
                 android:layout_gravity="center"
                 android:visibility="invisible" />
 

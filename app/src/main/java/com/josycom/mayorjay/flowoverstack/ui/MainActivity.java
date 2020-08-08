@@ -37,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
         mActivityMainBinding.searchFab.setOnClickListener(view -> fabAction());
 
         mActivityMainBinding.scanToSearch.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Coming soon", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, OcrActivity.class));
             hideFabActions();
         });
         mActivityMainBinding.typeToSearch.setOnClickListener(view -> {
-            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            startActivity(new Intent(this, SearchActivity.class));
             hideFabActions();
         });
 

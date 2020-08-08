@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.OcrActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/ocr_nested_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_medium">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/iv_cropped_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_medium"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:elevation="12dp"
+        android:textSize="20sp"
+        app:cornerRadius="8dp"
+        android:text="@string/scan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_cropped_image" />
+    
+    <ProgressBar
+        android:id="@+id/ocr_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_cropped_image"
+        app:layout_constraintEnd_toEndOf="@+id/iv_cropped_image"
+        app:layout_constraintStart_toStartOf="@+id/iv_cropped_image"
+        app:layout_constraintTop_toTopOf="@+id/iv_cropped_image" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ocr_text_input_layout"
+        style="@style/Widget.FlowOverStack.TextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:hint="@string/search_stack_overflow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_scan">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ocr_text_input_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:elevation="12dp"
+        android:textSize="20sp"
+        app:cornerRadius="8dp"
+        android:text="@string/action_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ocr_text_input_layout"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ocr_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/ocr_tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_medium"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ocr_progress_bar"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ocr_scan_fab"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginBottom="52dp"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:backgroundTint="@color/colorPrimaryLight"
+        app:backgroundTint="@color/colorPrimaryLight"
+        app:tint="@color/colorPrimaryText"
+        app:elevation="6dp"
+        app:fabCustomSize="50dp"
+        app:fabSize="auto"
+        app:maxImageSize="30dp"
+        app:srcCompat="@drawable/ic_camera"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ocr_scroll_up_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_medium"
+        android:backgroundTint="@color/colorPrimaryLight"
+        android:contentDescription="@string/scroll_up_button"
+        android:src="@drawable/ic_action_scroll_up"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorPrimaryLight"
+        app:fabCustomSize="40dp"
+        app:fabSize="auto"
+        app:maxImageSize="36dp"
+        app:tint="@color/colorPrimaryText" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
