@@ -9,6 +9,7 @@ import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
@@ -16,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private FragmentTransaction mFragmentTransaction;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void hideFabActions() {
-        mActivityMainBinding.searchFab.setImageDrawable(getDrawable(R.drawable.ic_search));
+        mActivityMainBinding.searchFab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_search));
         mActivityMainBinding.scanToSearch.startAnimation(fabClose);
         mActivityMainBinding.scanToSearch.setClickable(false);
         mActivityMainBinding.scanToSearch.setVisibility(View.INVISIBLE);
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showFabActions() {
-        mActivityMainBinding.searchFab.setImageDrawable(getDrawable(R.drawable.ic_close));
+        mActivityMainBinding.searchFab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_close));
         mActivityMainBinding.scanToSearch.startAnimation(fabOpen);
         mActivityMainBinding.scanToSearch.setClickable(true);
         mActivityMainBinding.scanToSearch.setVisibility(View.VISIBLE);

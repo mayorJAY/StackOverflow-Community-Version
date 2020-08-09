@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_root_layout"
     tools:context=".ui.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -25,56 +26,100 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/scan_to_search"
+        style="@style/Widget.FlowOverStack.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        app:icon="@drawable/ic_camera"
+        android:width="200dp"
+        android:height="30dp"
         app:strokeColor="@color/colorPrimary"
         app:strokeWidth="1dp"
         android:layout_marginEnd="@dimen/margin_large"
+        app:backgroundTint="@color/colorPrimaryText"
         android:layout_marginBottom="140dp"
-        android:width="180dp"
-        android:background="@drawable/button_background"
-        android:backgroundTint="@color/colorPrimaryText"
-        android:clickable="false"
-        android:elevation="6dp"
-        android:lineSpacingExtra="4sp"
         android:text="@string/scan_to_search"
         android:textStyle="bold"
-        android:visibility="invisible"
         android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
+        android:clickable="false"
         app:cornerRadius="16dp"
-        app:iconGravity="start"
-        app:pressedTranslationZ="12dp"/>
+        android:visibility="invisible"
+        app:icon="@drawable/ic_camera"
+        app:iconTint="@color/colorPrimary"
+        android:textColor="@color/colorPrimary"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/type_to_search"
+        style="@style/Widget.FlowOverStack.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        app:icon="@drawable/ic_keyboard"
+        android:width="190dp"
+        android:height="30dp"
         app:strokeColor="@color/colorPrimary"
         app:strokeWidth="1dp"
+        android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/margin_large"
         android:layout_marginBottom="100dp"
-        app:cornerRadius="16dp"
-        android:background="@drawable/button_background"
-        android:backgroundTint="@color/colorPrimaryText"
-        android:clickable="false"
-        android:elevation="6dp"
-        android:visibility="invisible"
-        app:iconGravity="start"
-        android:textStyle="bold"
-        android:lineSpacingExtra="4sp"
+        app:backgroundTint="@color/colorPrimaryText"
         android:text="@string/type_to_search"
+        android:textStyle="bold"
         android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
-        app:pressedTranslationZ="12dp"/>
+        android:clickable="false"
+        app:cornerRadius="16dp"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_keyboard"
+        app:iconTint="@color/colorPrimary"
+        android:textColor="@color/colorPrimary"/>
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/scan_to_search"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        app:icon="@drawable/ic_camera"-->
+<!--        style="@style/Widget.FlowOverStack.Button"-->
+<!--        app:strokeColor="@color/colorPrimary"-->
+<!--        app:strokeWidth="1dp"-->
+<!--        android:layout_marginEnd="@dimen/margin_large"-->
+<!--        android:layout_marginBottom="170dp"-->
+<!--        android:width="180dp"-->
+<!--        android:height="50dp"-->
+<!--        android:background="@color/colorPrimaryText"-->
+<!--        android:backgroundTint="@color/colorPrimaryText"-->
+<!--        android:clickable="false"-->
+<!--        android:elevation="6dp"-->
+<!--        android:lineSpacingExtra="4sp"-->
+<!--        android:text="@string/scan_to_search"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:textSize="14sp"-->
+<!--        app:cornerRadius="16dp"-->
+<!--        app:iconGravity="start"/>-->
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/type_to_search"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"-->
+<!--        app:icon="@drawable/ic_keyboard"-->
+<!--        app:strokeColor="@color/colorPrimary"-->
+<!--        app:strokeWidth="1dp"-->
+<!--        android:layout_marginEnd="@dimen/margin_large"-->
+<!--        android:layout_marginBottom="110dp"-->
+<!--        app:cornerRadius="16dp"-->
+<!--        android:height="50dp"-->
+<!--        android:background="@color/colorPrimaryText"-->
+<!--        android:backgroundTint="@color/colorPrimaryText"-->
+<!--        android:clickable="false"-->
+<!--        android:elevation="6dp"-->
+<!--        app:iconGravity="start"-->
+<!--        android:textStyle="bold"-->
+<!--        android:lineSpacingExtra="4sp"-->
+<!--        android:text="@string/type_to_search"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:textSize="14sp"/>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/search_fab"
