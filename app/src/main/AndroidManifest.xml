@@ -51,6 +51,7 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

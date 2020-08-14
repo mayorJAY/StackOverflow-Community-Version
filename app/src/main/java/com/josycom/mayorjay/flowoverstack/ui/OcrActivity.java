@@ -11,16 +11,28 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityOcrBinding;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class OcrActivity extends AppCompatActivity {
 
@@ -98,6 +111,7 @@ public class OcrActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mPhotoPath = Objects.requireNonNull(image).getAbsolutePath();
         return image;
     }
 
@@ -127,5 +141,78 @@ public class OcrActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mPhotoPath);
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (resultCode == RESULT_OK && bitmap != null) {
+                File file = new File(mPhotoPath);
+                Uri uri = Uri.fromFile(file);
+                CropImage.activity(uri)
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(this);
+            } else if (bitmap == null) {
+                startActivity(new Intent(this, MainActivity.class));
+            }
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = Objects.requireNonNull(result).getUri();
+                Glide.with(this)
+                        .load(resultUri)
+                        .into(mActivityOcrBinding.ivCroppedImage);
+                analyseImage(resultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = Objects.requireNonNull(result).getError();
+                error.printStackTrace();
+                Toast.makeText(this, "Oops! an error occurred", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void analyseImage(Uri resultUri) {
+        mActivityOcrBinding.btScan.setVisibility(View.VISIBLE);
+        mActivityOcrBinding.btScan.setOnClickListener(view -> {
+            mActivityOcrBinding.ocrProgressBar.setVisibility(View.VISIBLE);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+                InputImage image = InputImage.fromBitmap(bitmap, 0);
+                TextRecognizer recognizer = TextRecognition.getClient();
+                recognizer.process(image)
+                        .addOnSuccessListener(text -> {
+                            mActivityOcrBinding.ocrProgressBar.setVisibility(View.GONE);
+                            mActivityOcrBinding.btScan.setVisibility(View.GONE);
+                            processTextRecognitionResult(text);
+                        })
+                        .addOnFailureListener(e -> {
+                            mActivityOcrBinding.ocrProgressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Sorry, something went wrong!", Toast.LENGTH_SHORT).show();
+                        });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void processTextRecognitionResult(Text text) {
+        List<Text.TextBlock> blocks = text.getTextBlocks();
+        if (blocks.size() == 0) {
+            Toast.makeText(getApplicationContext(), "No text found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < blocks.size(); i++) {
+            List<Text.Line> lines = blocks.get(i).getLines();
+            for (int j = 0; j < lines.size(); j++) {
+                List<Text.Element> elements = lines.get(j).getElements();
+                for (int k = 0; k < elements.size(); k++) {
+                    builder.append(elements.get(k).getText());
+                }
+            }
+        }
+        mActivityOcrBinding.ocrTextInputLayout.setVisibility(View.VISIBLE);
+        mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.VISIBLE);
+        mActivityOcrBinding.btSearch.setVisibility(View.VISIBLE);
+        mActivityOcrBinding.ocrTextInputEditText.setText(builder.toString());
+        //Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
     }
 }
