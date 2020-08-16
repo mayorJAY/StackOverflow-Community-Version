@@ -49,6 +49,10 @@ public class SearchActivity extends AppCompatActivity {
         mActivitySearchBinding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(mActivitySearchBinding.getRoot());
 
+        if (getIntent().getStringExtra("query") != null) {
+            mActivitySearchBinding.searchTextInputEditText.setText(getIntent().getStringExtra("query"));
+        }
+
         mActivitySearchBinding.rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
         mActivitySearchBinding.rvSearchResults.setHasFixedSize(true);
         mActivitySearchBinding.rvSearchResults.setItemAnimator(new DefaultItemAnimator());

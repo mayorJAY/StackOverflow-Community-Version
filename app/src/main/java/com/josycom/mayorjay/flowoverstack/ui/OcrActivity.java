@@ -196,23 +196,21 @@ public class OcrActivity extends AppCompatActivity {
     private void processTextRecognitionResult(Text text) {
         List<Text.TextBlock> blocks = text.getTextBlocks();
         if (blocks.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No text found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "No text found, scan again", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class));
             return;
-        }
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < blocks.size(); i++) {
-            List<Text.Line> lines = blocks.get(i).getLines();
-            for (int j = 0; j < lines.size(); j++) {
-                List<Text.Element> elements = lines.get(j).getElements();
-                for (int k = 0; k < elements.size(); k++) {
-                    builder.append(elements.get(k).getText());
-                }
-            }
         }
         mActivityOcrBinding.ocrTextInputLayout.setVisibility(View.VISIBLE);
         mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.VISIBLE);
         mActivityOcrBinding.btSearch.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.ocrTextInputEditText.setText(builder.toString());
-        //Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
+        mActivityOcrBinding.ocrTextInputEditText.setText(text.getText());
+        mActivityOcrBinding.btSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent.putExtra("query", text.getText());
+                startActivity(intent);
+            }
+        });
     }
 }
