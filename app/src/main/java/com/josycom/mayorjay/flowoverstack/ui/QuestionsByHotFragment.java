@@ -87,7 +87,6 @@ public class QuestionsByHotFragment extends Fragment {
             answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
 
             startActivity(answerActivityIntent);
-            //requireActivity().overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         };
         handleRecyclerView();
         return mFragmentQuestionsByHotBinding.getRoot();

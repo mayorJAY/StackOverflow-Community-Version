@@ -49,10 +49,6 @@ public class SearchActivity extends AppCompatActivity {
         mActivitySearchBinding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(mActivitySearchBinding.getRoot());
 
-        if (getIntent().getStringExtra("query") != null) {
-            mActivitySearchBinding.searchTextInputEditText.setText(getIntent().getStringExtra("query"));
-        }
-
         mActivitySearchBinding.rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
         mActivitySearchBinding.rvSearchResults.setHasFixedSize(true);
         mActivitySearchBinding.rvSearchResults.setItemAnimator(new DefaultItemAnimator());
@@ -86,7 +82,6 @@ public class SearchActivity extends AppCompatActivity {
             answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
 
             startActivity(answerActivityIntent);
-            //overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         };
 
         // What happens when the search button is clicked
@@ -99,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
                 if (inputMethodManager != null) {
                     inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 }
-                makeSearch();
+                setQuery();
             }
         });
         final SearchAdapter searchAdapter = new SearchAdapter();
@@ -127,7 +122,7 @@ public class SearchActivity extends AppCompatActivity {
         searchAdapter.setOnClickListener(mOnClickListener);
     }
 
-    private void makeSearch() {
+    private void setQuery() {
         mSearchViewModel.setQuery(mSearchInput);
     }
 
@@ -169,6 +164,5 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 }

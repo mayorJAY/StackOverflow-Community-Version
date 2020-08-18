@@ -43,4 +43,8 @@
     <string name="type_to_search">Type to Search</string>
     <string name="home">Home</string>
     <string name="scan">Scan</string>
+    <string name="ocr_et_error_message">Ensure that the recognised text is here</string>
+    <string name="recognised_text">Recognised Text</string>
+    <string name="recognise">Recognise</string>
+    <string name="ocr">OCR</string>
 </resources>

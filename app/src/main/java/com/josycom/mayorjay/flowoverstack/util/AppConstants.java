@@ -9,7 +9,7 @@ public interface AppConstants {
 
     int FIRST_PAGE = 1;
     int PAGE_SIZE = 50;
-    long SPLASH_TIME = 3000L;
+    long SPLASH_TIME = 2000L;
     String ORDER_DESCENDING = "desc";
 
     String QUESTION_FILTER = "!9Z(-wwYGT";

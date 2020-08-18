@@ -38,7 +38,7 @@
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_scan"
+        android:id="@+id/bt_recognise"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -48,7 +48,7 @@
         android:textSize="20sp"
         app:cornerRadius="8dp"
         android:visibility="gone"
-        android:text="@string/scan"
+        android:text="@string/recognise"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,11 +73,11 @@
         android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="@dimen/margin_large"
-        android:hint="@string/search_stack_overflow"
+        android:hint="@string/recognised_text"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_scan">
+        app:layout_constraintTop_toBottomOf="@+id/bt_recognise">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ocr_text_input_editText"
@@ -134,7 +134,7 @@
         android:layout_height="50dp"
         android:layout_gravity="bottom|end"
         android:layout_marginTop="@dimen/margin_large"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginEnd="@dimen/margin_medium"
         android:backgroundTint="@color/colorPrimaryLight"
         app:backgroundTint="@color/colorPrimaryLight"
@@ -150,15 +150,15 @@
         android:id="@+id/ocr_scroll_up_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/margin_medium"
         android:backgroundTint="@color/colorPrimaryLight"
         android:contentDescription="@string/scroll_up_button"
         android:src="@drawable/ic_action_scroll_up"
         android:visibility="invisible"
         app:backgroundTint="@color/colorPrimaryLight"
-        app:fabCustomSize="40dp"
+        app:fabCustomSize="32dp"
         app:fabSize="auto"
-        app:maxImageSize="36dp"
+        app:maxImageSize="30dp"
         app:tint="@color/colorPrimaryText" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
