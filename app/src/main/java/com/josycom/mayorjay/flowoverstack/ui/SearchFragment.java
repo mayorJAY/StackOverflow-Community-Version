@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.josycom.mayorjay.flowoverstack.R;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */

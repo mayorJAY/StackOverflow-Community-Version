@@ -14,17 +14,20 @@
             android:id="@+id/action_activity_dest_to_recent_dest"
             app:destination="@id/activity_dest"
             app:popUpTo="@id/activity_dest"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"/>
         <action
             android:id="@+id/action_activity_dest_to_hot_dest"
             app:destination="@id/activity_dest"
             app:popUpTo="@id/activity_dest"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"/>
         <action
             android:id="@+id/action_activity_dest_to_vote_dest"
             app:destination="@id/activity_dest"
             app:popUpTo="@id/activity_dest"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"/>
         <action
             android:id="@+id/action_activity_dest_to_search_dest"
             app:destination="@id/search_dest"/>
