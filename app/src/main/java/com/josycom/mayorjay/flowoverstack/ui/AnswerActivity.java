@@ -14,7 +14,7 @@ import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.adapters.AnswerAdapter;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityAnswerBinding;
 import com.josycom.mayorjay.flowoverstack.util.AppUtils;
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
+import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.AnswerViewModel;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomAnswerViewModelFactory;
 
@@ -38,20 +38,20 @@ public class AnswerActivity extends AppCompatActivity {
         mAnswerAdapter = new AnswerAdapter();
 
         Intent mIntent = getIntent();
-        mActivityAnswerBinding.tvQuestionDetail.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_TITLE))).text());
-        mActivityAnswerBinding.markDownView.setMarkDownText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_FULL_TEXT));
-        mActivityAnswerBinding.tvDateQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_DATE));
-        mActivityAnswerBinding.tvNameQuestionDetail.setText(mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_NAME));
-        int voteCount = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_VOTES_COUNT, 0);
+        mActivityAnswerBinding.tvQuestionDetail.setText(Jsoup.parse(Objects.requireNonNull(mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_TITLE))).text());
+        mActivityAnswerBinding.markDownView.setMarkDownText(mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT));
+        mActivityAnswerBinding.tvDateQuestionDetail.setText(mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_DATE));
+        mActivityAnswerBinding.tvNameQuestionDetail.setText(mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_NAME));
+        int voteCount = mIntent.getIntExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, 0);
         if (voteCount <= 0){
             mActivityAnswerBinding.tvVotesCountItem.setText(String.valueOf(voteCount));
         } else {
             mActivityAnswerBinding.tvVotesCountItem.setText(getString(R.string.plus_score).concat(String.valueOf(voteCount)));
         }
 
-        int questionId = mIntent.getIntExtra(StringConstants.EXTRA_QUESTION_ID, 0);
-        String avatarAddress = mIntent.getStringExtra(StringConstants.EXTRA_AVATAR_ADDRESS);
-        mOwnerQuestionLink = mIntent.getStringExtra(StringConstants.EXTRA_QUESTION_OWNER_LINK);
+        int questionId = mIntent.getIntExtra(AppConstants.EXTRA_QUESTION_ID, 0);
+        String avatarAddress = mIntent.getStringExtra(AppConstants.EXTRA_AVATAR_ADDRESS);
+        mOwnerQuestionLink = mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK);
         Glide.with(this)
                 .load(avatarAddress)
                 .placeholder(R.drawable.loading)
@@ -59,11 +59,11 @@ public class AnswerActivity extends AppCompatActivity {
 
         AnswerViewModel answerViewModel = new ViewModelProvider(this,
                 new CustomAnswerViewModelFactory(questionId,
-                        StringConstants.ORDER_DESCENDING,
-                        StringConstants.SORT_BY_ACTIVITY,
-                        StringConstants.SITE,
-                        StringConstants.ANSWER_FILTER,
-                        StringConstants.API_KEY)).get(AnswerViewModel.class);
+                        AppConstants.ORDER_DESCENDING,
+                        AppConstants.SORT_BY_ACTIVITY,
+                        AppConstants.SITE,
+                        AppConstants.ANSWER_FILTER,
+                        AppConstants.API_KEY)).get(AnswerViewModel.class);
         answerViewModel.getAnswersLiveData().observe(this, answers -> {
             if (answers.size() == 0) {
                 mActivityAnswerBinding.tvNoAnswerQuestionDetail.setVisibility(View.VISIBLE);
@@ -95,6 +95,5 @@ public class AnswerActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 }

@@ -1,6 +1,6 @@
 package com.josycom.mayorjay.flowoverstack.network;
 
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
+import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,13 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestApiClient {
 
-    private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(); //.setLevel(HttpLoggingInterceptor.Level.BODY);
+    private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     private static OkHttpClient.Builder client = new OkHttpClient.Builder().addInterceptor(interceptor);
     private static Gson gson = new GsonBuilder()
             .setLenient()
             .create();
     private static Retrofit.Builder builder = new Retrofit.Builder()
-            .baseUrl(StringConstants.BASE_URL)
+            .baseUrl(AppConstants.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client.build());

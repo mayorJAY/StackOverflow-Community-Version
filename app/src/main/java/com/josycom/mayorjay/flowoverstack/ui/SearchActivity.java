@@ -20,21 +20,21 @@ import com.josycom.mayorjay.flowoverstack.databinding.ActivitySearchBinding;
 import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
+import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_AVATAR_ADDRESS;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_ANSWERS_COUNT;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_DATE;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_FULL_TEXT;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_ID;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_NAME;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_OWNER_LINK;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_TITLE;
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.EXTRA_QUESTION_VOTES_COUNT;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ANSWERS_COUNT;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_DATE;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_FULL_TEXT;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ID;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_NAME;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_OWNER_LINK;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_TITLE;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_VOTES_COUNT;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -82,7 +82,6 @@ public class SearchActivity extends AppCompatActivity {
             answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
 
             startActivity(answerActivityIntent);
-            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         };
 
         // What happens when the search button is clicked
@@ -95,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
                 if (inputMethodManager != null) {
                     inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 }
-                makeSearch();
+                setQuery();
             }
         });
         final SearchAdapter searchAdapter = new SearchAdapter();
@@ -103,18 +102,18 @@ public class SearchActivity extends AppCompatActivity {
 
         mSearchViewModel.getResponseLiveData().observe(this, searchResponse -> {
             switch (searchResponse.networkState) {
-                case StringConstants.LOADING:
+                case AppConstants.LOADING:
                     onLoading();
                     break;
-                case StringConstants.LOADED:
+                case AppConstants.LOADED:
                     onLoaded();
                     mQuestions = searchResponse.questions;
                     searchAdapter.setQuestions(searchResponse.questions);
                     break;
-                case StringConstants.NO_MATCHING_RESULT:
+                case AppConstants.NO_MATCHING_RESULT:
                     onNoMatchingResult();
                     break;
-                case StringConstants.FAILED:
+                case AppConstants.FAILED:
                     onError();
                     break;
             }
@@ -123,7 +122,7 @@ public class SearchActivity extends AppCompatActivity {
         searchAdapter.setOnClickListener(mOnClickListener);
     }
 
-    private void makeSearch() {
+    private void setQuery() {
         mSearchViewModel.setQuery(mSearchInput);
     }
 
@@ -165,6 +164,5 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 }

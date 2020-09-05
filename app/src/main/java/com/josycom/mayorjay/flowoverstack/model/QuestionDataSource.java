@@ -6,7 +6,7 @@ import androidx.paging.PageKeyedDataSource;
 
 import com.josycom.mayorjay.flowoverstack.network.ApiService;
 import com.josycom.mayorjay.flowoverstack.network.RestApiClient;
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
+import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> implements StringConstants {
+public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> implements AppConstants {
 
     private final int page;
     private final int pageSize;
@@ -41,25 +41,25 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Question> callback) {
         ApiService apiService = RestApiClient.getApiService(ApiService.class);
-        networkState.postValue(StringConstants.LOADING);
+        networkState.postValue(AppConstants.LOADING);
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(page, pageSize, order, sortCondition, site, filter, siteKey);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
             public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null) {
-                    networkState.setValue(StringConstants.LOADED);
+                    networkState.setValue(AppConstants.LOADED);
                     List<Question> responseItems = apiResponse.getItems();
                     callback.onResult(responseItems, null, page + 1);
                 } else {
-                    networkState.setValue(StringConstants.FAILED);
+                    networkState.setValue(AppConstants.FAILED);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
-                networkState.setValue(StringConstants.FAILED);
+                networkState.setValue(AppConstants.FAILED);
             }
         });
     }
@@ -73,7 +73,7 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null) {
-                    networkState.setValue(StringConstants.LOADED);
+                    networkState.setValue(AppConstants.LOADED);
                     List<Question> responseItems = apiResponse.getItems();
                     int key;
                     if (params.key > 1) {
@@ -83,14 +83,14 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
                     }
                     callback.onResult(responseItems, key);
                 } else {
-                    networkState.setValue(StringConstants.FAILED);
+                    networkState.setValue(AppConstants.FAILED);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
-                networkState.setValue(StringConstants.FAILED);
+                networkState.setValue(AppConstants.FAILED);
             }
         });
     }
@@ -104,18 +104,18 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
             public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
                 QuestionsResponse apiResponse = response.body();
                 if (apiResponse != null) {
-                    networkState.setValue(StringConstants.LOADED);
+                    networkState.setValue(AppConstants.LOADED);
                     List<Question> responseItems = apiResponse.getItems();
                     callback.onResult(responseItems, params.key + 1);
                 } else {
-                    networkState.setValue(StringConstants.FAILED);
+                    networkState.setValue(AppConstants.FAILED);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
-                networkState.setValue(StringConstants.FAILED);
+                networkState.setValue(AppConstants.FAILED);
             }
         });
     }

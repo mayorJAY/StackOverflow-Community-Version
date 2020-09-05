@@ -5,28 +5,48 @@ import android.os.Bundle;
 
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityMainBinding;
-import com.josycom.mayorjay.flowoverstack.util.StringConstants;
+import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class MainActivity extends AppCompatActivity {
     private FragmentTransaction mFragmentTransaction;
     private boolean isFragmentDisplayed = false;
+    private boolean isFabOpen = false;
+    private ActivityMainBinding mActivityMainBinding;
+    private Animation fabOpen, fabClose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(activityMainBinding.getRoot());
-        setSupportActionBar(activityMainBinding.toolbar);
+        mActivityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mActivityMainBinding.getRoot());
+        setSupportActionBar(mActivityMainBinding.toolbar);
+        fabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
+        mActivityMainBinding.searchFab.setOnClickListener(view -> fabAction());
+
+        mActivityMainBinding.scanToSearch.setOnClickListener(view -> {
+            startActivity(new Intent(this, OcrActivity.class));
+            hideFabActions();
+        });
+        mActivityMainBinding.typeToSearch.setOnClickListener(view -> {
+            startActivity(new Intent(this, SearchActivity.class));
+            hideFabActions();
+        });
 
         if (savedInstanceState != null) {
-            isFragmentDisplayed = savedInstanceState.getBoolean(StringConstants.FRAGMENT_STATE);
+            isFragmentDisplayed = savedInstanceState.getBoolean(AppConstants.FRAGMENT_STATE);
         }
 
         if (!isFragmentDisplayed) {
@@ -36,6 +56,36 @@ public class MainActivity extends AppCompatActivity {
                 isFragmentDisplayed = true;
             }
         }
+    }
+
+    private void fabAction() {
+        if (isFabOpen) {
+            hideFabActions();
+        } else {
+            showFabActions();
+        }
+    }
+
+    private void hideFabActions() {
+        mActivityMainBinding.searchFab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_search));
+        mActivityMainBinding.scanToSearch.startAnimation(fabClose);
+        mActivityMainBinding.scanToSearch.setClickable(false);
+        mActivityMainBinding.scanToSearch.setVisibility(View.INVISIBLE);
+        mActivityMainBinding.typeToSearch.startAnimation(fabClose);
+        mActivityMainBinding.typeToSearch.setClickable(false);
+        mActivityMainBinding.typeToSearch.setVisibility(View.INVISIBLE);
+        isFabOpen = false;
+    }
+
+    private void showFabActions() {
+        mActivityMainBinding.searchFab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_close));
+        mActivityMainBinding.scanToSearch.startAnimation(fabOpen);
+        mActivityMainBinding.scanToSearch.setClickable(true);
+        mActivityMainBinding.scanToSearch.setVisibility(View.VISIBLE);
+        mActivityMainBinding.typeToSearch.startAnimation(fabOpen);
+        mActivityMainBinding.typeToSearch.setClickable(true);
+        mActivityMainBinding.typeToSearch.setVisibility(View.VISIBLE);
+        isFabOpen = true;
     }
 
     @Override
@@ -49,11 +99,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_search) {
-            startActivity(new Intent(this, SearchActivity.class));
-            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
-            return true;
-        } else if (id == R.id.action_filter_by_recency) {
+        if (id == R.id.action_filter_by_recency) {
             if (findViewById(R.id.fragment_container) != null && item.getTitle().equals(getString(R.string.action_filter_by_recency))) {
                 mFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 mFragmentTransaction.replace(R.id.fragment_container, new QuestionsByCreationFragment()).commit();
@@ -81,12 +127,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(StringConstants.FRAGMENT_STATE, isFragmentDisplayed);
+        outState.putBoolean(AppConstants.FRAGMENT_STATE, isFragmentDisplayed);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 }
