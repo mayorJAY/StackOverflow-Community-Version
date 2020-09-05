@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -71,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="@dimen/margin_large"
         android:hint="@string/recognised_text"
         android:visibility="gone"
@@ -119,11 +119,11 @@
         android:layout_margin="@dimen/margin_medium"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ocr_progress_bar"/>
+        app:layout_constraintTop_toBottomOf="@id/bt_search"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

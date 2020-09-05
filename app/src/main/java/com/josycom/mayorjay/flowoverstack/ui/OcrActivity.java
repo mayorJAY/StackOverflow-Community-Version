@@ -23,9 +23,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -121,11 +119,6 @@ public class OcrActivity extends AppCompatActivity {
         mActivityOcrBinding.ocrTextInputLayout.setVisibility(View.GONE);
         mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.GONE);
         mActivityOcrBinding.btSearch.setVisibility(View.GONE);
-        /*Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        captureIntent.resolveActivity(this.getPackageManager());
-        Uri photoUri = Uri.fromFile(createImageFile());
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-        startActivityForResult(captureIntent, CAMERA_REQUEST_CODE);*/
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (captureIntent.resolveActivity(getPackageManager()) != null) {
             File photo = null;
@@ -148,13 +141,6 @@ public class OcrActivity extends AppCompatActivity {
         File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         mPhotoPath = image.getAbsolutePath();
-        /*File image = null;
-        try {
-            image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mPhotoPath = Objects.requireNonNull(image).getAbsolutePath();*/
         return image;
     }
 
@@ -207,7 +193,7 @@ public class OcrActivity extends AppCompatActivity {
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = Objects.requireNonNull(result).getError();
                 error.printStackTrace();
-                Toast.makeText(this, "Oops! an error occurred", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Oops! an error occurred, try again", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -228,7 +214,7 @@ public class OcrActivity extends AppCompatActivity {
                         })
                         .addOnFailureListener(e -> {
                             mActivityOcrBinding.ocrProgressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Sorry, something went wrong!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Oops!, that text could not be recognized. Scan again", Toast.LENGTH_LONG).show();
                         });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -344,6 +330,8 @@ public class OcrActivity extends AppCompatActivity {
         mActivityOcrBinding.ocrRecyclerview.setVisibility(View.VISIBLE);
         mActivityOcrBinding.ocrTvError.setVisibility(View.INVISIBLE);
         mActivityOcrBinding.ocrScanFab.setVisibility(View.VISIBLE);
+        mActivityOcrBinding.btSearch.setVisibility(View.INVISIBLE);
+        mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.INVISIBLE);
         activateScanFab();
     }
 
