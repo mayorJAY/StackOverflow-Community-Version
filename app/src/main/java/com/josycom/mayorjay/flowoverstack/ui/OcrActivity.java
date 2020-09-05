@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -120,24 +121,40 @@ public class OcrActivity extends AppCompatActivity {
         mActivityOcrBinding.ocrTextInputLayout.setVisibility(View.GONE);
         mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.GONE);
         mActivityOcrBinding.btSearch.setVisibility(View.GONE);
-        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        /*Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         captureIntent.resolveActivity(this.getPackageManager());
         Uri photoUri = Uri.fromFile(createImageFile());
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-        startActivityForResult(captureIntent, CAMERA_REQUEST_CODE);
+        startActivityForResult(captureIntent, CAMERA_REQUEST_CODE);*/
+        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (captureIntent.resolveActivity(getPackageManager()) != null) {
+            File photo = null;
+            try {
+                photo = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (photo != null) {
+                Uri photoUri = FileProvider.getUriForFile(this, "com.josycom.mayorjay.flowoverstack.fileprovider", photo);
+                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(captureIntent, CAMERA_REQUEST_CODE);
+            }
+        }
     }
 
-    private File createImageFile() {
+    private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = null;
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        mPhotoPath = image.getAbsolutePath();
+        /*File image = null;
         try {
             image = File.createTempFile(imageFileName, ".jpg", storageDir);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mPhotoPath = Objects.requireNonNull(image).getAbsolutePath();
+        mPhotoPath = Objects.requireNonNull(image).getAbsolutePath();*/
         return image;
     }
 
