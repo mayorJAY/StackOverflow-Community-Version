@@ -1,9 +1,12 @@
 package com.josycom.mayorjay.flowoverstack.adapters;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,10 +26,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     private static View.OnClickListener mOnClickListener;
     private List<Question> mQuestions;
+    private Context context;
 
     @NonNull
     @Override
     public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         QuestionItemBinding questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new SearchViewHolder(questionItemBinding);
     }
@@ -36,6 +41,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         if (mQuestions != null) {
             Question currentQuestion = mQuestions.get(position);
             holder.bind(currentQuestion);
+            animateView(holder.itemView, position);
         }
     }
 
@@ -52,12 +58,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
     }
 
+    void animateView(View view, int position) {
+        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+        animation.setStartOffset(30 * position);
+        view.startAnimation(animation);
+    }
+
     public void setQuestions(List<Question> questions) {
         mQuestions = questions;
         notifyDataSetChanged();
     }
 
-    static class SearchViewHolder extends RecyclerView.ViewHolder {
+    class SearchViewHolder extends RecyclerView.ViewHolder {
 
         private QuestionItemBinding mQuestionItemBinding;
 

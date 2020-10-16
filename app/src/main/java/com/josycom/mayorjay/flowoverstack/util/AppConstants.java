@@ -14,7 +14,7 @@ public interface AppConstants {
 
     String QUESTION_FILTER = "!9Z(-wwYGT";
     String ANSWER_FILTER = "!9Z(-wzu0T";
-    String API_KEY = "YOUR_API_KEY";
+    String API_KEY = "QUEuzCqtqLg4NXnEOO5qug((";
 
     String SORT_BY_ACTIVITY = "activity";
     String SORT_BY_VOTES = "votes";
