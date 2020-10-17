@@ -7,6 +7,10 @@ import androidx.paging.PagedList;
 import com.josycom.mayorjay.flowoverstack.model.Question;
 import com.josycom.mayorjay.flowoverstack.model.QuestionDataSourceFactory;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class QuestionRepository {
     private int page;
     private int pageSize;
@@ -16,6 +20,7 @@ public class QuestionRepository {
     private String filter;
     private final String siteKey;
     private LiveData<PagedList<Question>> mQuestionPagedList;
+
 
     public QuestionRepository(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
         this.page = page;

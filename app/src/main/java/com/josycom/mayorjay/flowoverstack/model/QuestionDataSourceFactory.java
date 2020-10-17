@@ -3,6 +3,8 @@ package com.josycom.mayorjay.flowoverstack.model;
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 
+import javax.inject.Singleton;
+
 public class QuestionDataSourceFactory extends DataSource.Factory<Integer, Question> {
 
     private static MutableLiveData<QuestionDataSource> questionLiveDataSource = new MutableLiveData<>();
