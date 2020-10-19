@@ -26,12 +26,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     private static View.OnClickListener mOnClickListener;
     private List<Question> mQuestions;
-    private Context context;
 
     @NonNull
     @Override
     public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
         QuestionItemBinding questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new SearchViewHolder(questionItemBinding);
     }
