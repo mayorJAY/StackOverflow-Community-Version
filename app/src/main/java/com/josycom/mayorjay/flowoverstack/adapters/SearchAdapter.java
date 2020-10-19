@@ -41,7 +41,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         if (mQuestions != null) {
             Question currentQuestion = mQuestions.get(position);
             holder.bind(currentQuestion);
-            animateView(holder.itemView, position);
         }
     }
 
@@ -56,12 +55,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         } else {
             return 0;
         }
-    }
-
-    void animateView(View view, int position) {
-        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-        animation.setStartOffset(30 * position);
-        view.startAnimation(animation);
     }
 
     public void setQuestions(List<Question> questions) {
