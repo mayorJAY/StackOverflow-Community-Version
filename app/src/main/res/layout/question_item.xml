@@ -19,13 +19,13 @@
             android:layout_width="@dimen/_14sdp"
             android:layout_height="@dimen/_14sdp"
             android:layout_marginStart="8dp"
-            android:tint="@color/colorPrimary"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date_item"
             app:layout_constraintStart_toEndOf="@+id/tv_date_item"
             app:layout_constraintTop_toTopOf="@+id/tv_date_item"
             app:srcCompat="@drawable/ic_baseline_verified_answer"
-            android:contentDescription="@string/answered_icon" />
+            android:contentDescription="@string/answered_icon"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/tv_question_item"
@@ -79,10 +79,10 @@
             android:layout_marginStart="8dp"
             android:contentDescription="@string/view_indicator_icon"
             android:src="@drawable/ic_view"
-            android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/tv_answers_count_item"
             app:layout_constraintStart_toEndOf="@+id/tv_answers_count_item"
-            app:layout_constraintTop_toTopOf="@+id/tv_answers_count_item" />
+            app:layout_constraintTop_toTopOf="@+id/tv_answers_count_item"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/tv_views_count_item"
