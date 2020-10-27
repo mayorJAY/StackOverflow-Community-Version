@@ -1,9 +1,11 @@
 package com.josycom.mayorjay.flowoverstack.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
@@ -27,6 +29,13 @@ import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.support.AndroidSupportInjection;
+
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS;
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ANSWERS_COUNT;
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_DATE;
@@ -45,6 +54,37 @@ public class QuestionsByActivityFragment extends Fragment {
     private FragmentQuestionsByActivityBinding mFragmentQuestionsByActivityBinding;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
+    @Inject
+    CustomQuestionViewModelFactory viewModelFactory;
+
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        AndroidSupportInjection.inject(this);
+//        super.onCreate(savedInstanceState);
+//
+//        viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
+//                AppConstants.PAGE_SIZE,
+//                AppConstants.ORDER_DESCENDING,
+//                AppConstants.SORT_BY_ACTIVITY,
+//                AppConstants.SITE,
+//                AppConstants.QUESTION_FILTER,
+//                AppConstants.API_KEY);
+//
+//    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
+                AppConstants.PAGE_SIZE,
+                AppConstants.ORDER_DESCENDING,
+                AppConstants.SORT_BY_ACTIVITY,
+                AppConstants.SITE,
+                AppConstants.QUESTION_FILTER,
+                AppConstants.API_KEY);
+    }
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
@@ -98,13 +138,7 @@ public class QuestionsByActivityFragment extends Fragment {
         mFragmentQuestionsByActivityBinding.activityRecyclerView.setLayoutManager(linearLayoutManager);
         mFragmentQuestionsByActivityBinding.activityRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        QuestionViewModel questionViewModel = new ViewModelProvider(this, new CustomQuestionViewModelFactory(AppConstants.FIRST_PAGE,
-                AppConstants.PAGE_SIZE,
-                AppConstants.ORDER_DESCENDING,
-                AppConstants.SORT_BY_ACTIVITY,
-                AppConstants.SITE,
-                AppConstants.QUESTION_FILTER,
-                AppConstants.API_KEY)).get(QuestionViewModel.class);
+        QuestionViewModel questionViewModel = new ViewModelProvider(this, viewModelFactory).get(QuestionViewModel.class);
 
         questionViewModel.getNetworkState().observe(getViewLifecycleOwner(), s -> {
             switch (s) {

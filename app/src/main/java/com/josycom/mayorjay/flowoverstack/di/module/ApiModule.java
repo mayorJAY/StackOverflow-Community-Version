@@ -1,7 +1,8 @@
-package com.josycom.mayorjay.flowoverstack.dagger;
+package com.josycom.mayorjay.flowoverstack.di.module;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.josycom.mayorjay.flowoverstack.network.ApiService;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
 import javax.inject.Singleton;
@@ -53,7 +54,7 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    <T> T getApiService(Class<T> type, Retrofit retrofit) {
-        return retrofit.create(type);
+    ApiService getApiService(Retrofit retrofit) {
+        return retrofit.create(ApiService.class);
     }
 }

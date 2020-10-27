@@ -25,9 +25,11 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
     private final String site;
     private final String filter;
     private final String siteKey;
+    private ApiService apiService;
     private MutableLiveData<String> networkState;
 
-    QuestionDataSource(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
+    QuestionDataSource(int page, int pageSize, String order, String sortCondition,
+                       String site, String filter, String siteKey, ApiService apiService) {
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;
@@ -35,12 +37,12 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
         this.site = site;
         this.filter = filter;
         this.siteKey = siteKey;
+        this.apiService = apiService;
         networkState = new MutableLiveData<>();
     }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Question> callback) {
-        ApiService apiService = RestApiClient.getApiService(ApiService.class);
         networkState.postValue(AppConstants.LOADING);
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(page, pageSize, order, sortCondition, site, filter, siteKey);
         call.enqueue(new Callback<QuestionsResponse>() {
@@ -66,7 +68,6 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
 
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
-        ApiService apiService = RestApiClient.getApiService(ApiService.class);
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter, siteKey);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override
@@ -97,7 +98,6 @@ public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> i
 
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
-        ApiService apiService = RestApiClient.getApiService(ApiService.class);
         Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter, siteKey);
         call.enqueue(new Callback<QuestionsResponse>() {
             @Override

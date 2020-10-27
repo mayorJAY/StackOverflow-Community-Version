@@ -6,35 +6,24 @@ import androidx.paging.PagedList;
 
 import com.josycom.mayorjay.flowoverstack.model.Question;
 import com.josycom.mayorjay.flowoverstack.model.QuestionDataSourceFactory;
+import com.josycom.mayorjay.flowoverstack.network.ApiService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class QuestionRepository {
-    private int page;
-    private int pageSize;
-    private String order;
-    private String sortCondition;
-    private String site;
-    private String filter;
-    private final String siteKey;
+
+    private ApiService apiService;
     private LiveData<PagedList<Question>> mQuestionPagedList;
 
-
-    public QuestionRepository(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
-        this.page = page;
-        this.pageSize = pageSize;
-        this.order = order;
-        this.sortCondition = sortCondition;
-        this.site = site;
-        this.filter = filter;
-        this.siteKey = siteKey;
-        init();
+    @Inject
+    public QuestionRepository(ApiService getApiService) {
+        apiService = getApiService;
     }
 
-    private void init() {
-        QuestionDataSourceFactory factory = new QuestionDataSourceFactory(page, pageSize, order, sortCondition, site, filter, siteKey);
+    public void init(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
+        QuestionDataSourceFactory factory = new QuestionDataSourceFactory(page, pageSize, order, sortCondition, site, filter, siteKey, apiService);
         PagedList.Config pageConfig = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
                 .setPageSize(pageSize)
