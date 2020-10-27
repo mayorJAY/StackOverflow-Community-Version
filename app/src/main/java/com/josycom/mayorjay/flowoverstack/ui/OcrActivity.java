@@ -39,6 +39,7 @@ import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
+import com.josycom.mayorjay.flowoverstack.viewmodel.CustomSearchViewModelFactory;
 import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -50,6 +51,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS;
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ANSWERS_COUNT;
@@ -72,10 +77,14 @@ public class OcrActivity extends AppCompatActivity {
     private String mSearchInput;
     private SearchViewModel mSearchViewModel;
     private View.OnClickListener mOnClickListener;
+    @Inject
+    CustomSearchViewModelFactory viewModelFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+
         mActivityOcrBinding = ActivityOcrBinding.inflate(getLayoutInflater());
         setContentView(mActivityOcrBinding.getRoot());
         if (allPermissionsGranted()) {
@@ -242,7 +251,7 @@ public class OcrActivity extends AppCompatActivity {
         mActivityOcrBinding.ocrRecyclerview.setItemAnimator(new DefaultItemAnimator());
         final SearchAdapter searchAdapter = new SearchAdapter();
 
-        mSearchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        mSearchViewModel = new ViewModelProvider(this, viewModelFactory).get(SearchViewModel.class);
         mSearchViewModel.getResponseLiveData().observe(this, searchResponse -> {
             switch (searchResponse.networkState) {
                 case AppConstants.LOADING:
