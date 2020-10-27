@@ -57,21 +57,6 @@ public class QuestionsByActivityFragment extends Fragment {
     @Inject
     CustomQuestionViewModelFactory viewModelFactory;
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        AndroidSupportInjection.inject(this);
-//        super.onCreate(savedInstanceState);
-//
-//        viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
-//                AppConstants.PAGE_SIZE,
-//                AppConstants.ORDER_DESCENDING,
-//                AppConstants.SORT_BY_ACTIVITY,
-//                AppConstants.SITE,
-//                AppConstants.QUESTION_FILTER,
-//                AppConstants.API_KEY);
-//
-//    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
