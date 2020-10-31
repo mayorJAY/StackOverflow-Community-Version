@@ -62,7 +62,7 @@ public class QuestionsByCreationFragment extends Fragment {
         viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
                 AppConstants.PAGE_SIZE,
                 AppConstants.ORDER_DESCENDING,
-                AppConstants.SORT_BY_ACTIVITY,
+                AppConstants.SORT_BY_CREATION,
                 AppConstants.SITE,
                 AppConstants.QUESTION_FILTER,
                 AppConstants.API_KEY);
