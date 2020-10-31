@@ -28,12 +28,6 @@ import dagger.android.HasAndroidInjector;
 
 public class MainActivity extends AppCompatActivity implements HasAndroidInjector {
 
-    /*
-     * Step 1: Rather than injecting the ViewModelFactory
-     * in the activity, we are going to implement the
-     * HasActivityInjector and inject the ViewModelFactory
-     * into our MovieListFragment
-     * */
     @Inject
     DispatchingAndroidInjector<Object> dispatchingAndroidInjector;
 
