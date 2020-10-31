@@ -14,21 +14,31 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@Singleton
 public class AnswerRepository {
 
-    private final int questionId;
-    private final String order;
-    private final String sortCondition;
-    private final String site;
-    private final String filter;
-    private final String siteKey;
+    private int questionId;
+    private String order;
+    private String sortCondition;
+    private String site;
+    private String filter;
+    private String siteKey;
+    private ApiService apiService;
     private MutableLiveData<List<Answer>> mAnswers = new MutableLiveData<>();
 
-    public AnswerRepository(int questionId, String order, String sortCondition, String site, String filter, String siteKey) {
+    @Inject
+    public AnswerRepository(ApiService apiService) {
+        this.apiService = apiService;
+    }
+
+    public void init(int questionId, String order, String sortCondition, String site, String filter, String siteKey) {
         this.questionId = questionId;
         this.order = order;
         this.sortCondition = sortCondition;
@@ -40,7 +50,6 @@ public class AnswerRepository {
 
     private void getAnswersToQuestion() {
         ThreadExecutor.mExecutor.execute(() -> {
-            ApiService apiService = RestApiClient.getApiService(ApiService.class);
             Call<AnswerResponse> call = apiService.getAnswersToQuestion(questionId, order, sortCondition, site, filter, siteKey);
             call.enqueue(new Callback<AnswerResponse>() {
                 @Override

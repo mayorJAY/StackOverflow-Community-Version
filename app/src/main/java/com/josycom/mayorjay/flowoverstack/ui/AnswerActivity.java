@@ -22,15 +22,23 @@ import org.jsoup.Jsoup;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+
 public class AnswerActivity extends AppCompatActivity {
 
     private ActivityAnswerBinding mActivityAnswerBinding;
     private AnswerAdapter mAnswerAdapter;
     private String mOwnerQuestionLink;
+    @Inject
+    CustomAnswerViewModelFactory viewModelFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+
         mActivityAnswerBinding = ActivityAnswerBinding.inflate(getLayoutInflater());
         setContentView(mActivityAnswerBinding.getRoot());
 
@@ -57,13 +65,15 @@ public class AnswerActivity extends AppCompatActivity {
                 .placeholder(R.drawable.loading)
                 .into(mActivityAnswerBinding.ivAvatarQuestionDetail);
 
+        viewModelFactory.setInputs(questionId,
+                AppConstants.ORDER_DESCENDING,
+                AppConstants.SORT_BY_ACTIVITY,
+                AppConstants.SITE,
+                AppConstants.ANSWER_FILTER,
+                AppConstants.API_KEY);
+
         AnswerViewModel answerViewModel = new ViewModelProvider(this,
-                new CustomAnswerViewModelFactory(questionId,
-                        AppConstants.ORDER_DESCENDING,
-                        AppConstants.SORT_BY_ACTIVITY,
-                        AppConstants.SITE,
-                        AppConstants.ANSWER_FILTER,
-                        AppConstants.API_KEY)).get(AnswerViewModel.class);
+                viewModelFactory).get(AnswerViewModel.class);
         answerViewModel.getAnswersLiveData().observe(this, answers -> {
             if (answers.size() == 0) {
                 mActivityAnswerBinding.tvNoAnswerQuestionDetail.setVisibility(View.VISIBLE);
