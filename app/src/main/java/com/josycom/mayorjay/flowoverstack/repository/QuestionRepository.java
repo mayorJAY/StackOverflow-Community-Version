@@ -18,8 +18,8 @@ public class QuestionRepository {
     private LiveData<PagedList<Question>> mQuestionPagedList;
 
     @Inject
-    public QuestionRepository(ApiService getApiService) {
-        apiService = getApiService;
+    public QuestionRepository(ApiService apiService) {
+        this.apiService = apiService;
     }
 
     public void init(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
