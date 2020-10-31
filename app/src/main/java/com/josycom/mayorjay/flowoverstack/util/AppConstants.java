@@ -38,4 +38,8 @@ public interface AppConstants {
     String NO_MATCHING_RESULT = "No matching result";
 
     String FRAGMENT_STATE = "fragment_state";
+
+    String SORT_BY = "sort_by";
+    String FILTER = "filter";
+    String SORT_KEY = "sort_key";
 }

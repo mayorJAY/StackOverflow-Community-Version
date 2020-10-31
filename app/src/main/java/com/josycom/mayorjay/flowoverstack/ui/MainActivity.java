@@ -10,6 +10,7 @@ import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
@@ -18,7 +19,19 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-public class MainActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
+
+public class MainActivity extends AppCompatActivity implements HasAndroidInjector {
+
+    @Inject
+    DispatchingAndroidInjector<Object> dispatchingAndroidInjector;
+
+
     private FragmentTransaction mFragmentTransaction;
     private boolean isFragmentDisplayed = false;
     private boolean isFabOpen = false;
@@ -27,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+
         mActivityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mActivityMainBinding.getRoot());
         setSupportActionBar(mActivityMainBinding.toolbar);
@@ -133,5 +148,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public AndroidInjector<Object> androidInjector() {
+        return dispatchingAndroidInjector;
     }
 }

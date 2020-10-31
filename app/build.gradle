@@ -108,4 +108,10 @@ dependencies {
 
     // ML Kit
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.0'
+
+    implementation 'com.google.dagger:dagger:2.27'
+    implementation 'com.google.dagger:dagger-android:2.27'
+    implementation 'com.google.dagger:dagger-android-support:2.27'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.27'
 }
