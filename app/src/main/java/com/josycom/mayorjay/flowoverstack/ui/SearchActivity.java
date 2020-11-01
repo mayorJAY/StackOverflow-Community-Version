@@ -21,10 +21,15 @@ import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
+import com.josycom.mayorjay.flowoverstack.viewmodel.CustomSearchViewModelFactory;
 import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel;
 
 import java.util.List;
 import java.util.Objects;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS;
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ANSWERS_COUNT;
@@ -42,9 +47,12 @@ public class SearchActivity extends AppCompatActivity {
     private String mSearchInput;
     private List<Question> mQuestions;
     private SearchViewModel mSearchViewModel;
+    @Inject
+    CustomSearchViewModelFactory viewModelFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         mActivitySearchBinding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(mActivitySearchBinding.getRoot());
@@ -98,7 +106,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
         final SearchAdapter searchAdapter = new SearchAdapter();
-        mSearchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        mSearchViewModel = new ViewModelProvider(this, viewModelFactory).get(SearchViewModel.class);
 
         mSearchViewModel.getResponseLiveData().observe(this, searchResponse -> {
             switch (searchResponse.networkState) {

@@ -14,16 +14,25 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@Singleton
 public class SearchRepository {
 
+    private ApiService apiService;
     private MutableLiveData<SearchResponse> mResponse = new MutableLiveData<>();
 
+    @Inject
+    public SearchRepository(ApiService apiService) {
+        this.apiService = apiService;
+    }
+
     private void getQuestionsWithTextInTitle(String inTitle) {
-        ApiService apiService = RestApiClient.getApiService(ApiService.class);
         mResponse.postValue(new SearchResponse(AppConstants.LOADING, null));
         Call<QuestionsResponse> call = apiService.getQuestionsWithTextInTitle(inTitle);
         call.enqueue(new Callback<QuestionsResponse>() {

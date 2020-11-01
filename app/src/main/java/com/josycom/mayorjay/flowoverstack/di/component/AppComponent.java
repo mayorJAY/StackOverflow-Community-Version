@@ -9,6 +9,7 @@ import com.josycom.mayorjay.flowoverstack.di.module.ApiModule;
 import com.josycom.mayorjay.flowoverstack.di.module.QuestionViewModelFactoryModule;
 import com.josycom.mayorjay.flowoverstack.di.module.QuestionViewModelModule;
 import com.josycom.mayorjay.flowoverstack.di.module.QuestionsFragmentModule;
+import com.josycom.mayorjay.flowoverstack.di.module.SearchActivityModule;
 
 
 import javax.inject.Singleton;
@@ -21,6 +22,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         AndroidSupportInjectionModule.class,
         MainActivityModule.class,
         AnswerActivityModule.class,
+        SearchActivityModule.class,
         QuestionsFragmentModule.class,
         ApiModule.class,
         QuestionViewModelFactoryModule.class,

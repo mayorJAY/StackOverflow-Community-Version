@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel;
 import com.josycom.mayorjay.flowoverstack.model.SearchResponse;
 import com.josycom.mayorjay.flowoverstack.repository.SearchRepository;
 
+import javax.inject.Inject;
+
 
 public class SearchViewModel extends ViewModel {
 
@@ -15,8 +17,9 @@ public class SearchViewModel extends ViewModel {
     private MutableLiveData<String> mSearchLiveData = new MutableLiveData<>();
     private LiveData<SearchResponse> mResponseLiveData = Transformations.switchMap(mSearchLiveData, (query) -> mSearchRepository.getResponse(query));
 
-    public SearchViewModel() {
-        mSearchRepository = new SearchRepository();
+    @Inject
+    public SearchViewModel(SearchRepository searchRepository) {
+        this.mSearchRepository = searchRepository;
     }
 
     public LiveData<SearchResponse> getResponseLiveData() {
