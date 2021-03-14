@@ -1,7 +1,10 @@
 package com.josycom.mayorjay.flowoverstack.di.module;
 
+import android.os.Build;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.josycom.mayorjay.flowoverstack.BuildConfig;
 import com.josycom.mayorjay.flowoverstack.network.ApiService;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
@@ -29,7 +32,9 @@ public class ApiModule {
     @Singleton
     HttpLoggingInterceptor provideInterceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        if (BuildConfig.DEBUG) {
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        }
         return interceptor;
     }
 

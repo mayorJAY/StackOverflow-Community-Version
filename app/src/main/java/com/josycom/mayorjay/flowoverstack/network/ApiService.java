@@ -30,7 +30,8 @@ public interface ApiService {
             @Query(value = "filter", encoded = true) String filter,
             @Query("key") String siteKey);
 
-    @GET("/2.2/search?pagesize=100&order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT&key=1ZLMY6ESrAkq5*odMs3zQw((")
-    Call<QuestionsResponse> getQuestionsWithTextInTitle(@Query("intitle") String inTitle);
+    @GET(AppConstants.SEARCH_END_POINT)
+    Call<QuestionsResponse> getQuestionsWithTextInTitle(
+            @Query("intitle") String inTitle);
 
 }

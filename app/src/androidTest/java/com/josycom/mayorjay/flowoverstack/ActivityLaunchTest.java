@@ -4,7 +4,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
-import com.josycom.mayorjay.flowoverstack.ui.MainActivity;
+import com.josycom.mayorjay.flowoverstack.ui.activity.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,7 +34,8 @@ public class ActivityLaunchTest {
 
     @Test
     public void launchSearchActivity(){
-        onView(withContentDescription(R.string.search_description)).perform(click());
+        onView(withId(R.id.search_fab)).perform(click());
+        onView(withId(R.id.type_to_search)).perform(click());
         onView(withId(R.id.search_text_input_layout)).check(matches(isDisplayed()));
     }
 }

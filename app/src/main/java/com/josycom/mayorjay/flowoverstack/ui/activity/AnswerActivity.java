@@ -1,4 +1,4 @@
-package com.josycom.mayorjay.flowoverstack.ui;
+package com.josycom.mayorjay.flowoverstack.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.adapters.AnswerAdapter;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityAnswerBinding;
+import com.josycom.mayorjay.flowoverstack.model.Answer;
 import com.josycom.mayorjay.flowoverstack.util.AppUtils;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.AnswerViewModel;
@@ -20,6 +21,7 @@ import com.josycom.mayorjay.flowoverstack.viewmodel.CustomAnswerViewModelFactory
 
 import org.jsoup.Jsoup;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -31,6 +33,7 @@ public class AnswerActivity extends AppCompatActivity {
     private ActivityAnswerBinding mActivityAnswerBinding;
     private AnswerAdapter mAnswerAdapter;
     private String mOwnerQuestionLink;
+    private List<Answer> mAnswers;
     @Inject
     CustomAnswerViewModelFactory viewModelFactory;
 
@@ -75,15 +78,23 @@ public class AnswerActivity extends AppCompatActivity {
         AnswerViewModel answerViewModel = new ViewModelProvider(this,
                 viewModelFactory).get(AnswerViewModel.class);
         answerViewModel.getAnswersLiveData().observe(this, answers -> {
-            if (answers.size() == 0) {
+            mAnswers = answers;
+            if (mAnswers.size() == 0) {
                 mActivityAnswerBinding.tvNoAnswerQuestionDetail.setVisibility(View.VISIBLE);
             } else {
-                mAnswerAdapter.setAnswers(answers);
+                mActivityAnswerBinding.tvNoAnswerQuestionDetail.setVisibility(View.INVISIBLE);
+                mAnswerAdapter.setAnswers(mAnswers);
             }
         });
         mActivityAnswerBinding.rvAnswers.setAdapter(mAnswerAdapter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAnswers.clear();
+        mAnswerAdapter.notifyDataSetChanged();
+    }
 
     public void openProfileOnWeb(View view) {
         AppUtils.directLinkToBrowser(this, mOwnerQuestionLink);
@@ -104,6 +115,7 @@ public class AnswerActivity extends AppCompatActivity {
             mActivityAnswerBinding.markDownView.goBack();
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 }

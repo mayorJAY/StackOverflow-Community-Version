@@ -1,4 +1,4 @@
-package com.josycom.mayorjay.flowoverstack.ui;
+package com.josycom.mayorjay.flowoverstack.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

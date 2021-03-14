@@ -11,7 +11,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/app_icon" />
+            android:src="@drawable/app_iconn" />
     </item>
 
 </layer-list>

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.josycom.mayorjay.flowoverstack.model.QuestionsResponse;
 import com.josycom.mayorjay.flowoverstack.model.SearchResponse;
 import com.josycom.mayorjay.flowoverstack.network.ApiService;
-import com.josycom.mayorjay.flowoverstack.network.RestApiClient;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.josycom.mayorjay.flowoverstack.util.ThreadExecutor;
 

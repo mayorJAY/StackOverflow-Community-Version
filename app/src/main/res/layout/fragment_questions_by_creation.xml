@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.QuestionsByCreationFragment">
+    tools:context=".ui.fragment.QuestionsByCreationFragment">
 
     <TextView
         android:id="@+id/tv_recent_questions"

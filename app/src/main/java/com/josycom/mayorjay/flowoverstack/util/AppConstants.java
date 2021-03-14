@@ -5,11 +5,12 @@ public interface AppConstants {
     String BASE_URL = "https://api.stackexchange.com";
     String QUESTIONS_END_POINT = "/2.2/questions";
     String ANSWERS_END_POINT = "/2.2/questions/{question_id}/answers";
+    String SEARCH_END_POINT = "/2.2/search?pagesize=100&order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT&key=1ZLMY6ESrAkq5*odMs3zQw((";
     String SITE = "stackoverflow";
 
     int FIRST_PAGE = 1;
     int PAGE_SIZE = 50;
-    long SPLASH_TIME = 2000L;
+    long SPLASH_TIME = 1500L;
     String ORDER_DESCENDING = "desc";
 
     String QUESTION_FILTER = "!9Z(-wwYGT";
@@ -38,8 +39,4 @@ public interface AppConstants {
     String NO_MATCHING_RESULT = "No matching result";
 
     String FRAGMENT_STATE = "fragment_state";
-
-    String SORT_BY = "sort_by";
-    String FILTER = "filter";
-    String SORT_KEY = "sort_key";
 }

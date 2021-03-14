@@ -1,9 +1,9 @@
 package com.josycom.mayorjay.flowoverstack.di.module;
 
-import com.josycom.mayorjay.flowoverstack.ui.QuestionsByActivityFragment;
-import com.josycom.mayorjay.flowoverstack.ui.QuestionsByCreationFragment;
-import com.josycom.mayorjay.flowoverstack.ui.QuestionsByHotFragment;
-import com.josycom.mayorjay.flowoverstack.ui.QuestionsByVoteFragment;
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByActivityFragment;
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByCreationFragment;
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByHotFragment;
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByVoteFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

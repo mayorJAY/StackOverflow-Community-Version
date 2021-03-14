@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.josycom.mayorjay.flowoverstack.model.Answer;
 import com.josycom.mayorjay.flowoverstack.model.AnswerResponse;
 import com.josycom.mayorjay.flowoverstack.network.ApiService;
-import com.josycom.mayorjay.flowoverstack.network.RestApiClient;
 import com.josycom.mayorjay.flowoverstack.util.ThreadExecutor;
 
 import org.jetbrains.annotations.NotNull;
