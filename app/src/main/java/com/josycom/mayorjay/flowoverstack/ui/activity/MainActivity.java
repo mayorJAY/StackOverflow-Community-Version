@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements HasAndroidInjecto
         setSupportActionBar(mActivityMainBinding.toolbar);
         fabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        checkForTablet();
 
         mActivityMainBinding.searchFab.setOnClickListener(view -> fabAction());
 
@@ -157,5 +158,13 @@ public class MainActivity extends AppCompatActivity implements HasAndroidInjecto
     @Override
     public AndroidInjector<Object> androidInjector() {
         return dispatchingAndroidInjector;
+    }
+
+    private void checkForTablet() {
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+        if (isTablet) {
+            mActivityMainBinding.scanToSearch.setTextSize(15F);
+            mActivityMainBinding.typeToSearch.setTextSize(15F);
+        }
     }
 }
