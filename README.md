@@ -17,6 +17,9 @@ Users can also search for a particular problem they are having by typing in any 
 * [View Binding](https://developer.android.com/topic/libraries/view-binding) used to easily write code that interacts with views by referencing them directly
 * [Espresso](https://developer.android.com/training/testing/espresso) used to write concise, beautiful, and reliable Android UI tests
 * [MarkdownView](https://github.com/mukeshsolanki/MarkdownView-Android) which is a simple library that helps to display Markdown text or files on Android as a HTML page just like GitHub
+* [ML Kit OCR](https://developers.google.com/ml-kit/vision/text-recognition) which is a library that recognizes text in any captured image
+* [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper) which is an image cropping library for Android, optimized for camera and gallery.
+* [Dagger](https://developer.android.com/training/dependency-injection/dagger-android) for DI
 # Installation
 
 FlowOver Stack requires a minimum API level of 21. Clone the repository. You will need an API key from [Stack Exchange API](https://api.stackexchange.com/) to receive a higher request quota. Locate the StringConstants.java file and edit the following line to add your API key:
