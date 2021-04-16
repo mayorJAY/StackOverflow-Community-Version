@@ -58,7 +58,6 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
         holder.bind(getItem(position));
-        //animateView(holder.itemView, position);
     }
 
     public void setOnClickListener(View.OnClickListener onClickListener) {
