@@ -12,13 +12,16 @@ import com.josycom.mayorjay.flowoverstack.repository.QuestionRepository;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 public class QuestionViewModel extends ViewModel {
 
     private LiveData<PagedList<Question>> mQuestionPagedList;
     private LiveData<String> networkState;
 
-    QuestionViewModel(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
-        QuestionRepository questionRepository = new QuestionRepository(page, pageSize, order, sortCondition, site, filter, siteKey);
+    @Inject
+    public QuestionViewModel(QuestionRepository questionRepository, int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
+        questionRepository.init(page, pageSize, order, sortCondition, site, filter, siteKey);
         mQuestionPagedList = questionRepository.getQuestionPagedList();
         LiveData<QuestionDataSource> liveDataSource = QuestionDataSourceFactory.getQuestionLiveDataSource();
         networkState = Transformations.switchMap(liveDataSource, QuestionDataSource::getNetworkState);

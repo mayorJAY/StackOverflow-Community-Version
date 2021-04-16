@@ -1,10 +1,13 @@
 package com.josycom.mayorjay.flowoverstack.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
@@ -25,6 +28,7 @@ import java.util.List;
 public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.QuestionViewHolder> {
 
     private static View.OnClickListener mOnClickListener;
+    private Context context;
 
     private static DiffUtil.ItemCallback<Question> DIFF_CALLBACK = new DiffUtil.ItemCallback<Question>() {
         @Override
@@ -46,6 +50,7 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
     @NonNull
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         QuestionItemBinding questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new QuestionViewHolder(questionItemBinding);
     }
@@ -57,6 +62,12 @@ public class QuestionAdapter extends PagedListAdapter<Question, QuestionAdapter.
 
     public void setOnClickListener(View.OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
+    }
+
+    void animateView(View view, int position) {
+        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+        animation.setStartOffset(30 * position);
+        view.startAnimation(animation);
     }
 
     static class QuestionViewHolder extends RecyclerView.ViewHolder {

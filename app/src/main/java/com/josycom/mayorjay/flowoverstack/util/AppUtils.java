@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.josycom.mayorjay.flowoverstack.ui.WebViewActivity;
+import com.josycom.mayorjay.flowoverstack.ui.activity.WebViewActivity;
 
 /**
  * FlowOverStack

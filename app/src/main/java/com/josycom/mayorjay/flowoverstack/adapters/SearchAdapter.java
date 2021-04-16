@@ -39,8 +39,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
     }
 
-    public void setOnClickListener(View.OnClickListener mOnClickListener) {
-        SearchAdapter.mOnClickListener = mOnClickListener;
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        SearchAdapter.mOnClickListener = onClickListener;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         notifyDataSetChanged();
     }
 
-    static class SearchViewHolder extends RecyclerView.ViewHolder {
+    class SearchViewHolder extends RecyclerView.ViewHolder {
 
         private QuestionItemBinding mQuestionItemBinding;
 

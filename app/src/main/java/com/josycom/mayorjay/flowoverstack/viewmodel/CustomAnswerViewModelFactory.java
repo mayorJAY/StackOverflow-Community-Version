@@ -4,17 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.josycom.mayorjay.flowoverstack.repository.AnswerRepository;
+
+import javax.inject.Inject;
+
 public class CustomAnswerViewModelFactory implements ViewModelProvider.Factory {
 
-    private final String order;
-    private final String sortCondition;
-    private final String site;
-    private final String filter;
+    private String order;
+    private String sortCondition;
+    private String site;
+    private String filter;
     private int questionId;
-    private final String siteKey;
+    private String siteKey;
+    private AnswerRepository answerRepository;
 
 
-    public CustomAnswerViewModelFactory(int questionId, String order, String sortCondition, String site, String filter, String siteKey) {
+    @Inject
+    public CustomAnswerViewModelFactory(AnswerRepository answerRepository) {
+        this.answerRepository = answerRepository;
+    }
+
+    public void setInputs(int questionId, String order, String sortCondition, String site, String filter, String siteKey) {
         this.questionId = questionId;
         this.order = order;
         this.sortCondition = sortCondition;
@@ -27,6 +37,6 @@ public class CustomAnswerViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new AnswerViewModel(questionId, order, sortCondition, site, filter, siteKey);
+        return (T) new AnswerViewModel(answerRepository, questionId, order, sortCondition, site, filter, siteKey);
     }
 }

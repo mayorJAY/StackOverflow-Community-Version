@@ -1,4 +1,4 @@
-package com.josycom.mayorjay.flowoverstack.ui;
+package com.josycom.mayorjay.flowoverstack.ui.activity;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.ActionBar;
@@ -32,7 +32,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-import static com.josycom.mayorjay.flowoverstack.util.StringConstants.WEBVIEW_EXTRA_OBJECT;
+import static com.josycom.mayorjay.flowoverstack.util.AppConstants.WEBVIEW_EXTRA_OBJECT;
 
 public class WebViewActivity extends AppCompatActivity {
 
@@ -132,7 +132,6 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     @Override

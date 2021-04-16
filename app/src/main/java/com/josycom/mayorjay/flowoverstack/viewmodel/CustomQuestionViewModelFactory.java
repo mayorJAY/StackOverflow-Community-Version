@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.josycom.mayorjay.flowoverstack.repository.QuestionRepository;
+
+import javax.inject.Inject;
+
 public class CustomQuestionViewModelFactory implements ViewModelProvider.Factory {
 
     private int page;
@@ -12,9 +16,15 @@ public class CustomQuestionViewModelFactory implements ViewModelProvider.Factory
     private String sortCondition;
     private String site;
     private String filter;
-    private final String siteKey;
+    private String siteKey;
+    private QuestionRepository questionRepository;
 
-    public CustomQuestionViewModelFactory(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
+    @Inject
+    public CustomQuestionViewModelFactory(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    public void setInputs(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
         this.page = page;
         this.pageSize = pageSize;
         this.order = order;
@@ -28,6 +38,6 @@ public class CustomQuestionViewModelFactory implements ViewModelProvider.Factory
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new QuestionViewModel(page, pageSize, order, sortCondition, site, filter, siteKey);
+        return (T) new QuestionViewModel(questionRepository, page, pageSize, order, sortCondition, site, filter, siteKey);
     }
 }
