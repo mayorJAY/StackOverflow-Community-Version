@@ -1,4 +1,4 @@
-package com.josycom.mayorjay.flowoverstack.ui;
+package com.josycom.mayorjay.flowoverstack.ui.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,9 +84,28 @@ public class OcrActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
         mActivityOcrBinding = ActivityOcrBinding.inflate(getLayoutInflater());
         setContentView(mActivityOcrBinding.getRoot());
+
+        checkPermissionAndStartCamera();
+        activateViewHolder();
+        setupRecyclerView();
+        hideAndShowScrollFab();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (allPermissionsGranted()) {
+                startCamera();
+            } else {
+                returnToMainActivity();
+                finish();
+            }
+        }
+    }
+
+    private void checkPermissionAndStartCamera() {
         if (allPermissionsGranted()) {
             startCamera();
             mActivityOcrBinding.ivCroppedImage.setOnClickListener(view -> startCamera());
@@ -104,22 +123,6 @@ public class OcrActivity extends AppCompatActivity {
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(REQUIRED_PERMISSIONS, PERMISSION_REQUEST_CODE);
-            }
-        }
-
-        activateViewHolder();
-        setupRecyclerView();
-        hideAndShowScrollFab();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (allPermissionsGranted()) {
-                startCamera();
-            } else {
-                returnToMainActivity();
-                finish();
             }
         }
     }

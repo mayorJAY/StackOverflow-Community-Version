@@ -1,11 +1,10 @@
-package com.josycom.mayorjay.flowoverstack.ui;
+package com.josycom.mayorjay.flowoverstack.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
@@ -22,6 +21,7 @@ import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter;
 import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByHotBinding;
 import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
+import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory;

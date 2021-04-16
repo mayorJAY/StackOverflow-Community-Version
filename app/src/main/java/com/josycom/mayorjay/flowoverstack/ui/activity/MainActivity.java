@@ -1,16 +1,19 @@
-package com.josycom.mayorjay.flowoverstack.ui;
+package com.josycom.mayorjay.flowoverstack.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityMainBinding;
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByActivityFragment;
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByCreationFragment;
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByHotFragment;
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByVoteFragment;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements HasAndroidInjecto
         setSupportActionBar(mActivityMainBinding.toolbar);
         fabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        checkForTablet();
 
         mActivityMainBinding.searchFab.setOnClickListener(view -> fabAction());
 
@@ -148,10 +152,19 @@ public class MainActivity extends AppCompatActivity implements HasAndroidInjecto
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     @Override
     public AndroidInjector<Object> androidInjector() {
         return dispatchingAndroidInjector;
+    }
+
+    private void checkForTablet() {
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+        if (isTablet) {
+            mActivityMainBinding.scanToSearch.setTextSize(15F);
+            mActivityMainBinding.typeToSearch.setTextSize(15F);
+        }
     }
 }

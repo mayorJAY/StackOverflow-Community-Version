@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PageKeyedDataSource;
 
 import com.josycom.mayorjay.flowoverstack.network.ApiService;
-import com.josycom.mayorjay.flowoverstack.network.RestApiClient;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
 import org.jetbrains.annotations.NotNull;

@@ -9,4 +9,6 @@
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
 
+    <bool name="isTablet">false</bool>
+
 </resources>

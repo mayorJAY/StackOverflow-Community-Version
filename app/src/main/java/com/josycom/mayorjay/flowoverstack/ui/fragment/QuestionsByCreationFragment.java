@@ -1,11 +1,10 @@
-package com.josycom.mayorjay.flowoverstack.ui;
+package com.josycom.mayorjay.flowoverstack.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
@@ -19,9 +18,10 @@ import android.view.ViewGroup;
 
 import com.josycom.mayorjay.flowoverstack.R;
 import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter;
-import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByActivityBinding;
+import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByCreationBinding;
 import com.josycom.mayorjay.flowoverstack.model.Owner;
 import com.josycom.mayorjay.flowoverstack.model.Question;
+import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity;
 import com.josycom.mayorjay.flowoverstack.util.DateUtil;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory;
@@ -29,11 +29,8 @@ import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
 
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS;
@@ -47,11 +44,11 @@ import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTIO
 import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_VOTES_COUNT;
 
 /**
- * This fragment houses the Active Questions
+ * This fragment houses the Recent Questions
  */
-public class QuestionsByActivityFragment extends Fragment {
+public class QuestionsByCreationFragment extends Fragment {
 
-    private FragmentQuestionsByActivityBinding mFragmentQuestionsByActivityBinding;
+    private FragmentQuestionsByCreationBinding mFragmentQuestionsByCreationBinding;
     private PagedList<Question> mQuestions;
     private View.OnClickListener mOnClickListener;
     @Inject
@@ -65,32 +62,33 @@ public class QuestionsByActivityFragment extends Fragment {
         viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
                 AppConstants.PAGE_SIZE,
                 AppConstants.ORDER_DESCENDING,
-                AppConstants.SORT_BY_ACTIVITY,
+                AppConstants.SORT_BY_CREATION,
                 AppConstants.SITE,
                 AppConstants.QUESTION_FILTER,
                 AppConstants.API_KEY);
     }
 
+
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mFragmentQuestionsByActivityBinding = FragmentQuestionsByActivityBinding.inflate(inflater, container, false);
-        mFragmentQuestionsByActivityBinding.activitySwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
-        mFragmentQuestionsByActivityBinding.activityScrollUpFab.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByCreationBinding = FragmentQuestionsByCreationBinding.inflate(inflater, container, false);
+        mFragmentQuestionsByCreationBinding.creationSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight);
+        mFragmentQuestionsByCreationBinding.creationScrollUpFab.setVisibility(View.INVISIBLE);
 
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mFragmentQuestionsByCreationBinding.creationRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
-                    mFragmentQuestionsByActivityBinding.activityScrollUpFab.setVisibility(View.VISIBLE);
+                    mFragmentQuestionsByCreationBinding.creationScrollUpFab.setVisibility(View.VISIBLE);
                 } else {
-                    mFragmentQuestionsByActivityBinding.activityScrollUpFab.setVisibility(View.INVISIBLE);
+                    mFragmentQuestionsByCreationBinding.creationScrollUpFab.setVisibility(View.INVISIBLE);
                 }
             }
         });
-        mFragmentQuestionsByActivityBinding.activityScrollUpFab.setOnClickListener(v ->
-                mFragmentQuestionsByActivityBinding.activityRecyclerView.scrollToPosition(0));
+        mFragmentQuestionsByCreationBinding.creationScrollUpFab.setOnClickListener(v ->
+                mFragmentQuestionsByCreationBinding.creationRecyclerView.scrollToPosition(0));
 
         mOnClickListener = v -> {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
@@ -114,14 +112,13 @@ public class QuestionsByActivityFragment extends Fragment {
             startActivity(answerActivityIntent);
         };
         handleRecyclerView();
-        return mFragmentQuestionsByActivityBinding.getRoot();
+        return mFragmentQuestionsByCreationBinding.getRoot();
     }
 
     private void handleRecyclerView() {
         final QuestionAdapter questionAdapter = new QuestionAdapter();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.setLayoutManager(linearLayoutManager);
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mFragmentQuestionsByCreationBinding.creationRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mFragmentQuestionsByCreationBinding.creationRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         QuestionViewModel questionViewModel = new ViewModelProvider(this, viewModelFactory).get(QuestionViewModel.class);
 
@@ -142,29 +139,29 @@ public class QuestionsByActivityFragment extends Fragment {
             mQuestions = questions;
             questionAdapter.submitList(questions);
         });
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.setAdapter(questionAdapter);
+        mFragmentQuestionsByCreationBinding.creationRecyclerView.setAdapter(questionAdapter);
         questionAdapter.setOnClickListener(mOnClickListener);
-        mFragmentQuestionsByActivityBinding.activitySwipeContainer.setOnRefreshListener(() -> {
+        mFragmentQuestionsByCreationBinding.creationSwipeContainer.setOnRefreshListener(() -> {
             questionViewModel.refresh();
-            mFragmentQuestionsByActivityBinding.activitySwipeContainer.setRefreshing(false);
+            mFragmentQuestionsByCreationBinding.creationSwipeContainer.setRefreshing(false);
         });
     }
 
     private void onLoaded() {
-        mFragmentQuestionsByActivityBinding.activityPbFetchData.setVisibility(View.INVISIBLE);
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.setVisibility(View.VISIBLE);
-        mFragmentQuestionsByActivityBinding.activityTvError.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByCreationBinding.creationPbFetchData.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByCreationBinding.creationRecyclerView.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByCreationBinding.creationTvError.setVisibility(View.INVISIBLE);
     }
 
     private void onError() {
-        mFragmentQuestionsByActivityBinding.activityPbFetchData.setVisibility(View.INVISIBLE);
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.setVisibility(View.INVISIBLE);
-        mFragmentQuestionsByActivityBinding.activityTvError.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByCreationBinding.creationPbFetchData.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByCreationBinding.creationRecyclerView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByCreationBinding.creationTvError.setVisibility(View.VISIBLE);
     }
 
     private void onLoading() {
-        mFragmentQuestionsByActivityBinding.activityPbFetchData.setVisibility(View.VISIBLE);
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.setVisibility(View.VISIBLE);
-        mFragmentQuestionsByActivityBinding.activityTvError.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByCreationBinding.creationPbFetchData.setVisibility(View.VISIBLE);
+        mFragmentQuestionsByCreationBinding.creationRecyclerView.setVisibility(View.INVISIBLE);
+        mFragmentQuestionsByCreationBinding.creationTvError.setVisibility(View.INVISIBLE);
     }
 }

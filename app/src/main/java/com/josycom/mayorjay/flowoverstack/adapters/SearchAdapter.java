@@ -1,12 +1,9 @@
 package com.josycom.mayorjay.flowoverstack.adapters;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,8 +39,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
     }
 
-    public void setOnClickListener(View.OnClickListener mOnClickListener) {
-        SearchAdapter.mOnClickListener = mOnClickListener;
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        SearchAdapter.mOnClickListener = onClickListener;
     }
 
     @Override
