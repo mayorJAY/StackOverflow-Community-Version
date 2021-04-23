@@ -91,6 +91,8 @@ public class OcrActivity extends AppCompatActivity {
         activateViewHolder();
         setupRecyclerView();
         hideAndShowScrollFab();
+        activateSearchButton();
+        activateScanFab();
     }
 
     @Override
@@ -131,6 +133,8 @@ public class OcrActivity extends AppCompatActivity {
         mActivityOcrBinding.ocrTextInputLayout.setVisibility(View.GONE);
         mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.GONE);
         mActivityOcrBinding.btSearch.setVisibility(View.GONE);
+        mActivityOcrBinding.ocrRecyclerview.setVisibility(View.GONE);
+        mActivityOcrBinding.ivCroppedImage.setVisibility(View.GONE);
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (captureIntent.resolveActivity(getPackageManager()) != null) {
             File photo = null;
@@ -183,6 +187,7 @@ public class OcrActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        mActivityOcrBinding.ivCroppedImage.setVisibility(View.VISIBLE);
         Bitmap bitmap = BitmapFactory.decodeFile(mPhotoPath);
         if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK && bitmap != null) {
@@ -245,7 +250,6 @@ public class OcrActivity extends AppCompatActivity {
         mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.VISIBLE);
         mActivityOcrBinding.btSearch.setVisibility(View.VISIBLE);
         mActivityOcrBinding.ocrTextInputEditText.setText(text.getText());
-        activateSearchButton();
     }
 
     private void setupRecyclerView() {
@@ -344,7 +348,6 @@ public class OcrActivity extends AppCompatActivity {
         mActivityOcrBinding.ocrScanFab.setVisibility(View.VISIBLE);
         mActivityOcrBinding.btSearch.setVisibility(View.INVISIBLE);
         mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.INVISIBLE);
-        activateScanFab();
     }
 
     private void onNoMatchingResult() {
