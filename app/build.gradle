@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: "androidx.navigation.safeargs"
 
@@ -14,10 +15,6 @@ android {
         versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        viewBinding {
-            enabled = true
-        }
     }
 
     buildTypes {
@@ -26,6 +23,9 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = 1.8
@@ -110,12 +110,16 @@ dependencies {
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.3'
 
     // Dagger
-    implementation 'com.google.dagger:dagger:2.27'
-    implementation 'com.google.dagger:dagger-android:2.27'
+    implementation 'com.google.dagger:dagger:2.35.1'
+    implementation 'com.google.dagger:dagger-android:2.35.1'
     implementation 'com.google.dagger:dagger-android-support:2.27'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.27'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.35.1'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.35.1'
 
     // Play core
     implementation 'com.google.android.play:core:1.10.0'
+
+    // Kotlin
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
