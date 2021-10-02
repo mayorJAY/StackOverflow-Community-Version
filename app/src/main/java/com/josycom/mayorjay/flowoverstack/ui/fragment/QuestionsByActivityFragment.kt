@@ -17,7 +17,25 @@ import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByActivityBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.*
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.API_KEY
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ANSWERS_COUNT
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_DATE
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_FULL_TEXT
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ID
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_NAME
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_OWNER_LINK
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_TITLE
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_VOTES_COUNT
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.FAILED
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.FIRST_PAGE
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.LOADED
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.LOADING
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.ORDER_DESCENDING
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.PAGE_SIZE
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.QUESTION_FILTER
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.SITE
+import com.josycom.mayorjay.flowoverstack.util.AppConstants.SORT_BY_ACTIVITY
 import com.josycom.mayorjay.flowoverstack.util.DateUtil
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory
 import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionViewModel
@@ -54,7 +72,7 @@ class QuestionsByActivityFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mFragmentQuestionsByActivityBinding = FragmentQuestionsByActivityBinding.inflate(inflater, container, false)
         mFragmentQuestionsByActivityBinding.apply {
             activitySwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
