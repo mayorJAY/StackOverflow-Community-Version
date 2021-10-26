@@ -1,60 +1,46 @@
-package com.josycom.mayorjay.flowoverstack.repository;
+package com.josycom.mayorjay.flowoverstack.repository
 
-
-import androidx.lifecycle.MutableLiveData;
-
-import com.josycom.mayorjay.flowoverstack.model.QuestionsResponse;
-import com.josycom.mayorjay.flowoverstack.model.SearchResponse;
-import com.josycom.mayorjay.flowoverstack.network.ApiService;
-import com.josycom.mayorjay.flowoverstack.util.AppConstants;
-import com.josycom.mayorjay.flowoverstack.util.ThreadExecutor;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import androidx.lifecycle.MutableLiveData
+import com.josycom.mayorjay.flowoverstack.model.QuestionsResponse
+import com.josycom.mayorjay.flowoverstack.model.SearchResponse
+import com.josycom.mayorjay.flowoverstack.network.ApiService
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import com.josycom.mayorjay.flowoverstack.util.ThreadExecutor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
-public class SearchRepository {
+class SearchRepository @Inject constructor(private val apiService: ApiService) {
 
-    private ApiService apiService;
-    private MutableLiveData<SearchResponse> mResponse = new MutableLiveData<>();
+    private val mResponse = MutableLiveData<SearchResponse>()
 
-    @Inject
-    public SearchRepository(ApiService apiService) {
-        this.apiService = apiService;
-    }
-
-    private void getQuestionsWithTextInTitle(String inTitle) {
-        mResponse.postValue(new SearchResponse(AppConstants.LOADING, null));
-        Call<QuestionsResponse> call = apiService.getQuestionsWithTextInTitle(inTitle);
-        call.enqueue(new Callback<QuestionsResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
-                QuestionsResponse questionsResponse = response.body();
-                if (Objects.requireNonNull(questionsResponse).getItems().size() != 0) {
-                    mResponse.setValue(new SearchResponse(AppConstants.LOADED, questionsResponse.getItems()));
-                } else {
-                    mResponse.setValue(new SearchResponse(AppConstants.NO_MATCHING_RESULT, null));
+    private fun getQuestionsWithTextInTitle(inTitle: String) {
+        mResponse.postValue(SearchResponse(AppConstants.LOADING, null))
+        val call = apiService.getQuestionsWithTextInTitle(inTitle)
+        call.enqueue(object : Callback<QuestionsResponse?> {
+            override fun onResponse(call: Call<QuestionsResponse?>, response: Response<QuestionsResponse?>) {
+                val questionsResponse = response.body()
+                if (questionsResponse != null) {
+                    if (questionsResponse.items!!.isNotEmpty()) {
+                        mResponse.setValue(SearchResponse(AppConstants.LOADED, questionsResponse.items))
+                    } else {
+                        mResponse.setValue(SearchResponse(AppConstants.NO_MATCHING_RESULT, null))
+                    }
                 }
             }
 
-            @Override
-            public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
-                t.printStackTrace();
-                mResponse.setValue(new SearchResponse(AppConstants.FAILED, null));
+            override fun onFailure(call: Call<QuestionsResponse?>, t: Throwable) {
+                t.printStackTrace()
+                mResponse.value = SearchResponse(AppConstants.FAILED, null)
             }
-        });
+        })
     }
 
-    public MutableLiveData<SearchResponse> getResponse(String inTitle) {
-        ThreadExecutor.mExecutor.execute(() -> getQuestionsWithTextInTitle(inTitle));
-        return mResponse;
+    fun getResponse(inTitle: String): MutableLiveData<SearchResponse> {
+        ThreadExecutor.mExecutor.execute { getQuestionsWithTextInTitle(inTitle) }
+        return mResponse
     }
 }

@@ -1,45 +1,20 @@
-package com.josycom.mayorjay.flowoverstack.model;
+package com.josycom.mayorjay.flowoverstack.model
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.DataSource;
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.DataSource
+import com.josycom.mayorjay.flowoverstack.network.ApiService
 
-import com.josycom.mayorjay.flowoverstack.network.ApiService;
+class QuestionDataSourceFactory(private val page: Int, private val pageSize: Int, private val order: String,
+                                private val sortCondition: String, private val site: String, private val filter: String,
+                                private val siteKey: String, private val apiService: ApiService) : DataSource.Factory<Int, Question>() {
 
-import javax.inject.Singleton;
-
-public class QuestionDataSourceFactory extends DataSource.Factory<Integer, Question> {
-
-    private static MutableLiveData<QuestionDataSource> questionLiveDataSource = new MutableLiveData<>();
-    private final int page;
-    private final int pageSize;
-    private final String order;
-    private final String sortCondition;
-    private final String site;
-    private final String filter;
-    private final String siteKey;
-    private ApiService apiService;
-
-    public QuestionDataSourceFactory(int page, int pageSize, String order,
-                                     String sortCondition, String site, String filter, String siteKey, ApiService apiService) {
-        this.page = page;
-        this.pageSize = pageSize;
-        this.order = order;
-        this.sortCondition = sortCondition;
-        this.site = site;
-        this.filter = filter;
-        this.siteKey = siteKey;
-        this.apiService = apiService;
+    override fun create(): DataSource<Int, Question> {
+        val questionDataSource = QuestionDataSource(page, pageSize, order, sortCondition, site, filter, siteKey, apiService)
+        questionLiveDataSource.postValue(questionDataSource)
+        return questionDataSource
     }
 
-    public static MutableLiveData<QuestionDataSource> getQuestionLiveDataSource() {
-        return questionLiveDataSource;
-    }
-
-    @Override
-    public DataSource<Integer, Question> create() {
-        QuestionDataSource questionDataSource = new QuestionDataSource(page, pageSize, order, sortCondition,
-                site, filter, siteKey, apiService);
-        questionLiveDataSource.postValue(questionDataSource);
-        return questionDataSource;
+    companion object {
+        val questionLiveDataSource = MutableLiveData<QuestionDataSource>()
     }
 }

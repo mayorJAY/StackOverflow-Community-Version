@@ -1,42 +1,30 @@
-package com.josycom.mayorjay.flowoverstack.viewmodel;
+package com.josycom.mayorjay.flowoverstack.viewmodel
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.josycom.mayorjay.flowoverstack.repository.AnswerRepository
+import javax.inject.Inject
 
-import com.josycom.mayorjay.flowoverstack.repository.AnswerRepository;
+class CustomAnswerViewModelFactory @Inject constructor(private val answerRepository: AnswerRepository) : ViewModelProvider.Factory {
 
-import javax.inject.Inject;
+    private var order: String? = null
+    private var sortCondition: String? = null
+    private var site: String? = null
+    private var filter: String? = null
+    private var questionId = 0
+    private var siteKey: String? = null
 
-public class CustomAnswerViewModelFactory implements ViewModelProvider.Factory {
-
-    private String order;
-    private String sortCondition;
-    private String site;
-    private String filter;
-    private int questionId;
-    private String siteKey;
-    private AnswerRepository answerRepository;
-
-
-    @Inject
-    public CustomAnswerViewModelFactory(AnswerRepository answerRepository) {
-        this.answerRepository = answerRepository;
+    fun setInputs(questionId: Int, order: String?, sortCondition: String?, site: String?, filter: String?, siteKey: String?) {
+        this.questionId = questionId
+        this.order = order
+        this.sortCondition = sortCondition
+        this.site = site
+        this.filter = filter
+        this.siteKey = siteKey
     }
 
-    public void setInputs(int questionId, String order, String sortCondition, String site, String filter, String siteKey) {
-        this.questionId = questionId;
-        this.order = order;
-        this.sortCondition = sortCondition;
-        this.site = site;
-        this.filter = filter;
-        this.siteKey = siteKey;
-    }
-
-    @SuppressWarnings("unchecked")
-    @NonNull
-    @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new AnswerViewModel(answerRepository, questionId, order, sortCondition, site, filter, siteKey);
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return AnswerViewModel(answerRepository, questionId, order, sortCondition, site, filter, siteKey) as T
     }
 }

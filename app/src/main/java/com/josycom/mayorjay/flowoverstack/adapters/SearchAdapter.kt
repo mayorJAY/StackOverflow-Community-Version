@@ -1,117 +1,85 @@
-package com.josycom.mayorjay.flowoverstack.adapters;
+package com.josycom.mayorjay.flowoverstack.adapters
 
-import android.content.res.Resources;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.josycom.mayorjay.flowoverstack.R
+import com.josycom.mayorjay.flowoverstack.adapters.SearchAdapter.SearchViewHolder
+import com.josycom.mayorjay.flowoverstack.databinding.QuestionItemBinding
+import com.josycom.mayorjay.flowoverstack.model.Question
+import com.josycom.mayorjay.flowoverstack.util.AppUtils
+import org.jsoup.Jsoup
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
 
-import com.bumptech.glide.Glide;
-import com.josycom.mayorjay.flowoverstack.R;
-import com.josycom.mayorjay.flowoverstack.databinding.QuestionItemBinding;
-import com.josycom.mayorjay.flowoverstack.model.Owner;
-import com.josycom.mayorjay.flowoverstack.model.Question;
-import com.josycom.mayorjay.flowoverstack.util.DateUtil;
+    private var mQuestions: List<Question>? = null
 
-import org.jsoup.Jsoup;
-
-import java.util.List;
-
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
-
-    private static View.OnClickListener mOnClickListener;
-    private List<Question> mQuestions;
-
-    @NonNull
-    @Override
-    public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        QuestionItemBinding questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new SearchViewHolder(questionItemBinding);
+    companion object {
+        private var mOnClickListener: View.OnClickListener? = null
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull SearchAdapter.SearchViewHolder holder, int position) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+        val questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SearchViewHolder(questionItemBinding)
+    }
+
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         if (mQuestions != null) {
-            Question currentQuestion = mQuestions.get(position);
-            holder.bind(currentQuestion);
+            val currentQuestion = mQuestions!![position]
+            holder.bind(currentQuestion)
         }
     }
 
-    public void setOnClickListener(View.OnClickListener onClickListener) {
-        SearchAdapter.mOnClickListener = onClickListener;
+    fun setOnClickListener(onClickListener: View.OnClickListener?) {
+        mOnClickListener = onClickListener
     }
 
-    @Override
-    public int getItemCount() {
-        if (mQuestions != null) {
-            return mQuestions.size();
-        } else {
-            return 0;
-        }
+    override fun getItemCount(): Int {
+        return if (mQuestions != null) mQuestions!!.size else 0
     }
 
-    public void setQuestions(List<Question> questions) {
-        mQuestions = questions;
-        notifyDataSetChanged();
+    fun setQuestions(questions: List<Question>?) {
+        mQuestions = questions
+        notifyDataSetChanged()
     }
 
-    class SearchViewHolder extends RecyclerView.ViewHolder {
+    inner class SearchViewHolder(private val mQuestionItemBinding: QuestionItemBinding) : RecyclerView.ViewHolder(mQuestionItemBinding.root) {
 
-        private QuestionItemBinding mQuestionItemBinding;
-
-        SearchViewHolder(QuestionItemBinding questionItemBinding) {
-            super(questionItemBinding.getRoot());
-            this.mQuestionItemBinding = questionItemBinding;
-
-            mQuestionItemBinding.getRoot().setTag(this);
-            mQuestionItemBinding.getRoot().setOnClickListener(mOnClickListener);
+        init {
+            mQuestionItemBinding.root.tag = this
+            mQuestionItemBinding.root.setOnClickListener(mOnClickListener)
         }
 
-        void bind(Question question) {
+        fun bind(question: Question?) {
             if (question != null) {
-                Owner owner = question.getOwner();
-                String profileImage = owner.getProfileImage();
-                List<String> tagList = question.getTags();
-                Glide.with(mQuestionItemBinding.getRoot().getContext())
+                val owner = question.owner
+                val profileImage = owner?.profileImage
+                val tagList = question.tags
+                Glide.with(mQuestionItemBinding.root.context)
                         .load(profileImage)
                         .placeholder(R.drawable.loading)
-                        .into(mQuestionItemBinding.ivAvatarItem);
-                mQuestionItemBinding.tvQuestionItem.setText(Jsoup.parse(question.getTitle()).text());
-                mQuestionItemBinding.tvViewsCountItem.setText(String.valueOf(question.getViewCount()));
-                mQuestionItemBinding.tvDateItem.setText(DateUtil.toNormalDate(question.getCreationDate()));
-
-                if (question.getIsAnswered()) {
-                    mQuestionItemBinding.answered.setVisibility(View.VISIBLE);
+                        .into(mQuestionItemBinding.ivAvatarItem)
+                mQuestionItemBinding.tvQuestionItem.text = Jsoup.parse(question.title).text()
+                mQuestionItemBinding.tvViewsCountItem.text = question.viewCount.toString()
+                mQuestionItemBinding.tvDateItem.text = AppUtils.toNormalDate(question.creationDate!!.toLong())
+                if (question.isAnswered == true) {
+                    mQuestionItemBinding.answered.visibility = View.VISIBLE
                 } else {
-                    mQuestionItemBinding.answered.setVisibility(View.GONE);
+                    mQuestionItemBinding.answered.visibility = View.GONE
                 }
-
-                int answers = question.getAnswerCount();
-                Resources resources = mQuestionItemBinding.getRoot().getContext().getResources();
-                String answerCount = resources.getQuantityString(R.plurals.answers, answers, answers);
-                mQuestionItemBinding.tvAnswersCountItem.setText(answerCount);
-
-                if (question.getScore() <= 0){
-                    mQuestionItemBinding.tvVotesCountItem.setText(String.valueOf(question.getScore()));
+                val answers = question.answerCount
+                val resources = mQuestionItemBinding.root.context.resources
+                val answerCount = resources.getQuantityString(R.plurals.answers, answers!!, answers)
+                mQuestionItemBinding.tvAnswersCountItem.text = answerCount
+                if (question.score!! <= 0) {
+                    mQuestionItemBinding.tvVotesCountItem.text = question.score.toString()
                 } else {
-                    mQuestionItemBinding.tvVotesCountItem.setText(mQuestionItemBinding.getRoot().getContext()
-                            .getString(R.string.plus_score).concat(String.valueOf(question.getScore())));
+                    mQuestionItemBinding.tvVotesCountItem.text = mQuestionItemBinding.root.context.getString(R.string.plus_score, question.score)
                 }
-                mQuestionItemBinding.tvTagsListItem.setText(updateTagsTextView(tagList));
+                mQuestionItemBinding.tvTagsListItem.text = AppUtils.getFormattedTags(tagList!!)
             }
-        }
-
-        private String updateTagsTextView(List<String> tagList) {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < tagList.size(); i++) {
-                builder.append(tagList.get(i));
-                if (i != tagList.size() - 1) {
-                    builder.append(", ");
-                }
-            }
-            return builder.toString();
         }
     }
 }

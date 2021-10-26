@@ -34,7 +34,7 @@
     <string name="type_a_search_query">Type a search query</string>
     <string name="search_description">Search</string>
     <string name="read_more">Read More</string>
-    <string name="plus_score">+</string>
+    <string name="plus_score">+%d</string>
     <string name="answers_description">answers</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_open_in_browser">Open in Browser</string>

@@ -1,19 +1,10 @@
-package com.josycom.mayorjay.flowoverstack.di;
+package com.josycom.mayorjay.flowoverstack.di
 
-import androidx.lifecycle.ViewModel;
+import dagger.MapKey
+import kotlin.reflect.KClass
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import dagger.MapKey;
-
-@Documented
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
+@MustBeDocumented
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
+@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 @MapKey
-public @interface ViewModelKey {
-    Class<? extends ViewModel> value();
-}
+annotation class ViewModelKey(val value: KClass<out Any>)

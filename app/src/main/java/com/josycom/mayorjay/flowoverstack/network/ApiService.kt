@@ -1,37 +1,35 @@
-package com.josycom.mayorjay.flowoverstack.network;
+package com.josycom.mayorjay.flowoverstack.network
 
-import com.josycom.mayorjay.flowoverstack.model.AnswerResponse;
-import com.josycom.mayorjay.flowoverstack.model.QuestionsResponse;
-import com.josycom.mayorjay.flowoverstack.util.AppConstants;
+import com.josycom.mayorjay.flowoverstack.model.AnswerResponse
+import com.josycom.mayorjay.flowoverstack.model.QuestionsResponse
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-
-public interface ApiService {
+interface ApiService {
 
     @GET(AppConstants.QUESTIONS_END_POINT)
-    Call<QuestionsResponse> getQuestionsForAll(
-            @Query("page") int page,
-            @Query("pagesize") int pageSize,
-            @Query("order") String order,
-            @Query("sort") String sortCondition,
-            @Query("site") String site,
-            @Query(value = "filter", encoded = true) String filter,
-            @Query("key") String siteKey);
+    fun getQuestionsForAll(
+            @Query("page") page: Int,
+            @Query("pagesize") pageSize: Int,
+            @Query("order") order: String?,
+            @Query("sort") sortCondition: String?,
+            @Query("site") site: String?,
+            @Query(value = "filter", encoded = true) filter: String?,
+            @Query("key") siteKey: String?): Call<QuestionsResponse?>
 
     @GET(AppConstants.ANSWERS_END_POINT)
-    Call<AnswerResponse> getAnswersToQuestion(
-            @Path("question_id") int id,
-            @Query("order") String order,
-            @Query("sort") String sortCondition,
-            @Query("site") String site,
-            @Query(value = "filter", encoded = true) String filter,
-            @Query("key") String siteKey);
+    fun getAnswersToQuestion(
+            @Path("question_id") id: Int,
+            @Query("order") order: String?,
+            @Query("sort") sortCondition: String?,
+            @Query("site") site: String?,
+            @Query(value = "filter", encoded = true) filter: String?,
+            @Query("key") siteKey: String?): Call<AnswerResponse?>
 
     @GET(AppConstants.SEARCH_END_POINT)
-    Call<QuestionsResponse> getQuestionsWithTextInTitle(
-            @Query("intitle") String inTitle);
-
+    fun getQuestionsWithTextInTitle(
+            @Query("intitle") inTitle: String?): Call<QuestionsResponse?>
 }

@@ -1,49 +1,17 @@
-package com.josycom.mayorjay.flowoverstack.model;
+package com.josycom.mayorjay.flowoverstack.model
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-import java.util.List;
-
-public class QuestionsResponse {
-
+class QuestionsResponse {
     @SerializedName("has_more")
-    private Boolean hasMore;
+    var hasMore: Boolean? = null
+
     @SerializedName("items")
-    private List<Question> items;
+    var items: List<Question>? = null
+
     @SerializedName("quota_max")
-    private Integer quotaMax;
+    var quotaMax: Int? = null
+
     @SerializedName("quota_remaining")
-    private Integer quotaRemaining;
-
-    public Boolean getHasMore() {
-        return hasMore;
-    }
-
-    public void setHasMore(Boolean hasMore) {
-        this.hasMore = hasMore;
-    }
-
-    public List<Question> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Question> items) {
-        this.items = items;
-    }
-
-    public Integer getQuotaMax() {
-        return quotaMax;
-    }
-
-    public void setQuotaMax(Integer quotaMax) {
-        this.quotaMax = quotaMax;
-    }
-
-    public Integer getQuotaRemaining() {
-        return quotaRemaining;
-    }
-
-    public void setQuotaRemaining(Integer quotaRemaining) {
-        this.quotaRemaining = quotaRemaining;
-    }
+    var quotaRemaining: Int? = null
 }

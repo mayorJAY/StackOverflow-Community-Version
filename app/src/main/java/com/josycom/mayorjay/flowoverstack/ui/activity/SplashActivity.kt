@@ -1,27 +1,24 @@
-package com.josycom.mayorjay.flowoverstack.ui.activity;
+package com.josycom.mayorjay.flowoverstack.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-
-import com.josycom.mayorjay.flowoverstack.util.AppConstants;
-
-public class SplashActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+class SplashActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         //SplashScreen handler
-        Handler handler = new Handler();
-        handler.postDelayed(this::goToMainActivity, AppConstants.SPLASH_TIME);
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({ goToMainActivity() }, AppConstants.SPLASH_TIME)
     }
 
     //Launch MainActivity
-    private void goToMainActivity() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();
+    private fun goToMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

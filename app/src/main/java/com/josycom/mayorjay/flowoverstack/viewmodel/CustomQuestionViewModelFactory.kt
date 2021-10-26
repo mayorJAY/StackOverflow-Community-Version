@@ -1,43 +1,32 @@
-package com.josycom.mayorjay.flowoverstack.viewmodel;
+package com.josycom.mayorjay.flowoverstack.viewmodel
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.josycom.mayorjay.flowoverstack.repository.QuestionRepository
+import javax.inject.Inject
 
-import com.josycom.mayorjay.flowoverstack.repository.QuestionRepository;
+class CustomQuestionViewModelFactory @Inject constructor(private val questionRepository: QuestionRepository) : ViewModelProvider.Factory {
 
-import javax.inject.Inject;
+    private var page = 0
+    private var pageSize = 0
+    private var order: String? = null
+    private var sortCondition: String? = null
+    private var site: String? = null
+    private var filter: String? = null
+    private var siteKey: String? = null
 
-public class CustomQuestionViewModelFactory implements ViewModelProvider.Factory {
-
-    private int page;
-    private int pageSize;
-    private String order;
-    private String sortCondition;
-    private String site;
-    private String filter;
-    private String siteKey;
-    private QuestionRepository questionRepository;
-
-    @Inject
-    public CustomQuestionViewModelFactory(QuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
+    fun setInputs(page: Int, pageSize: Int, order: String?, sortCondition: String?, site: String?, filter: String?, siteKey: String?) {
+        this.page = page
+        this.pageSize = pageSize
+        this.order = order
+        this.sortCondition = sortCondition
+        this.site = site
+        this.filter = filter
+        this.siteKey = siteKey
     }
 
-    public void setInputs(int page, int pageSize, String order, String sortCondition, String site, String filter, String siteKey) {
-        this.page = page;
-        this.pageSize = pageSize;
-        this.order = order;
-        this.sortCondition = sortCondition;
-        this.site = site;
-        this.filter = filter;
-        this.siteKey = siteKey;
-    }
-
-    @SuppressWarnings("unchecked")
-    @NonNull
-    @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new QuestionViewModel(questionRepository, page, pageSize, order, sortCondition, site, filter, siteKey);
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return QuestionViewModel(questionRepository, page, pageSize, order, sortCondition, site, filter, siteKey) as T
     }
 }

@@ -1,23 +1,15 @@
-package com.josycom.mayorjay.flowoverstack.viewmodel;
+package com.josycom.mayorjay.flowoverstack.viewmodel
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
+import com.josycom.mayorjay.flowoverstack.repository.AnswerRepository
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import com.josycom.mayorjay.flowoverstack.model.Answer
 
-import com.josycom.mayorjay.flowoverstack.model.Answer;
-import com.josycom.mayorjay.flowoverstack.repository.AnswerRepository;
+class AnswerViewModel(answerRepository: AnswerRepository, questionId: Int, order: String?, sortCondition: String?, site: String?, filter: String?, siteKey: String?) : ViewModel() {
+    val answersLiveData: LiveData<List<Answer>>
 
-import java.util.List;
-
-public class AnswerViewModel extends ViewModel {
-
-    private LiveData<List<Answer>> mAnswersLiveData;
-
-    public AnswerViewModel(AnswerRepository answerRepository, int questionId, String order, String sortCondition, String site, String filter, String siteKey) {
-        answerRepository.init(questionId, order, sortCondition, site, filter, siteKey);
-        mAnswersLiveData = answerRepository.getAnswers();
-    }
-
-    public LiveData<List<Answer>> getAnswersLiveData() {
-        return mAnswersLiveData;
+    init {
+        answerRepository.init(questionId, order, sortCondition, site, filter, siteKey)
+        answersLiveData = answerRepository.answers
     }
 }

@@ -1,65 +1,48 @@
-package com.josycom.mayorjay.flowoverstack.adapters;
+package com.josycom.mayorjay.flowoverstack.adapters
 
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.josycom.mayorjay.flowoverstack.adapters.AnswerAdapter.AnswerViewHolder
+import com.josycom.mayorjay.flowoverstack.databinding.AnswerItemBinding
+import com.josycom.mayorjay.flowoverstack.model.Answer
+import com.josycom.mayorjay.flowoverstack.util.AppUtils
+import org.jsoup.Jsoup
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class AnswerAdapter : RecyclerView.Adapter<AnswerViewHolder>() {
 
-import com.josycom.mayorjay.flowoverstack.databinding.AnswerItemBinding;
-import com.josycom.mayorjay.flowoverstack.model.Answer;
-import com.josycom.mayorjay.flowoverstack.util.DateUtil;
+    private var mAnswers: List<Answer>? = null
 
-import org.jsoup.Jsoup;
-
-import java.util.List;
-
-public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerViewHolder> {
-
-    private List<Answer> mAnswers;
-
-    @NonNull
-    @Override
-    public AnswerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        AnswerItemBinding answerItemBinding = AnswerItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new AnswerViewHolder(answerItemBinding);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
+        val answerItemBinding = AnswerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return AnswerViewHolder(answerItemBinding)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull AnswerViewHolder holder, int position) {
+    override fun onBindViewHolder(holder: AnswerViewHolder, position: Int) {
         if (mAnswers != null) {
-            Answer currentAnswer = mAnswers.get(position);
-            holder.bind(currentAnswer);
+            val currentAnswer = mAnswers!![position]
+            holder.bind(currentAnswer)
         }
     }
 
-    public void setAnswers(List<Answer> answers) {
-        mAnswers = answers;
-        notifyDataSetChanged();
+    fun setAnswers(answers: List<Answer>?) {
+        mAnswers = answers
+        notifyDataSetChanged()
     }
 
-    @Override
-    public int getItemCount() {
-        if (mAnswers != null) {
-            return mAnswers.size();
-        } else {
-            return 0;
-        }
+    override fun getItemCount(): Int {
+        return if (mAnswers != null) mAnswers!!.size else 0
     }
 
-    static class AnswerViewHolder extends RecyclerView.ViewHolder {
-        private AnswerItemBinding mAnswerItemBinding;
+    class AnswerViewHolder(private val mAnswerItemBinding: AnswerItemBinding) : RecyclerView.ViewHolder(mAnswerItemBinding.root) {
 
-        AnswerViewHolder(AnswerItemBinding answerItemBinding) {
-            super(answerItemBinding.getRoot());
-            this.mAnswerItemBinding = answerItemBinding;
-        }
-
-        void bind(Answer answer) {
-            mAnswerItemBinding.tvVotesItem.setText(String.valueOf(answer.getScore()));
-            mAnswerItemBinding.tvAnswerNameItem.setText(answer.getOwner().getDisplayName());
-            mAnswerItemBinding.tvAnswerDateItem.setText(DateUtil.toNormalDate(answer.getCreationDate()));
-            mAnswerItemBinding.tvAnswerBodyItem.setText(Jsoup.parse(answer.getBody()).text());
+        fun bind(answer: Answer) {
+            mAnswerItemBinding.tvVotesItem.text = answer.score.toString()
+            mAnswerItemBinding.tvAnswerNameItem.text = answer.owner!!.displayName
+            if (answer.creationDate != null) {
+                mAnswerItemBinding.tvAnswerDateItem.text = AppUtils.toNormalDate(answer.creationDate!!.toLong())
+            }
+            mAnswerItemBinding.tvAnswerBodyItem.text = Jsoup.parse(answer.body).text()
         }
     }
 }

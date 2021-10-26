@@ -1,149 +1,47 @@
-package com.josycom.mayorjay.flowoverstack.model;
+package com.josycom.mayorjay.flowoverstack.model
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-import java.util.List;
-
-public class Question {
-
+class Question {
     @SerializedName("tags")
-    private List<String> tags = null;
+    var tags: List<String>? = null
+
     @SerializedName("body")
-    private String body;
+    var body: String? = null
+
     @SerializedName("owner")
-    private Owner owner;
+    var owner: Owner? = null
+
     @SerializedName("is_answered")
-    private Boolean isAnswered;
+    var isAnswered: Boolean? = null
+
     @SerializedName("view_count")
-    private Integer viewCount;
+    var viewCount: Int? = null
+
     @SerializedName("accepted_answer_id")
-    private Integer acceptedAnswerId;
+    var acceptedAnswerId: Int? = null
+
     @SerializedName("answer_count")
-    private Integer answerCount;
+    var answerCount: Int? = null
+
     @SerializedName("score")
-    private Integer score;
+    var score: Int? = null
+
     @SerializedName("last_activity_date")
-    private Integer lastActivityDate;
+    var lastActivityDate: Int? = null
+
     @SerializedName("creation_date")
-    private Integer creationDate;
+    var creationDate: Int? = null
+
     @SerializedName("last_edit_date")
-    private Integer lastEditDate;
+    var lastEditDate: Int? = null
+
     @SerializedName("question_id")
-    private Integer questionId;
+    var questionId: Int? = null
+
     @SerializedName("link")
-    private String link;
+    var link: String? = null
+
     @SerializedName("title")
-    private String title;
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public Boolean getIsAnswered() {
-        return isAnswered;
-    }
-
-    public void setIsAnswered(Boolean isAnswered) {
-        this.isAnswered = isAnswered;
-    }
-
-    public Integer getViewCount() {
-        return viewCount;
-    }
-
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public Integer getAnswerCount() {
-        return answerCount;
-    }
-
-    public void setAnswerCount(Integer answerCount) {
-        this.answerCount = answerCount;
-    }
-
-    public Integer getAcceptedAnswerId() {
-        return acceptedAnswerId;
-    }
-
-    public void setAcceptedAnswerId(Integer acceptedAnswerId) {
-        this.acceptedAnswerId = acceptedAnswerId;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public Integer getLastActivityDate() {
-        return lastActivityDate;
-    }
-
-    public void setLastActivityDate(Integer lastActivityDate) {
-        this.lastActivityDate = lastActivityDate;
-    }
-
-    public Integer getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Integer creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Integer getLastEditDate() {
-        return lastEditDate;
-    }
-
-    public void setLastEditDate(Integer lastEditDate) {
-        this.lastEditDate = lastEditDate;
-    }
-
-    public Integer getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
+    var title: String? = null
 }

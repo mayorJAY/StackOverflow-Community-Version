@@ -17,26 +17,8 @@ import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByActivityBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.API_KEY
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ANSWERS_COUNT
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_DATE
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_FULL_TEXT
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ID
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_NAME
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_OWNER_LINK
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_TITLE
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_VOTES_COUNT
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.FAILED
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.FIRST_PAGE
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.LOADED
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.LOADING
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.ORDER_DESCENDING
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.PAGE_SIZE
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.QUESTION_FILTER
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.SITE
-import com.josycom.mayorjay.flowoverstack.util.AppConstants.SORT_BY_ACTIVITY
-import com.josycom.mayorjay.flowoverstack.util.DateUtil
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory
 import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionViewModel
 import dagger.android.support.AndroidSupportInjection
@@ -58,13 +40,13 @@ class QuestionsByActivityFragment : Fragment() {
         super.onAttach(context)
 
         viewModelFactory.setInputs(
-                FIRST_PAGE,
-                PAGE_SIZE,
-                ORDER_DESCENDING,
-                SORT_BY_ACTIVITY,
-                SITE,
-                QUESTION_FILTER,
-                API_KEY
+                AppConstants.FIRST_PAGE,
+                AppConstants.PAGE_SIZE,
+                AppConstants.ORDER_DESCENDING,
+                AppConstants.SORT_BY_ACTIVITY,
+                AppConstants.SITE,
+                AppConstants.QUESTION_FILTER,
+                AppConstants.API_KEY
         )
     }
 
@@ -74,6 +56,11 @@ class QuestionsByActivityFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View {
         mFragmentQuestionsByActivityBinding = FragmentQuestionsByActivityBinding.inflate(inflater, container, false)
+        return mFragmentQuestionsByActivityBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mFragmentQuestionsByActivityBinding.apply {
             activitySwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
             activityScrollUpFab.visibility = View.INVISIBLE
@@ -86,38 +73,38 @@ class QuestionsByActivityFragment : Fragment() {
             })
             activityScrollUpFab.setOnClickListener { activityRecyclerView.scrollToPosition(0) }
         }
+
         mOnClickListener = View.OnClickListener {
             val viewHolder = it.tag as RecyclerView.ViewHolder
             val position = viewHolder.adapterPosition
             Intent(context, AnswerActivity::class.java).apply {
-                val currentQuestion = mQuestions.get(position)
-                assert(currentQuestion != null)
-                val questionOwner = currentQuestion!!.owner
-
-                putExtra(EXTRA_QUESTION_TITLE, currentQuestion.title)
-                putExtra(EXTRA_QUESTION_NAME, questionOwner.displayName)
-                putExtra(EXTRA_QUESTION_DATE, DateUtil.toNormalDate(currentQuestion.creationDate.toLong()))
-                putExtra(EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
-                putExtra(EXTRA_AVATAR_ADDRESS, questionOwner.profileImage)
-                putExtra(EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
-                putExtra(EXTRA_QUESTION_ID, currentQuestion.questionId)
-                putExtra(EXTRA_QUESTION_VOTES_COUNT, currentQuestion.score)
-                putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.link)
-
+                val currentQuestion = mQuestions[position]
+                if (currentQuestion != null) {
+                    putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
+                    if (currentQuestion.creationDate != null) {
+                        putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
+                    }
+                    putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
+                    putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
+                    putExtra(AppConstants.EXTRA_QUESTION_ID, currentQuestion.questionId)
+                    putExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, currentQuestion.score)
+                    val questionOwner = currentQuestion.owner
+                    if (questionOwner != null) {
+                        putExtra(AppConstants.EXTRA_QUESTION_NAME, questionOwner.displayName)
+                        putExtra(AppConstants.EXTRA_AVATAR_ADDRESS, questionOwner.profileImage)
+                        putExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK, questionOwner.link)
+                    }
+                }
                 startActivity(this)
             }
-
         }
         handleRecyclerView()
-        return mFragmentQuestionsByActivityBinding.root
     }
 
     private fun handleRecyclerView() {
         val questionAdapter = QuestionAdapter()
-        val linearLayoutManager = LinearLayoutManager(context)
-
         mFragmentQuestionsByActivityBinding.activityRecyclerView.apply {
-            layoutManager = linearLayoutManager
+            layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
         }
 
@@ -126,13 +113,13 @@ class QuestionsByActivityFragment : Fragment() {
                 .apply {
                     networkState.observe(viewLifecycleOwner, {
                         when (it) {
-                            LOADING -> onLoading()
-                            LOADED -> onLoaded()
-                            FAILED -> onError()
+                            AppConstants.LOADING -> onLoading()
+                            AppConstants.LOADED -> onLoaded()
+                            AppConstants.FAILED -> onError()
                         }
                     })
 
-                    questionPagedList.observe(viewLifecycleOwner, {
+                    questionPagedList!!.observe(viewLifecycleOwner, {
                         mQuestions = it
                         questionAdapter.submitList(it)
                     })

@@ -1,372 +1,353 @@
-package com.josycom.mayorjay.flowoverstack.ui.activity;
+package com.josycom.mayorjay.flowoverstack.ui.activity
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.core.widget.NestedScrollView;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.Manifest
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.text.TextUtils
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
+import com.google.mlkit.vision.text.TextRecognition
+import com.josycom.mayorjay.flowoverstack.R
+import com.josycom.mayorjay.flowoverstack.adapters.SearchAdapter
+import com.josycom.mayorjay.flowoverstack.databinding.ActivityOcrBinding
+import com.josycom.mayorjay.flowoverstack.model.Question
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import com.josycom.mayorjay.flowoverstack.util.AppUtils
+import com.josycom.mayorjay.flowoverstack.viewmodel.CustomSearchViewModelFactory
+import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import dagger.android.AndroidInjection
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.Date
+import javax.inject.Inject
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Toast;
+class OcrActivity : AppCompatActivity() {
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
-import com.google.mlkit.vision.text.TextRecognition;
-import com.google.mlkit.vision.text.TextRecognizer;
-import com.josycom.mayorjay.flowoverstack.R;
-import com.josycom.mayorjay.flowoverstack.adapters.SearchAdapter;
-import com.josycom.mayorjay.flowoverstack.databinding.ActivityOcrBinding;
-import com.josycom.mayorjay.flowoverstack.model.Owner;
-import com.josycom.mayorjay.flowoverstack.model.Question;
-import com.josycom.mayorjay.flowoverstack.util.AppConstants;
-import com.josycom.mayorjay.flowoverstack.util.DateUtil;
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomSearchViewModelFactory;
-import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import javax.inject.Inject;
-
-import dagger.android.AndroidInjection;
-
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_AVATAR_ADDRESS;
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ANSWERS_COUNT;
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_DATE;
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_FULL_TEXT;
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_ID;
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_NAME;
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_OWNER_LINK;
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_TITLE;
-import static com.josycom.mayorjay.flowoverstack.util.AppConstants.EXTRA_QUESTION_VOTES_COUNT;
-
-public class OcrActivity extends AppCompatActivity {
-
-    private ActivityOcrBinding mActivityOcrBinding;
-    private String mPhotoPath;
-    private static int PERMISSION_REQUEST_CODE = 100;
-    private static int CAMERA_REQUEST_CODE = 101;
-    private String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private List<Question> mQuestions;
-    private String mSearchInput;
-    private SearchViewModel mSearchViewModel;
-    private View.OnClickListener mOnClickListener;
+    private lateinit var mActivityOcrBinding: ActivityOcrBinding
+    private var mPhotoPath: String? = null
+    private val requiredPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private var mQuestions: List<Question>? = null
+    private var mSearchInput: String? = null
+    private lateinit var mSearchViewModel: SearchViewModel
+    private lateinit var mOnClickListener: View.OnClickListener
     @Inject
-    CustomSearchViewModelFactory viewModelFactory;
+    lateinit var viewModelFactory: CustomSearchViewModelFactory
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
-        super.onCreate(savedInstanceState);
-        mActivityOcrBinding = ActivityOcrBinding.inflate(getLayoutInflater());
-        setContentView(mActivityOcrBinding.getRoot());
-
-        checkPermissionAndStartCamera();
-        activateViewHolder();
-        setupRecyclerView();
-        hideAndShowScrollFab();
-        activateSearchButton();
-        activateScanFab();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+        mActivityOcrBinding = ActivityOcrBinding.inflate(layoutInflater)
+        setContentView(mActivityOcrBinding.root)
+        checkPermissionAndStartCamera()
+        activateViewHolder()
+        setupRecyclerView()
+        hideAndShowScrollFab()
+        activateSearchButton()
+        activateScanFab()
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (allPermissionsGranted()) {
-                startCamera();
+                startCamera()
             } else {
-                returnToMainActivity();
-                finish();
+                returnToMainActivity()
+                finish()
             }
         }
     }
 
-    private void checkPermissionAndStartCamera() {
+    private fun checkPermissionAndStartCamera() {
         if (allPermissionsGranted()) {
-            startCamera();
-            mActivityOcrBinding.ivCroppedImage.setOnClickListener(view -> startCamera());
+            startCamera()
+            mActivityOcrBinding.ivCroppedImage.setOnClickListener { startCamera() }
         } else if (shouldShowRequestPermissionRationale()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            val builder = AlertDialog.Builder(this)
             builder.setTitle("App Permissions")
                     .setMessage("This application requires access to your camera and storage to function!")
-                    .setNegativeButton("No", (dialogInterface, i) ->
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class)))
-                    .setPositiveButton("Ask Me", (dialogInterface, i) -> {
+                    .setNegativeButton("No") { _: DialogInterface?, _: Int -> startActivity(Intent(applicationContext, MainActivity::class.java)) }
+                    .setPositiveButton("Ask Me") { _: DialogInterface?, _: Int ->
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            requestPermissions(REQUIRED_PERMISSIONS, PERMISSION_REQUEST_CODE);
+                            requestPermissions(requiredPermissions, PERMISSION_REQUEST_CODE)
                         }
-                    }).show();
+                    }.show()
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(REQUIRED_PERMISSIONS, PERMISSION_REQUEST_CODE);
+                requestPermissions(requiredPermissions, PERMISSION_REQUEST_CODE)
             }
         }
     }
 
-    private void startCamera() {
-        mActivityOcrBinding.ocrTextInputLayout.setVisibility(View.GONE);
-        mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.GONE);
-        mActivityOcrBinding.btSearch.setVisibility(View.GONE);
-        mActivityOcrBinding.ocrRecyclerview.setVisibility(View.GONE);
-        mActivityOcrBinding.ivCroppedImage.setVisibility(View.GONE);
-        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (captureIntent.resolveActivity(getPackageManager()) != null) {
-            File photo = null;
+    private fun startCamera() {
+        mActivityOcrBinding.apply {
+            ocrTextInputLayout.visibility = View.GONE
+            ocrTextInputEditText.visibility = View.GONE
+            btSearch.visibility = View.GONE
+            ocrRecyclerview.visibility = View.GONE
+            ivCroppedImage.visibility = View.GONE
+        }
+        val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (captureIntent.resolveActivity(packageManager) != null) {
+            var photo: File? = null
             try {
-                photo = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
+                photo = createImageFile()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
             if (photo != null) {
-                Uri photoUri = FileProvider.getUriForFile(this, "com.josycom.mayorjay.flowoverstack.fileprovider", photo);
-                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(captureIntent, CAMERA_REQUEST_CODE);
+                val photoUri = FileProvider.getUriForFile(this, "com.josycom.mayorjay.flowoverstack.fileprovider", photo)
+                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                startActivityForResult(captureIntent, CAMERA_REQUEST_CODE)
             }
         }
     }
 
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        mPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    private void returnToMainActivity() {
-        startActivity(new Intent(this, MainActivity.class));
-        Snackbar.make(findViewById(R.id.main_root_layout), "Permission Denied", Snackbar.LENGTH_SHORT).show();
-    }
-
-    private boolean allPermissionsGranted() {
-        boolean granted = false;
-        for (String item: REQUIRED_PERMISSIONS) {
-            granted = ContextCompat.checkSelfPermission(this, item) == PackageManager.PERMISSION_GRANTED;
+    private fun createImageFile(): File? {
+        return try {
+            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val imageFileName = "JPEG_" + timeStamp + "_"
+            val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val image = File.createTempFile(imageFileName, ".jpg", storageDir)
+            mPhotoPath = image.absolutePath
+            image
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            null
         }
-        return granted;
     }
 
-    private boolean shouldShowRequestPermissionRationale() {
-        boolean shouldRequest = false;
+    private fun returnToMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        Snackbar.make(findViewById(R.id.main_root_layout), "Permission Denied", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun allPermissionsGranted(): Boolean {
+        var granted = false
+        for (item in requiredPermissions) {
+            granted = ContextCompat.checkSelfPermission(this, item) == PackageManager.PERMISSION_GRANTED
+        }
+        return granted
+    }
+
+    private fun shouldShowRequestPermissionRationale(): Boolean {
+        var shouldRequest = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            for (String item: REQUIRED_PERMISSIONS) {
-                shouldRequest = shouldShowRequestPermissionRationale(item);
+            for (item in requiredPermissions) {
+                shouldRequest = shouldShowRequestPermissionRationale(item)
             }
         }
-        return shouldRequest;
+        return shouldRequest
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        mActivityOcrBinding.ivCroppedImage.setVisibility(View.VISIBLE);
-        Bitmap bitmap = BitmapFactory.decodeFile(mPhotoPath);
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        mActivityOcrBinding.ivCroppedImage.visibility = View.VISIBLE
+        val bitmap = BitmapFactory.decodeFile(mPhotoPath)
         if (requestCode == CAMERA_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && bitmap != null) {
-                File file = new File(mPhotoPath);
-                Uri uri = Uri.fromFile(file);
+            if (resultCode == RESULT_OK && bitmap != null && mPhotoPath != null) {
+                val file = File(mPhotoPath!!)
+                val uri = Uri.fromFile(file)
                 CropImage.activity(uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(this);
+                        .start(this)
             } else if (bitmap == null) {
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(Intent(this, MainActivity::class.java))
             }
         } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            val result = CropImage.getActivityResult(data)
             if (resultCode == RESULT_OK) {
-                Uri resultUri = Objects.requireNonNull(result).getUri();
+                val resultUri = result.uri
                 Glide.with(this)
                         .load(resultUri)
-                        .into(mActivityOcrBinding.ivCroppedImage);
-                analyseImage(resultUri);
+                        .into(mActivityOcrBinding.ivCroppedImage)
+                analyseImage(resultUri)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = Objects.requireNonNull(result).getError();
-                error.printStackTrace();
-                Toast.makeText(this, "Oops! an error occurred, try again", Toast.LENGTH_LONG).show();
+                val error = result.error
+                error.printStackTrace()
+                Toast.makeText(this, "Oops! an error occurred, try again", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private void analyseImage(Uri resultUri) {
-        mActivityOcrBinding.btRecognise.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.btRecognise.setOnClickListener(view -> {
-            mActivityOcrBinding.ocrProgressBar.setVisibility(View.VISIBLE);
+    private fun analyseImage(resultUri: Uri) {
+        mActivityOcrBinding.btRecognise.visibility = View.VISIBLE
+        mActivityOcrBinding.btRecognise.setOnClickListener {
+            mActivityOcrBinding.ocrProgressBar.visibility = View.VISIBLE
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
-                InputImage image = InputImage.fromBitmap(bitmap, 0);
-                TextRecognizer recognizer = TextRecognition.getClient();
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, resultUri)
+                val image = InputImage.fromBitmap(bitmap, 0)
+                val recognizer = TextRecognition.getClient()
                 recognizer.process(image)
-                        .addOnSuccessListener(text -> {
-                            mActivityOcrBinding.ocrProgressBar.setVisibility(View.GONE);
-                            mActivityOcrBinding.btRecognise.setVisibility(View.GONE);
-                            processTextRecognitionResult(text);
-                        })
-                        .addOnFailureListener(e -> {
-                            mActivityOcrBinding.ocrProgressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Oops!, that text could not be recognized. Scan again", Toast.LENGTH_LONG).show();
-                        });
-            } catch (IOException e) {
-                e.printStackTrace();
+                        .addOnSuccessListener { text: Text ->
+                            mActivityOcrBinding.ocrProgressBar.visibility = View.GONE
+                            mActivityOcrBinding.btRecognise.visibility = View.GONE
+                            processTextRecognitionResult(text)
+                        }
+                        .addOnFailureListener {
+                            mActivityOcrBinding.ocrProgressBar.visibility = View.GONE
+                            Toast.makeText(applicationContext, "Oops!, that text could not be recognized. Scan again", Toast.LENGTH_LONG).show()
+                        }
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-        });
-    }
-
-    private void processTextRecognitionResult(Text text) {
-        List<Text.TextBlock> blocks = text.getTextBlocks();
-        if (blocks.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No text found, scan again", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, MainActivity.class));
-            return;
         }
-        mActivityOcrBinding.ocrTextInputLayout.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.btSearch.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.ocrTextInputEditText.setText(text.getText());
     }
 
-    private void setupRecyclerView() {
-        mActivityOcrBinding.ocrRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        mActivityOcrBinding.ocrRecyclerview.setHasFixedSize(true);
-        mActivityOcrBinding.ocrRecyclerview.setItemAnimator(new DefaultItemAnimator());
-        final SearchAdapter searchAdapter = new SearchAdapter();
+    private fun processTextRecognitionResult(text: Text) {
+        val blocks = text.textBlocks
+        if (blocks.size == 0) {
+            Toast.makeText(applicationContext, "No text found, scan again", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, MainActivity::class.java))
+            return
+        }
+        mActivityOcrBinding.apply {
+            ocrTextInputLayout.visibility = View.VISIBLE
+            ocrTextInputEditText.visibility = View.VISIBLE
+            btSearch.visibility = View.VISIBLE
+            ocrTextInputEditText.setText(text.text)
+        }
+    }
 
-        mSearchViewModel = new ViewModelProvider(this, viewModelFactory).get(SearchViewModel.class);
-        mSearchViewModel.getResponseLiveData().observe(this, searchResponse -> {
-            switch (searchResponse.networkState) {
-                case AppConstants.LOADING:
-                    onLoading();
-                    break;
-                case AppConstants.LOADED:
-                    onLoaded();
-                    mQuestions = searchResponse.questions;
-                    searchAdapter.setQuestions(searchResponse.questions);
-                    break;
-                case AppConstants.NO_MATCHING_RESULT:
-                    onNoMatchingResult();
-                    break;
-                case AppConstants.FAILED:
-                    onError();
-                    break;
+    private fun setupRecyclerView() {
+        mActivityOcrBinding.apply {
+            ocrRecyclerview.layoutManager = LinearLayoutManager(this@OcrActivity)
+            ocrRecyclerview.setHasFixedSize(true)
+            ocrRecyclerview.itemAnimator = DefaultItemAnimator()
+        }
+        val searchAdapter = SearchAdapter()
+        mSearchViewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
+        mSearchViewModel.responseLiveData.observe(this, {
+            when (it.networkState) {
+                AppConstants.LOADING -> onLoading()
+                AppConstants.LOADED -> {
+                    onLoaded()
+                    mQuestions = it.questions
+                    searchAdapter.setQuestions(it.questions)
+                }
+                AppConstants.NO_MATCHING_RESULT -> onNoMatchingResult()
+                AppConstants.FAILED -> onError()
             }
-        });
-        mActivityOcrBinding.ocrRecyclerview.setAdapter(searchAdapter);
-        searchAdapter.setOnClickListener(mOnClickListener);
+        })
+        mActivityOcrBinding.ocrRecyclerview.adapter = searchAdapter
+        searchAdapter.setOnClickListener(mOnClickListener)
     }
 
-    private void hideAndShowScrollFab() {
-        mActivityOcrBinding.ocrScrollUpFab.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrNestedScrollview.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY > 0) {
-                mActivityOcrBinding.ocrScrollUpFab.setVisibility(View.VISIBLE);
+    private fun hideAndShowScrollFab() {
+        mActivityOcrBinding.apply {
+            ocrScrollUpFab.visibility = View.INVISIBLE
+            ocrNestedScrollview.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
+                if (scrollY > 0) {
+                    ocrScrollUpFab.visibility = View.VISIBLE
+                } else {
+                    ocrScrollUpFab.visibility = View.INVISIBLE
+                }
+            }
+            ocrScrollUpFab.setOnClickListener { ocrNestedScrollview.scrollTo(0, 0) }
+        }
+    }
+
+    private fun activateViewHolder() {
+        mOnClickListener = View.OnClickListener {
+            val viewHolder = it.tag as RecyclerView.ViewHolder
+            val position = viewHolder.adapterPosition
+            Intent(applicationContext, AnswerActivity::class.java).apply {
+                val currentQuestion = mQuestions!![position]
+                putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
+                putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
+                putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
+                putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
+                putExtra(AppConstants.EXTRA_QUESTION_ID, currentQuestion.questionId)
+                putExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, currentQuestion.score)
+                val questionOwner = currentQuestion.owner
+                if (questionOwner != null) {
+                    putExtra(AppConstants.EXTRA_QUESTION_NAME, questionOwner.displayName)
+                    putExtra(AppConstants.EXTRA_AVATAR_ADDRESS, questionOwner.profileImage)
+                    putExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK, questionOwner.link)
+                }
+                startActivity(this)
+            }
+        }
+    }
+
+    private fun activateSearchButton() {
+        mActivityOcrBinding.btSearch.setOnClickListener {
+            if (TextUtils.isEmpty(mActivityOcrBinding.ocrTextInputEditText.text.toString())) {
+                mActivityOcrBinding.ocrTextInputEditText.error = getString(R.string.ocr_et_error_message)
             } else {
-                mActivityOcrBinding.ocrScrollUpFab.setVisibility(View.INVISIBLE);
+                mSearchInput = mActivityOcrBinding.ocrTextInputEditText.text.toString()
+                setQuery()
             }
-        });
-        mActivityOcrBinding.ocrScrollUpFab.setOnClickListener(view -> mActivityOcrBinding.ocrNestedScrollview.scrollTo(0, 0));
+        }
     }
 
-    private void activateViewHolder() {
-        mOnClickListener = view -> {
-            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
-            int position = viewHolder.getAdapterPosition();
-            Intent answerActivityIntent = new Intent(getApplicationContext(), AnswerActivity.class);
-            Question currentQuestion = mQuestions.get(position);
-            Owner questionOwner = currentQuestion.getOwner();
-
-            answerActivityIntent.putExtra(EXTRA_QUESTION_TITLE, currentQuestion.getTitle());
-            answerActivityIntent.putExtra(EXTRA_QUESTION_NAME, questionOwner.getDisplayName());
-            answerActivityIntent.putExtra(EXTRA_QUESTION_DATE,
-                    DateUtil.toNormalDate(currentQuestion.getCreationDate()));
-            answerActivityIntent.putExtra(EXTRA_QUESTION_FULL_TEXT, currentQuestion.getBody());
-            answerActivityIntent.putExtra(EXTRA_AVATAR_ADDRESS, questionOwner.getProfileImage());
-            answerActivityIntent.putExtra(EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.getAnswerCount());
-            answerActivityIntent.putExtra(EXTRA_QUESTION_ID, currentQuestion.getQuestionId());
-            answerActivityIntent.putExtra(EXTRA_QUESTION_VOTES_COUNT, currentQuestion.getScore());
-            answerActivityIntent.putExtra(EXTRA_QUESTION_OWNER_LINK, questionOwner.getLink());
-
-            startActivity(answerActivityIntent);
-        };
+    private fun activateScanFab() {
+        mActivityOcrBinding.ocrScanFab.setOnClickListener { startCamera() }
     }
 
-    private void activateSearchButton() {
-        mActivityOcrBinding.btSearch.setOnClickListener(view -> {
-            if (TextUtils.isEmpty(Objects.requireNonNull(mActivityOcrBinding.ocrTextInputEditText.getText()).toString())) {
-                mActivityOcrBinding.ocrTextInputEditText.setError(getString(R.string.ocr_et_error_message));
-            } else {
-                mSearchInput = Objects.requireNonNull(mActivityOcrBinding.ocrTextInputEditText.getText()).toString();
-                setQuery();
-            }
-        });
+    private fun setQuery() {
+        mSearchViewModel.setQuery(mSearchInput!!)
     }
 
-    private void activateScanFab() {
-        mActivityOcrBinding.ocrScanFab.setOnClickListener(view -> startCamera());
+    private fun onLoading() = mActivityOcrBinding.apply {
+        ocrProgressBar.visibility = View.VISIBLE
+        ocrRecyclerview.visibility = View.INVISIBLE
+        ocrTvError.visibility = View.INVISIBLE
     }
 
-    private void setQuery() {
-        mSearchViewModel.setQuery(mSearchInput);
+    private fun onLoaded() = mActivityOcrBinding.apply {
+        ocrProgressBar.visibility = View.INVISIBLE
+        ocrRecyclerview.visibility = View.VISIBLE
+        ocrTvError.visibility = View.INVISIBLE
+        ocrScanFab.visibility = View.VISIBLE
+        btSearch.visibility = View.INVISIBLE
+        ocrTextInputEditText.visibility = View.INVISIBLE
     }
 
-    private void onLoading() {
-        mActivityOcrBinding.ocrProgressBar.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.ocrRecyclerview.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrTvError.setVisibility(View.INVISIBLE);
+    private fun onNoMatchingResult() = mActivityOcrBinding.apply {
+        ocrProgressBar.visibility = View.INVISIBLE
+        ocrRecyclerview.visibility = View.INVISIBLE
+        ocrTvError.visibility = View.VISIBLE
+        ocrTvError.setText(R.string.no_matching_result)
     }
 
-    private void onLoaded() {
-        mActivityOcrBinding.ocrProgressBar.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrRecyclerview.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.ocrTvError.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrScanFab.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.btSearch.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrTextInputEditText.setVisibility(View.INVISIBLE);
+    private fun onError() = mActivityOcrBinding.apply {
+        ocrProgressBar.visibility = View.INVISIBLE
+        ocrRecyclerview.visibility = View.INVISIBLE
+        ocrTvError.visibility = View.VISIBLE
+        ocrTvError.setText(R.string.search_error_message)
     }
 
-    private void onNoMatchingResult() {
-        mActivityOcrBinding.ocrProgressBar.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrRecyclerview.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrTvError.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.ocrTvError.setText(R.string.no_matching_result);
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
-    private void onError() {
-        mActivityOcrBinding.ocrProgressBar.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrRecyclerview.setVisibility(View.INVISIBLE);
-        mActivityOcrBinding.ocrTvError.setVisibility(View.VISIBLE);
-        mActivityOcrBinding.ocrTvError.setText(R.string.search_error_message);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 100
+        private const val CAMERA_REQUEST_CODE = 101
     }
 }

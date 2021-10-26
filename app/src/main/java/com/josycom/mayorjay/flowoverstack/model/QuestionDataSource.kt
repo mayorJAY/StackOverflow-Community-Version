@@ -1,125 +1,82 @@
-package com.josycom.mayorjay.flowoverstack.model;
+package com.josycom.mayorjay.flowoverstack.model
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PageKeyedDataSource;
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PageKeyedDataSource
+import com.josycom.mayorjay.flowoverstack.network.ApiService
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-import com.josycom.mayorjay.flowoverstack.network.ApiService;
-import com.josycom.mayorjay.flowoverstack.util.AppConstants;
+class QuestionDataSource internal constructor(private val page: Int, private val pageSize: Int, private val order: String, private val sortCondition: String,
+                                              private val site: String, private val filter: String, private val siteKey: String,
+                                              private val apiService: ApiService) : PageKeyedDataSource<Int, Question>() {
 
-import org.jetbrains.annotations.NotNull;
+    val networkState: MutableLiveData<String> = MutableLiveData()
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class QuestionDataSource extends PageKeyedDataSource<Integer, Question> implements AppConstants {
-
-    private final int page;
-    private final int pageSize;
-    private final String order;
-    private final String sortCondition;
-    private final String site;
-    private final String filter;
-    private final String siteKey;
-    private ApiService apiService;
-    private MutableLiveData<String> networkState;
-
-    QuestionDataSource(int page, int pageSize, String order, String sortCondition,
-                       String site, String filter, String siteKey, ApiService apiService) {
-        this.page = page;
-        this.pageSize = pageSize;
-        this.order = order;
-        this.sortCondition = sortCondition;
-        this.site = site;
-        this.filter = filter;
-        this.siteKey = siteKey;
-        this.apiService = apiService;
-        networkState = new MutableLiveData<>();
-    }
-
-    @Override
-    public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Question> callback) {
-        networkState.postValue(AppConstants.LOADING);
-        Call<QuestionsResponse> call = apiService.getQuestionsForAll(page, pageSize, order, sortCondition, site, filter, siteKey);
-        call.enqueue(new Callback<QuestionsResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
-                QuestionsResponse apiResponse = response.body();
+    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Question?>) {
+        networkState.postValue(AppConstants.LOADING)
+        val call = apiService.getQuestionsForAll(page, pageSize, order, sortCondition, site, filter, siteKey)
+        call.enqueue(object : Callback<QuestionsResponse?> {
+            override fun onResponse(call: Call<QuestionsResponse?>, response: Response<QuestionsResponse?>) {
+                val apiResponse = response.body()
                 if (apiResponse != null) {
-                    networkState.setValue(AppConstants.LOADED);
-                    List<Question> responseItems = apiResponse.getItems();
-                    callback.onResult(responseItems, null, page + 1);
+                    networkState.value = AppConstants.LOADED
+                    val responseItems: List<Question?>? = apiResponse.items
+                    callback.onResult(responseItems!!, null, page + 1)
                 } else {
-                    networkState.setValue(AppConstants.FAILED);
+                    networkState.setValue(AppConstants.FAILED)
                 }
             }
 
-            @Override
-            public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
-                t.printStackTrace();
-                networkState.setValue(AppConstants.FAILED);
+            override fun onFailure(call: Call<QuestionsResponse?>, t: Throwable) {
+                t.printStackTrace()
+                networkState.value = AppConstants.FAILED
             }
-        });
+        })
     }
 
-    @Override
-    public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
-        Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter, siteKey);
-        call.enqueue(new Callback<QuestionsResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
-                QuestionsResponse apiResponse = response.body();
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Question?>) {
+        val call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter, siteKey)
+        call.enqueue(object : Callback<QuestionsResponse?> {
+            override fun onResponse(call: Call<QuestionsResponse?>, response: Response<QuestionsResponse?>) {
+                val apiResponse = response.body()
                 if (apiResponse != null) {
-                    networkState.setValue(AppConstants.LOADED);
-                    List<Question> responseItems = apiResponse.getItems();
-                    int key;
-                    if (params.key > 1) {
-                        key = params.key - 1;
-                    } else {
-                        key = 0;
-                    }
-                    callback.onResult(responseItems, key);
+                    networkState.value = AppConstants.LOADED
+                    val responseItems: List<Question?>? = apiResponse.items
+                    val key: Int = if (params.key > 1) params.key - 1 else 0
+                    callback.onResult(responseItems!!, key)
                 } else {
-                    networkState.setValue(AppConstants.FAILED);
+                    networkState.setValue(AppConstants.FAILED)
                 }
             }
 
-            @Override
-            public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
-                t.printStackTrace();
-                networkState.setValue(AppConstants.FAILED);
+            override fun onFailure(call: Call<QuestionsResponse?>, t: Throwable) {
+                t.printStackTrace()
+                networkState.value = AppConstants.FAILED
             }
-        });
+        })
     }
 
-    @Override
-    public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Question> callback) {
-        Call<QuestionsResponse> call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter, siteKey);
-        call.enqueue(new Callback<QuestionsResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<QuestionsResponse> call, @NotNull Response<QuestionsResponse> response) {
-                QuestionsResponse apiResponse = response.body();
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Question?>) {
+        val call = apiService.getQuestionsForAll(params.key, pageSize, order, sortCondition, site, filter, siteKey)
+        call.enqueue(object : Callback<QuestionsResponse?> {
+            override fun onResponse(call: Call<QuestionsResponse?>, response: Response<QuestionsResponse?>) {
+                val apiResponse = response.body()
                 if (apiResponse != null) {
-                    networkState.setValue(AppConstants.LOADED);
-                    List<Question> responseItems = apiResponse.getItems();
-                    callback.onResult(responseItems, params.key + 1);
+                    networkState.value = AppConstants.LOADED
+                    val responseItems: List<Question?>? = apiResponse.items
+                    callback.onResult(responseItems!!, params.key + 1)
                 } else {
-                    networkState.setValue(AppConstants.FAILED);
+                    networkState.setValue(AppConstants.FAILED)
                 }
             }
 
-            @Override
-            public void onFailure(@NotNull Call<QuestionsResponse> call, @NotNull Throwable t) {
-                t.printStackTrace();
-                networkState.setValue(AppConstants.FAILED);
+            override fun onFailure(call: Call<QuestionsResponse?>, t: Throwable) {
+                t.printStackTrace()
+                networkState.value = AppConstants.FAILED
             }
-        });
+        })
     }
 
-    public MutableLiveData<String> getNetworkState() {
-        return networkState;
-    }
 }
