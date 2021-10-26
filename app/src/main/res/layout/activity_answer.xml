@@ -38,7 +38,6 @@
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="4dp"
                 app:cardElevation="0dp"
-                android:onClick="openProfileOnWeb"
                 app:layout_constraintStart_toStartOf="@+id/tv_question_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_question_detail">
 
@@ -68,7 +67,6 @@
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/montserrat"
                 android:maxLines="3"
-                android:onClick="openProfileOnWeb"
                 android:text="@string/tv_example_name_item"
                 android:textColor="@color/blueText"
                 android:textSize="@dimen/_10ssp"
