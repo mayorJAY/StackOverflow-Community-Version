@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -21,27 +21,27 @@ import javax.inject.Inject
 
 class AnswerActivity : AppCompatActivity() {
 
-    private lateinit var mActivityAnswerBinding: ActivityAnswerBinding
-    private lateinit var mAnswerAdapter: AnswerAdapter
-    private var mOwnerQuestionLink: String? = null
-    private var mAnswers: List<Answer>? = null
+    private lateinit var binding: ActivityAnswerBinding
+    private lateinit var answerAdapter: AnswerAdapter
+    private var ownerQuestionLink: String? = null
+    private var answers: List<Answer>? = null
     @Inject
     lateinit var viewModelFactory: CustomAnswerViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        mActivityAnswerBinding = ActivityAnswerBinding.inflate(layoutInflater)
-        mActivityAnswerBinding.apply {
+        binding = ActivityAnswerBinding.inflate(layoutInflater)
+        binding.apply {
             setContentView(this.root)
             rvAnswers.layoutManager = LinearLayoutManager(this@AnswerActivity)
         }
-        mAnswerAdapter = AnswerAdapter()
+        answerAdapter = AnswerAdapter()
         val mIntent = intent
         var questionId = 0
         var avatarAddress: String? = ""
         if (mIntent != null) {
-            mActivityAnswerBinding.apply {
+            binding.apply {
                 tvQuestionDetail.text = Jsoup.parse(mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_TITLE)).text()
                 markDownView.setMarkDownText(mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT))
                 tvDateQuestionDetail.text = mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_DATE)
@@ -49,18 +49,18 @@ class AnswerActivity : AppCompatActivity() {
             }
             val voteCount = mIntent.getIntExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, 0)
             if (voteCount <= 0) {
-                mActivityAnswerBinding.tvVotesCountItem.text = voteCount.toString()
+                binding.tvVotesCountItem.text = voteCount.toString()
             } else {
-                mActivityAnswerBinding.tvVotesCountItem.text = getString(R.string.plus_score, voteCount)
+                binding.tvVotesCountItem.text = getString(R.string.plus_score, voteCount)
             }
             questionId = mIntent.getIntExtra(AppConstants.EXTRA_QUESTION_ID, 0)
             avatarAddress = mIntent.getStringExtra(AppConstants.EXTRA_AVATAR_ADDRESS)
         }
-        mOwnerQuestionLink = mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK)
+        ownerQuestionLink = mIntent.getStringExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK)
         Glide.with(this)
                 .load(avatarAddress)
                 .placeholder(R.drawable.loading)
-                .into(mActivityAnswerBinding.ivAvatarQuestionDetail)
+                .into(binding.ivAvatarQuestionDetail)
 
         viewModelFactory.setInputs(questionId,
                 AppConstants.ORDER_DESCENDING,
@@ -70,30 +70,30 @@ class AnswerActivity : AppCompatActivity() {
                 AppConstants.API_KEY)
         val answerViewModel = ViewModelProvider(this, viewModelFactory).get(AnswerViewModel::class.java)
         answerViewModel.answersLiveData.observe(this, {
-            mAnswers = it
-            if (mAnswers!!.isEmpty()) {
-                mActivityAnswerBinding.tvNoAnswerQuestionDetail.visibility = View.VISIBLE
+            answers = it
+            if (answers!!.isEmpty()) {
+                binding.tvNoAnswerQuestionDetail.visibility = View.VISIBLE
             } else {
-                mActivityAnswerBinding.tvNoAnswerQuestionDetail.visibility = View.INVISIBLE
-                mAnswerAdapter.setAnswers(it)
+                binding.tvNoAnswerQuestionDetail.visibility = View.INVISIBLE
+                answerAdapter.setAnswers(it)
             }
         })
 
-        mActivityAnswerBinding.apply {
-            rvAnswers.adapter = mAnswerAdapter
+        binding.apply {
+            rvAnswers.adapter = answerAdapter
             avatarCard.setOnClickListener {
-                AppUtils.directLinkToBrowser(this@AnswerActivity, mOwnerQuestionLink)
+                AppUtils.directLinkToBrowser(this@AnswerActivity, ownerQuestionLink)
             }
             tvNameQuestionDetail.setOnClickListener {
-                AppUtils.directLinkToBrowser(this@AnswerActivity, mOwnerQuestionLink)
+                AppUtils.directLinkToBrowser(this@AnswerActivity, ownerQuestionLink)
             }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mAnswers = null
-        mAnswerAdapter.notifyDataSetChanged()
+        answers = null
+        answerAdapter.notifyDataSetChanged()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -105,8 +105,8 @@ class AnswerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (mActivityAnswerBinding.markDownView.canGoBack()) {
-            mActivityAnswerBinding.markDownView.goBack()
+        if (binding.markDownView.canGoBack()) {
+            binding.markDownView.goBack()
         } else {
             super.onBackPressed()
             finish()

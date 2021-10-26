@@ -76,7 +76,7 @@ class WebViewActivity : AppCompatActivity() {
             setBackgroundColor(Color.TRANSPARENT)
         }
         webView.webViewClient = object : WebViewClient() {
-            override fun onPageStarted(view: WebView, url: String, favicon: Bitmap) {
+            override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 actionBar.title = null
                 actionBar.subtitle = getHostName(url)

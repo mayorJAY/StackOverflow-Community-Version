@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter
-import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByVoteBinding
+import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -25,57 +26,61 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 /**
- * This fragment houses the Voted Questions
+ * This [Fragment] houses all Questions
  */
-class QuestionsByVoteFragment : Fragment() {
+class QuestionsFragment : Fragment() {
 
-    private lateinit var mFragmentQuestionsByVoteBinding: FragmentQuestionsByVoteBinding
-    private lateinit var mQuestions: PagedList<Question>
-    private lateinit var mOnClickListener: View.OnClickListener
+    private lateinit var binding: FragmentQuestionsBinding
+    private lateinit var questions: PagedList<Question>
+    private lateinit var onClickListener: View.OnClickListener
     @Inject
     lateinit var viewModelFactory: CustomQuestionViewModelFactory
-    
+
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
-        viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
+
+        viewModelFactory.setInputs(
+                AppConstants.FIRST_PAGE,
                 AppConstants.PAGE_SIZE,
                 AppConstants.ORDER_DESCENDING,
-                AppConstants.SORT_BY_VOTES,
+                sortCondition,
                 AppConstants.SITE,
                 AppConstants.QUESTION_FILTER,
-                AppConstants.API_KEY)
+                AppConstants.API_KEY
+        )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        mFragmentQuestionsByVoteBinding = FragmentQuestionsByVoteBinding.inflate(inflater, container, false)
-        return mFragmentQuestionsByVoteBinding.root
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentQuestionsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mFragmentQuestionsByVoteBinding.apply {
-            voteSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
-            voteScrollUpFab.visibility = View.INVISIBLE
-            voteRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        (activity as AppCompatActivity).supportActionBar?.title = title
+        binding.apply {
+            activitySwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
+            activityScrollUpFab.visibility = View.INVISIBLE
+
+            activityRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    if (dy > 0) {
-                        voteScrollUpFab.visibility = View.VISIBLE
-                    } else {
-                        voteScrollUpFab.visibility = View.INVISIBLE
-                    }
+                    activityScrollUpFab.visibility = if (dy > 0) View.VISIBLE else View.INVISIBLE
                 }
             })
-            voteScrollUpFab.setOnClickListener { voteRecyclerView.scrollToPosition(0) }
+            activityScrollUpFab.setOnClickListener { activityRecyclerView.scrollToPosition(0) }
         }
 
-        mOnClickListener = View.OnClickListener { v: View ->
-            val viewHolder = v.tag as RecyclerView.ViewHolder
+        onClickListener = View.OnClickListener {
+            val viewHolder = it.tag as RecyclerView.ViewHolder
             val position = viewHolder.adapterPosition
             Intent(context, AnswerActivity::class.java).apply {
-                val currentQuestion = mQuestions[position]
+                val currentQuestion = questions[position]
                 if (currentQuestion != null) {
                     putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
                     if (currentQuestion.creationDate != null) {
@@ -100,10 +105,11 @@ class QuestionsByVoteFragment : Fragment() {
 
     private fun handleRecyclerView() {
         val questionAdapter = QuestionAdapter()
-        mFragmentQuestionsByVoteBinding.voteRecyclerView.apply {
+        binding.activityRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
         }
+
         val questionViewModel = ViewModelProvider(this, viewModelFactory)
                 .get(QuestionViewModel::class.java)
                 .apply {
@@ -114,37 +120,43 @@ class QuestionsByVoteFragment : Fragment() {
                             AppConstants.FAILED -> onError()
                         }
                     })
+
                     questionPagedList!!.observe(viewLifecycleOwner, {
-                        mQuestions = it
+                        questions = it
                         questionAdapter.submitList(it)
                     })
                 }
-        mFragmentQuestionsByVoteBinding.apply {
-            voteRecyclerView.adapter = questionAdapter.apply {
-                setOnClickListener(mOnClickListener)
+        binding.apply {
+            activityRecyclerView.adapter = questionAdapter.apply {
+                setOnClickListener(onClickListener)
             }
-            voteSwipeContainer.setOnRefreshListener {
+            activitySwipeContainer.setOnRefreshListener {
                 questionViewModel.refresh()
-                voteSwipeContainer.isRefreshing = false
+                activitySwipeContainer.isRefreshing = false
             }
         }
     }
 
-    private fun onLoaded() = mFragmentQuestionsByVoteBinding.apply {
-        votePbFetchData.visibility = View.INVISIBLE
-        voteRecyclerView.visibility = View.VISIBLE
-        voteTvError.visibility = View.INVISIBLE
+    private fun onLoaded() = binding.apply {
+        activityPbFetchData.visibility = View.INVISIBLE
+        activityRecyclerView.visibility = View.VISIBLE
+        activityTvError.visibility = View.INVISIBLE
     }
 
-    private fun onError() = mFragmentQuestionsByVoteBinding.apply {
-        votePbFetchData.visibility = View.INVISIBLE
-        voteRecyclerView.visibility = View.INVISIBLE
-        voteTvError.visibility = View.VISIBLE
+    private fun onError() = binding.apply {
+        activityPbFetchData.visibility = View.INVISIBLE
+        activityRecyclerView.visibility = View.INVISIBLE
+        activityTvError.visibility = View.VISIBLE
     }
 
-    private fun onLoading() = mFragmentQuestionsByVoteBinding.apply {
-        votePbFetchData.visibility = View.VISIBLE
-        voteRecyclerView.visibility = View.INVISIBLE
-        voteTvError.visibility = View.INVISIBLE
+    private fun onLoading() = binding.apply {
+        activityPbFetchData.visibility = View.VISIBLE
+        activityRecyclerView.visibility = View.VISIBLE
+        activityTvError.visibility = View.INVISIBLE
+    }
+
+    companion object {
+        var title = ""
+        var sortCondition = ""
     }
 }
