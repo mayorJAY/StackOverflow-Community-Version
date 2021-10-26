@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter
-import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByActivityBinding
+import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByVoteBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -25,57 +25,54 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 /**
- * This [Fragment] houses the Activity Questions
+ * This fragment houses the Voted Questions
  */
-class QuestionsByActivityFragment : Fragment() {
+class QuestionsByVoteFragment : Fragment() {
 
-    private lateinit var mFragmentQuestionsByActivityBinding: FragmentQuestionsByActivityBinding
+    private lateinit var mFragmentQuestionsByVoteBinding: FragmentQuestionsByVoteBinding
     private lateinit var mQuestions: PagedList<Question>
     private lateinit var mOnClickListener: View.OnClickListener
     @Inject
     lateinit var viewModelFactory: CustomQuestionViewModelFactory
-
+    
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
-
-        viewModelFactory.setInputs(
-                AppConstants.FIRST_PAGE,
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
                 AppConstants.PAGE_SIZE,
                 AppConstants.ORDER_DESCENDING,
-                AppConstants.SORT_BY_ACTIVITY,
+                AppConstants.SORT_BY_VOTES,
                 AppConstants.SITE,
                 AppConstants.QUESTION_FILTER,
-                AppConstants.API_KEY
-        )
+                AppConstants.API_KEY)
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View {
-        mFragmentQuestionsByActivityBinding = FragmentQuestionsByActivityBinding.inflate(inflater, container, false)
-        return mFragmentQuestionsByActivityBinding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        mFragmentQuestionsByVoteBinding = FragmentQuestionsByVoteBinding.inflate(inflater, container, false)
+        return mFragmentQuestionsByVoteBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mFragmentQuestionsByActivityBinding.apply {
-            activitySwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
-            activityScrollUpFab.visibility = View.INVISIBLE
-
-            activityRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        mFragmentQuestionsByVoteBinding.apply {
+            voteSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
+            voteScrollUpFab.visibility = View.INVISIBLE
+            voteRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    activityScrollUpFab.visibility = if (dy > 0) View.VISIBLE else View.INVISIBLE
+                    if (dy > 0) {
+                        voteScrollUpFab.visibility = View.VISIBLE
+                    } else {
+                        voteScrollUpFab.visibility = View.INVISIBLE
+                    }
                 }
             })
-            activityScrollUpFab.setOnClickListener { activityRecyclerView.scrollToPosition(0) }
+            voteScrollUpFab.setOnClickListener { voteRecyclerView.scrollToPosition(0) }
         }
 
-        mOnClickListener = View.OnClickListener {
-            val viewHolder = it.tag as RecyclerView.ViewHolder
+        mOnClickListener = View.OnClickListener { v: View ->
+            val viewHolder = v.tag as RecyclerView.ViewHolder
             val position = viewHolder.adapterPosition
             Intent(context, AnswerActivity::class.java).apply {
                 val currentQuestion = mQuestions[position]
@@ -103,11 +100,10 @@ class QuestionsByActivityFragment : Fragment() {
 
     private fun handleRecyclerView() {
         val questionAdapter = QuestionAdapter()
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.apply {
+        mFragmentQuestionsByVoteBinding.voteRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
         }
-
         val questionViewModel = ViewModelProvider(this, viewModelFactory)
                 .get(QuestionViewModel::class.java)
                 .apply {
@@ -118,38 +114,37 @@ class QuestionsByActivityFragment : Fragment() {
                             AppConstants.FAILED -> onError()
                         }
                     })
-
                     questionPagedList!!.observe(viewLifecycleOwner, {
                         mQuestions = it
                         questionAdapter.submitList(it)
                     })
                 }
-        mFragmentQuestionsByActivityBinding.apply {
-            activityRecyclerView.adapter = questionAdapter.apply {
+        mFragmentQuestionsByVoteBinding.apply {
+            voteRecyclerView.adapter = questionAdapter.apply {
                 setOnClickListener(mOnClickListener)
             }
-            activitySwipeContainer.setOnRefreshListener {
+            voteSwipeContainer.setOnRefreshListener {
                 questionViewModel.refresh()
-                activitySwipeContainer.isRefreshing = false
+                voteSwipeContainer.isRefreshing = false
             }
         }
     }
 
-    private fun onLoaded() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.INVISIBLE
-        activityRecyclerView.visibility = View.VISIBLE
-        activityTvError.visibility = View.INVISIBLE
+    private fun onLoaded() = mFragmentQuestionsByVoteBinding.apply {
+        votePbFetchData.visibility = View.INVISIBLE
+        voteRecyclerView.visibility = View.VISIBLE
+        voteTvError.visibility = View.INVISIBLE
     }
 
-    private fun onError() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.INVISIBLE
-        activityRecyclerView.visibility = View.INVISIBLE
-        activityTvError.visibility = View.VISIBLE
+    private fun onError() = mFragmentQuestionsByVoteBinding.apply {
+        votePbFetchData.visibility = View.INVISIBLE
+        voteRecyclerView.visibility = View.INVISIBLE
+        voteTvError.visibility = View.VISIBLE
     }
 
-    private fun onLoading() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.VISIBLE
-        activityRecyclerView.visibility = View.VISIBLE
-        activityTvError.visibility = View.INVISIBLE
+    private fun onLoading() = mFragmentQuestionsByVoteBinding.apply {
+        votePbFetchData.visibility = View.VISIBLE
+        voteRecyclerView.visibility = View.INVISIBLE
+        voteTvError.visibility = View.INVISIBLE
     }
 }

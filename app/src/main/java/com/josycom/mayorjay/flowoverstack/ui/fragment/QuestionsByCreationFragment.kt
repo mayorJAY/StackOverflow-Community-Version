@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter
-import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByActivityBinding
+import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByCreationBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -25,11 +25,11 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 /**
- * This [Fragment] houses the Activity Questions
+ * This fragment houses the Recent Questions
  */
-class QuestionsByActivityFragment : Fragment() {
+class QuestionsByCreationFragment : Fragment() {
 
-    private lateinit var mFragmentQuestionsByActivityBinding: FragmentQuestionsByActivityBinding
+    private lateinit var mFragmentQuestionsByCreationBinding: FragmentQuestionsByCreationBinding
     private lateinit var mQuestions: PagedList<Question>
     private lateinit var mOnClickListener: View.OnClickListener
     @Inject
@@ -38,40 +38,38 @@ class QuestionsByActivityFragment : Fragment() {
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
-
-        viewModelFactory.setInputs(
-                AppConstants.FIRST_PAGE,
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
                 AppConstants.PAGE_SIZE,
                 AppConstants.ORDER_DESCENDING,
-                AppConstants.SORT_BY_ACTIVITY,
+                AppConstants.SORT_BY_CREATION,
                 AppConstants.SITE,
                 AppConstants.QUESTION_FILTER,
-                AppConstants.API_KEY
-        )
+                AppConstants.API_KEY)
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View {
-        mFragmentQuestionsByActivityBinding = FragmentQuestionsByActivityBinding.inflate(inflater, container, false)
-        return mFragmentQuestionsByActivityBinding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        mFragmentQuestionsByCreationBinding = FragmentQuestionsByCreationBinding.inflate(inflater, container, false)
+        return mFragmentQuestionsByCreationBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mFragmentQuestionsByActivityBinding.apply {
-            activitySwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
-            activityScrollUpFab.visibility = View.INVISIBLE
+        mFragmentQuestionsByCreationBinding.apply {
+            creationSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
+            creationScrollUpFab.visibility = View.INVISIBLE
 
-            activityRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            creationRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    activityScrollUpFab.visibility = if (dy > 0) View.VISIBLE else View.INVISIBLE
+                    if (dy > 0) {
+                        creationScrollUpFab.visibility = View.VISIBLE
+                    } else {
+                        creationScrollUpFab.visibility = View.INVISIBLE
+                    }
                 }
             })
-            activityScrollUpFab.setOnClickListener { activityRecyclerView.scrollToPosition(0) }
+            creationScrollUpFab.setOnClickListener { creationRecyclerView.scrollToPosition(0) }
         }
 
         mOnClickListener = View.OnClickListener {
@@ -103,53 +101,52 @@ class QuestionsByActivityFragment : Fragment() {
 
     private fun handleRecyclerView() {
         val questionAdapter = QuestionAdapter()
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.apply {
+        mFragmentQuestionsByCreationBinding.creationRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
         }
-
         val questionViewModel = ViewModelProvider(this, viewModelFactory)
                 .get(QuestionViewModel::class.java)
                 .apply {
-                    networkState.observe(viewLifecycleOwner, {
-                        when (it) {
-                            AppConstants.LOADING -> onLoading()
-                            AppConstants.LOADED -> onLoaded()
-                            AppConstants.FAILED -> onError()
-                        }
-                    })
-
-                    questionPagedList!!.observe(viewLifecycleOwner, {
-                        mQuestions = it
-                        questionAdapter.submitList(it)
-                    })
+                networkState.observe(viewLifecycleOwner, {
+                when (it) {
+                    AppConstants.LOADING -> onLoading()
+                    AppConstants.LOADED -> onLoaded()
+                    AppConstants.FAILED -> onError()
                 }
-        mFragmentQuestionsByActivityBinding.apply {
-            activityRecyclerView.adapter = questionAdapter.apply {
+            })
+            questionPagedList!!.observe(viewLifecycleOwner, {
+                mQuestions = it
+                questionAdapter.submitList(it)
+            })
+        }
+
+        mFragmentQuestionsByCreationBinding.apply {
+            creationRecyclerView.adapter = questionAdapter.apply {
                 setOnClickListener(mOnClickListener)
             }
-            activitySwipeContainer.setOnRefreshListener {
+            creationSwipeContainer.setOnRefreshListener {
                 questionViewModel.refresh()
-                activitySwipeContainer.isRefreshing = false
+                creationSwipeContainer.isRefreshing = false
             }
         }
     }
 
-    private fun onLoaded() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.INVISIBLE
-        activityRecyclerView.visibility = View.VISIBLE
-        activityTvError.visibility = View.INVISIBLE
+    private fun onLoaded() = mFragmentQuestionsByCreationBinding.apply {
+        creationPbFetchData.visibility = View.INVISIBLE
+        creationRecyclerView.visibility = View.VISIBLE
+        creationTvError.visibility = View.INVISIBLE
     }
 
-    private fun onError() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.INVISIBLE
-        activityRecyclerView.visibility = View.INVISIBLE
-        activityTvError.visibility = View.VISIBLE
+    private fun onError() = mFragmentQuestionsByCreationBinding.apply {
+        creationPbFetchData.visibility = View.INVISIBLE
+        creationRecyclerView.visibility = View.INVISIBLE
+        creationTvError.visibility = View.VISIBLE
     }
 
-    private fun onLoading() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.VISIBLE
-        activityRecyclerView.visibility = View.VISIBLE
-        activityTvError.visibility = View.INVISIBLE
+    private fun onLoading() = mFragmentQuestionsByCreationBinding.apply {
+        creationPbFetchData.visibility = View.VISIBLE
+        creationRecyclerView.visibility = View.INVISIBLE
+        creationTvError.visibility = View.INVISIBLE
     }
 }

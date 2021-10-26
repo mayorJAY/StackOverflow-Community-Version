@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter
-import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByActivityBinding
+import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsByHotBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -25,11 +25,11 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 /**
- * This [Fragment] houses the Activity Questions
+ * This fragment houses the Hot Questions
  */
-class QuestionsByActivityFragment : Fragment() {
+class QuestionsByHotFragment : Fragment() {
 
-    private lateinit var mFragmentQuestionsByActivityBinding: FragmentQuestionsByActivityBinding
+    private lateinit var mFragmentQuestionsByHotBinding: FragmentQuestionsByHotBinding
     private lateinit var mQuestions: PagedList<Question>
     private lateinit var mOnClickListener: View.OnClickListener
     @Inject
@@ -38,40 +38,37 @@ class QuestionsByActivityFragment : Fragment() {
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
-
-        viewModelFactory.setInputs(
-                AppConstants.FIRST_PAGE,
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE,
                 AppConstants.PAGE_SIZE,
                 AppConstants.ORDER_DESCENDING,
-                AppConstants.SORT_BY_ACTIVITY,
+                AppConstants.SORT_BY_HOT,
                 AppConstants.SITE,
                 AppConstants.QUESTION_FILTER,
-                AppConstants.API_KEY
-        )
+                AppConstants.API_KEY)
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View {
-        mFragmentQuestionsByActivityBinding = FragmentQuestionsByActivityBinding.inflate(inflater, container, false)
-        return mFragmentQuestionsByActivityBinding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        mFragmentQuestionsByHotBinding = FragmentQuestionsByHotBinding.inflate(inflater, container, false)
+        return mFragmentQuestionsByHotBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mFragmentQuestionsByActivityBinding.apply {
-            activitySwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
-            activityScrollUpFab.visibility = View.INVISIBLE
-
-            activityRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        mFragmentQuestionsByHotBinding.apply {
+            hotSwipeContainer.setColorSchemeResources(R.color.colorPrimaryLight)
+            hotScrollUpFab.visibility = View.INVISIBLE
+            hotRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    activityScrollUpFab.visibility = if (dy > 0) View.VISIBLE else View.INVISIBLE
+                    if (dy > 0) {
+                        hotScrollUpFab.visibility = View.VISIBLE
+                    } else {
+                        hotScrollUpFab.visibility = View.INVISIBLE
+                    }
                 }
             })
-            activityScrollUpFab.setOnClickListener { activityRecyclerView.scrollToPosition(0) }
+            hotScrollUpFab.setOnClickListener { hotRecyclerView.scrollToPosition(0) }
         }
 
         mOnClickListener = View.OnClickListener {
@@ -103,11 +100,10 @@ class QuestionsByActivityFragment : Fragment() {
 
     private fun handleRecyclerView() {
         val questionAdapter = QuestionAdapter()
-        mFragmentQuestionsByActivityBinding.activityRecyclerView.apply {
+        mFragmentQuestionsByHotBinding.hotRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
         }
-
         val questionViewModel = ViewModelProvider(this, viewModelFactory)
                 .get(QuestionViewModel::class.java)
                 .apply {
@@ -118,38 +114,37 @@ class QuestionsByActivityFragment : Fragment() {
                             AppConstants.FAILED -> onError()
                         }
                     })
-
                     questionPagedList!!.observe(viewLifecycleOwner, {
                         mQuestions = it
                         questionAdapter.submitList(it)
                     })
                 }
-        mFragmentQuestionsByActivityBinding.apply {
-            activityRecyclerView.adapter = questionAdapter.apply {
+        mFragmentQuestionsByHotBinding.apply {
+            hotRecyclerView.adapter = questionAdapter.apply {
                 setOnClickListener(mOnClickListener)
             }
-            activitySwipeContainer.setOnRefreshListener {
+            hotSwipeContainer.setOnRefreshListener {
                 questionViewModel.refresh()
-                activitySwipeContainer.isRefreshing = false
+                hotSwipeContainer.isRefreshing = false
             }
         }
     }
 
-    private fun onLoaded() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.INVISIBLE
-        activityRecyclerView.visibility = View.VISIBLE
-        activityTvError.visibility = View.INVISIBLE
+    private fun onLoaded() = mFragmentQuestionsByHotBinding.apply {
+        hotPbFetchData.visibility = View.INVISIBLE
+        hotRecyclerView.visibility = View.VISIBLE
+        hotTvError.visibility = View.INVISIBLE
     }
 
-    private fun onError() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.INVISIBLE
-        activityRecyclerView.visibility = View.INVISIBLE
-        activityTvError.visibility = View.VISIBLE
+    private fun onError() = mFragmentQuestionsByHotBinding.apply {
+        hotPbFetchData.visibility = View.INVISIBLE
+        hotRecyclerView.visibility = View.INVISIBLE
+        hotTvError.visibility = View.VISIBLE
     }
 
-    private fun onLoading() = mFragmentQuestionsByActivityBinding.apply {
-        activityPbFetchData.visibility = View.VISIBLE
-        activityRecyclerView.visibility = View.VISIBLE
-        activityTvError.visibility = View.INVISIBLE
+    private fun onLoading() = mFragmentQuestionsByHotBinding.apply {
+        hotPbFetchData.visibility = View.VISIBLE
+        hotRecyclerView.visibility = View.INVISIBLE
+        hotTvError.visibility = View.INVISIBLE
     }
 }
