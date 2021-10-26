@@ -23,10 +23,7 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityMainBinding
-import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByActivityFragment
-import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByCreationFragment
-import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByHotFragment
-import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsByVoteFragment
+import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsFragment
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -38,29 +35,29 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-    private var mFragmentTransaction: FragmentTransaction? = null
+    private var fragmentTransaction: FragmentTransaction? = null
     private var isFragmentDisplayed = false
     private var isFabOpen = false
-    private lateinit var mActivityMainBinding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private var fabOpen: Animation? = null
     private var fabClose: Animation? = null
-    private var mAppUpdateManager: AppUpdateManager? = null
+    private var appUpdateManager: AppUpdateManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        mActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(mActivityMainBinding.root)
-        setSupportActionBar(mActivityMainBinding.toolbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open)
         fabClose = AnimationUtils.loadAnimation(this, R.anim.fab_close)
         checkForTablet()
-        mActivityMainBinding.searchFab.setOnClickListener { fabAction() }
-        mActivityMainBinding.scanToSearch.setOnClickListener {
+        binding.searchFab.setOnClickListener { fabAction() }
+        binding.scanToSearch.setOnClickListener {
             startActivity(Intent(this, OcrActivity::class.java))
             hideFabActions()
         }
-        mActivityMainBinding.typeToSearch.setOnClickListener {
+        binding.typeToSearch.setOnClickListener {
             startActivity(Intent(this, SearchActivity::class.java))
             hideFabActions()
         }
@@ -69,8 +66,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         }
         if (!isFragmentDisplayed) {
             if (findViewById<View?>(R.id.fragment_container) != null) {
-                mFragmentTransaction = supportFragmentManager.beginTransaction()
-                mFragmentTransaction!!.add(R.id.fragment_container, QuestionsByActivityFragment()).commit()
+                fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction!!.add(R.id.fragment_container, QuestionsFragment()).commit()
+                QuestionsFragment.sortCondition = AppConstants.SORT_BY_ACTIVITY
+                QuestionsFragment.title = getString(R.string.active_questions)
                 isFragmentDisplayed = true
             }
         }
@@ -90,7 +89,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     private fun hideFabActions() {
-        mActivityMainBinding.apply {
+        binding.apply {
             searchFab.setImageDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_search))
             scanToSearch.startAnimation(fabClose)
             scanToSearch.isClickable = false
@@ -103,7 +102,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     private fun showFabActions() {
-        mActivityMainBinding.apply {
+        binding.apply {
             searchFab.setImageDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_close))
             scanToSearch.startAnimation(fabOpen)
             scanToSearch.isClickable = true
@@ -122,30 +121,34 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.action_filter_by_recency) {
-            if (findViewById<View?>(R.id.fragment_container) != null && item.title == getString(R.string.action_filter_by_recency)) {
-                mFragmentTransaction = supportFragmentManager.beginTransaction()
-                mFragmentTransaction!!.replace(R.id.fragment_container, QuestionsByCreationFragment()).commit()
-                item.setTitle(R.string.action_filter_by_activity)
-            } else if (findViewById<View?>(R.id.fragment_container) != null && item.title == getString(R.string.action_filter_by_activity)) {
-                mFragmentTransaction = supportFragmentManager.beginTransaction()
-                mFragmentTransaction!!.replace(R.id.fragment_container, QuestionsByActivityFragment()).commit()
-                item.setTitle(R.string.action_filter_by_recency)
+        when (item.itemId) {
+            R.id.action_filter_by_recency -> {
+                if (item.title == getString(R.string.action_filter_by_recency)) {
+                    switchView(getString(R.string.recent_questions), AppConstants.SORT_BY_CREATION)
+                    item.setTitle(R.string.action_filter_by_activity)
+                } else if (item.title == getString(R.string.action_filter_by_activity)) {
+                    switchView(getString(R.string.active_questions), AppConstants.SORT_BY_ACTIVITY)
+                    item.setTitle(R.string.action_filter_by_recency)
+                }
+                return true
             }
-            return true
-        } else if (id == R.id.action_filter_by_hot) {
-            if (findViewById<View?>(R.id.fragment_container) != null) {
-                mFragmentTransaction = supportFragmentManager.beginTransaction()
-                mFragmentTransaction!!.replace(R.id.fragment_container, QuestionsByHotFragment()).commit()
+            R.id.action_filter_by_hot -> {
+                switchView(getString(R.string.hot_questions), AppConstants.SORT_BY_HOT)
             }
-        } else if (id == R.id.action_filter_by_vote) {
-            if (findViewById<View?>(R.id.fragment_container) != null) {
-                mFragmentTransaction = supportFragmentManager.beginTransaction()
-                mFragmentTransaction!!.replace(R.id.fragment_container, QuestionsByVoteFragment()).commit()
+            R.id.action_filter_by_vote -> {
+                switchView(getString(R.string.voted_questions), AppConstants.SORT_BY_VOTES)
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun switchView(title: String, sortCondition: String) {
+        if (findViewById<View?>(R.id.fragment_container) != null) {
+            fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction!!.replace(R.id.fragment_container, QuestionsFragment()).commit()
+            QuestionsFragment.title = title
+            QuestionsFragment.sortCondition = sortCondition
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -165,15 +168,15 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private fun checkForTablet() {
         val isTablet = resources.getBoolean(R.bool.isTablet)
         if (isTablet) {
-            mActivityMainBinding.scanToSearch.textSize = 15f
-            mActivityMainBinding.typeToSearch.textSize = 15f
+            binding.scanToSearch.textSize = 15f
+            binding.typeToSearch.textSize = 15f
         }
     }
 
     override fun onPause() {
         super.onPause()
-        if (mAppUpdateManager != null) {
-            mAppUpdateManager!!.unregisterListener(installStateUpdatedListener)
+        if (appUpdateManager != null) {
+            appUpdateManager!!.unregisterListener(installStateUpdatedListener)
         }
     }
 
@@ -182,8 +185,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
                 popupSnackBarForCompleteUpdate()
             } else if (state.installStatus() == InstallStatus.INSTALLED) {
-                if (mAppUpdateManager != null) {
-                    mAppUpdateManager!!.unregisterListener(this)
+                if (appUpdateManager != null) {
+                    appUpdateManager!!.unregisterListener(this)
                 }
             } else {
                 Log.i("UpdateInstaller", "InstallStateUpdatedListener >>>>> " + state.installStatus())
@@ -192,13 +195,13 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     private fun checkForUpdate() {
-        mAppUpdateManager = AppUpdateManagerFactory.create(this)
-        mAppUpdateManager!!.registerListener(installStateUpdatedListener)
-        mAppUpdateManager!!.appUpdateInfo.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager!!.registerListener(installStateUpdatedListener)
+        appUpdateManager!!.appUpdateInfo.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                 try {
-                    mAppUpdateManager!!.startUpdateFlowForResult(
+                    appUpdateManager!!.startUpdateFlowForResult(
                             appUpdateInfo, AppUpdateType.FLEXIBLE, this@MainActivity, APP_UPDATE)
                 } catch (e: SendIntentException) {
                     e.printStackTrace()
@@ -214,8 +217,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private fun popupSnackBarForCompleteUpdate() {
         Snackbar.make(findViewById(R.id.main_root_layout), "An update has just been downloaded", Snackbar.LENGTH_INDEFINITE).apply {
             setAction("Restart") {
-                if (mAppUpdateManager != null) {
-                    mAppUpdateManager!!.completeUpdate()
+                if (appUpdateManager != null) {
+                    appUpdateManager!!.completeUpdate()
                 }
             }
             setActionTextColor(resources.getColor(R.color.colorPrimaryText))

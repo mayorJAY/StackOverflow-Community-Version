@@ -13,7 +13,7 @@ interface AppConstants {
         const val ORDER_DESCENDING = "desc"
         const val QUESTION_FILTER = "!9Z(-wwYGT"
         const val ANSWER_FILTER = "!9Z(-wzu0T"
-        const val API_KEY = "YOUR_API_KEY"
+        const val API_KEY = "1ZLMY6ESrAkq5*odMs3zQw((" //YOUR_API_KEY
         const val SORT_BY_ACTIVITY = "activity"
         const val SORT_BY_VOTES = "votes"
         const val SORT_BY_CREATION = "creation"

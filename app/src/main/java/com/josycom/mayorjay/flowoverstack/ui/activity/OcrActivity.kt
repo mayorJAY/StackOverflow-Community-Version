@@ -47,21 +47,21 @@ import javax.inject.Inject
 
 class OcrActivity : AppCompatActivity() {
 
-    private lateinit var mActivityOcrBinding: ActivityOcrBinding
-    private var mPhotoPath: String? = null
+    private lateinit var binding: ActivityOcrBinding
+    private var photoPath: String? = null
     private val requiredPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    private var mQuestions: List<Question>? = null
-    private var mSearchInput: String? = null
-    private lateinit var mSearchViewModel: SearchViewModel
-    private lateinit var mOnClickListener: View.OnClickListener
+    private var questions: List<Question>? = null
+    private var searchInput: String? = null
+    private lateinit var searchViewModel: SearchViewModel
+    private lateinit var onClickListener: View.OnClickListener
     @Inject
     lateinit var viewModelFactory: CustomSearchViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        mActivityOcrBinding = ActivityOcrBinding.inflate(layoutInflater)
-        setContentView(mActivityOcrBinding.root)
+        binding = ActivityOcrBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         checkPermissionAndStartCamera()
         activateViewHolder()
         setupRecyclerView()
@@ -84,7 +84,7 @@ class OcrActivity : AppCompatActivity() {
     private fun checkPermissionAndStartCamera() {
         if (allPermissionsGranted()) {
             startCamera()
-            mActivityOcrBinding.ivCroppedImage.setOnClickListener { startCamera() }
+            binding.ivCroppedImage.setOnClickListener { startCamera() }
         } else if (shouldShowRequestPermissionRationale()) {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("App Permissions")
@@ -103,7 +103,7 @@ class OcrActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        mActivityOcrBinding.apply {
+        binding.apply {
             ocrTextInputLayout.visibility = View.GONE
             ocrTextInputEditText.visibility = View.GONE
             btSearch.visibility = View.GONE
@@ -132,7 +132,7 @@ class OcrActivity : AppCompatActivity() {
             val imageFileName = "JPEG_" + timeStamp + "_"
             val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             val image = File.createTempFile(imageFileName, ".jpg", storageDir)
-            mPhotoPath = image.absolutePath
+            photoPath = image.absolutePath
             image
         } catch (ex: IOException) {
             ex.printStackTrace()
@@ -165,11 +165,11 @@ class OcrActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mActivityOcrBinding.ivCroppedImage.visibility = View.VISIBLE
-        val bitmap = BitmapFactory.decodeFile(mPhotoPath)
+        binding.ivCroppedImage.visibility = View.VISIBLE
+        val bitmap = BitmapFactory.decodeFile(photoPath)
         if (requestCode == CAMERA_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && bitmap != null && mPhotoPath != null) {
-                val file = File(mPhotoPath!!)
+            if (resultCode == RESULT_OK && bitmap != null && photoPath != null) {
+                val file = File(photoPath!!)
                 val uri = Uri.fromFile(file)
                 CropImage.activity(uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
@@ -183,7 +183,7 @@ class OcrActivity : AppCompatActivity() {
                 val resultUri = result.uri
                 Glide.with(this)
                         .load(resultUri)
-                        .into(mActivityOcrBinding.ivCroppedImage)
+                        .into(binding.ivCroppedImage)
                 analyseImage(resultUri)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
@@ -194,21 +194,21 @@ class OcrActivity : AppCompatActivity() {
     }
 
     private fun analyseImage(resultUri: Uri) {
-        mActivityOcrBinding.btRecognise.visibility = View.VISIBLE
-        mActivityOcrBinding.btRecognise.setOnClickListener {
-            mActivityOcrBinding.ocrProgressBar.visibility = View.VISIBLE
+        binding.btRecognise.visibility = View.VISIBLE
+        binding.btRecognise.setOnClickListener {
+            binding.ocrProgressBar.visibility = View.VISIBLE
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, resultUri)
                 val image = InputImage.fromBitmap(bitmap, 0)
                 val recognizer = TextRecognition.getClient()
                 recognizer.process(image)
                         .addOnSuccessListener { text: Text ->
-                            mActivityOcrBinding.ocrProgressBar.visibility = View.GONE
-                            mActivityOcrBinding.btRecognise.visibility = View.GONE
+                            binding.ocrProgressBar.visibility = View.GONE
+                            binding.btRecognise.visibility = View.GONE
                             processTextRecognitionResult(text)
                         }
                         .addOnFailureListener {
-                            mActivityOcrBinding.ocrProgressBar.visibility = View.GONE
+                            binding.ocrProgressBar.visibility = View.GONE
                             Toast.makeText(applicationContext, "Oops!, that text could not be recognized. Scan again", Toast.LENGTH_LONG).show()
                         }
             } catch (e: IOException) {
@@ -224,7 +224,7 @@ class OcrActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             return
         }
-        mActivityOcrBinding.apply {
+        binding.apply {
             ocrTextInputLayout.visibility = View.VISIBLE
             ocrTextInputEditText.visibility = View.VISIBLE
             btSearch.visibility = View.VISIBLE
@@ -233,31 +233,31 @@ class OcrActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        mActivityOcrBinding.apply {
+        binding.apply {
             ocrRecyclerview.layoutManager = LinearLayoutManager(this@OcrActivity)
             ocrRecyclerview.setHasFixedSize(true)
             ocrRecyclerview.itemAnimator = DefaultItemAnimator()
         }
         val searchAdapter = SearchAdapter()
-        mSearchViewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
-        mSearchViewModel.responseLiveData.observe(this, {
+        searchViewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
+        searchViewModel.responseLiveData.observe(this, {
             when (it.networkState) {
                 AppConstants.LOADING -> onLoading()
                 AppConstants.LOADED -> {
                     onLoaded()
-                    mQuestions = it.questions
+                    questions = it.questions
                     searchAdapter.setQuestions(it.questions)
                 }
                 AppConstants.NO_MATCHING_RESULT -> onNoMatchingResult()
                 AppConstants.FAILED -> onError()
             }
         })
-        mActivityOcrBinding.ocrRecyclerview.adapter = searchAdapter
-        searchAdapter.setOnClickListener(mOnClickListener)
+        binding.ocrRecyclerview.adapter = searchAdapter
+        searchAdapter.setOnClickListener(onClickListener)
     }
 
     private fun hideAndShowScrollFab() {
-        mActivityOcrBinding.apply {
+        binding.apply {
             ocrScrollUpFab.visibility = View.INVISIBLE
             ocrNestedScrollview.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
                 if (scrollY > 0) {
@@ -271,11 +271,11 @@ class OcrActivity : AppCompatActivity() {
     }
 
     private fun activateViewHolder() {
-        mOnClickListener = View.OnClickListener {
+        onClickListener = View.OnClickListener {
             val viewHolder = it.tag as RecyclerView.ViewHolder
             val position = viewHolder.adapterPosition
             Intent(applicationContext, AnswerActivity::class.java).apply {
-                val currentQuestion = mQuestions!![position]
+                val currentQuestion = questions!![position]
                 putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
                 putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
                 putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
@@ -294,31 +294,31 @@ class OcrActivity : AppCompatActivity() {
     }
 
     private fun activateSearchButton() {
-        mActivityOcrBinding.btSearch.setOnClickListener {
-            if (TextUtils.isEmpty(mActivityOcrBinding.ocrTextInputEditText.text.toString())) {
-                mActivityOcrBinding.ocrTextInputEditText.error = getString(R.string.ocr_et_error_message)
+        binding.btSearch.setOnClickListener {
+            if (TextUtils.isEmpty(binding.ocrTextInputEditText.text.toString())) {
+                binding.ocrTextInputEditText.error = getString(R.string.ocr_et_error_message)
             } else {
-                mSearchInput = mActivityOcrBinding.ocrTextInputEditText.text.toString()
+                searchInput = binding.ocrTextInputEditText.text.toString()
                 setQuery()
             }
         }
     }
 
     private fun activateScanFab() {
-        mActivityOcrBinding.ocrScanFab.setOnClickListener { startCamera() }
+        binding.ocrScanFab.setOnClickListener { startCamera() }
     }
 
     private fun setQuery() {
-        mSearchViewModel.setQuery(mSearchInput!!)
+        searchViewModel.setQuery(searchInput!!)
     }
 
-    private fun onLoading() = mActivityOcrBinding.apply {
+    private fun onLoading() = binding.apply {
         ocrProgressBar.visibility = View.VISIBLE
         ocrRecyclerview.visibility = View.INVISIBLE
         ocrTvError.visibility = View.INVISIBLE
     }
 
-    private fun onLoaded() = mActivityOcrBinding.apply {
+    private fun onLoaded() = binding.apply {
         ocrProgressBar.visibility = View.INVISIBLE
         ocrRecyclerview.visibility = View.VISIBLE
         ocrTvError.visibility = View.INVISIBLE
@@ -327,14 +327,14 @@ class OcrActivity : AppCompatActivity() {
         ocrTextInputEditText.visibility = View.INVISIBLE
     }
 
-    private fun onNoMatchingResult() = mActivityOcrBinding.apply {
+    private fun onNoMatchingResult() = binding.apply {
         ocrProgressBar.visibility = View.INVISIBLE
         ocrRecyclerview.visibility = View.INVISIBLE
         ocrTvError.visibility = View.VISIBLE
         ocrTvError.setText(R.string.no_matching_result)
     }
 
-    private fun onError() = mActivityOcrBinding.apply {
+    private fun onError() = binding.apply {
         ocrProgressBar.visibility = View.INVISIBLE
         ocrRecyclerview.visibility = View.INVISIBLE
         ocrTvError.visibility = View.VISIBLE

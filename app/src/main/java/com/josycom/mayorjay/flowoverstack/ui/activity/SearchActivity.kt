@@ -26,18 +26,18 @@ import javax.inject.Inject
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var mActivitySearchBinding: ActivitySearchBinding
-    private var mSearchInput: String? = null
-    private var mQuestions: List<Question>? = null
-    private lateinit var mSearchViewModel: SearchViewModel
+    private lateinit var binding: ActivitySearchBinding
+    private var searchInput: String? = null
+    private var questions: List<Question>? = null
+    private lateinit var searchViewModel: SearchViewModel
     @Inject
     lateinit var viewModelFactory: CustomSearchViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        mActivitySearchBinding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(mActivitySearchBinding.root)
-        mActivitySearchBinding.apply {
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.apply {
             rvSearchResults.layoutManager = LinearLayoutManager(this@SearchActivity)
             rvSearchResults.setHasFixedSize(true)
             rvSearchResults.itemAnimator = DefaultItemAnimator()
@@ -55,7 +55,7 @@ class SearchActivity : AppCompatActivity() {
             val viewHolder = it.tag as RecyclerView.ViewHolder
             val position = viewHolder.adapterPosition
             Intent(applicationContext, AnswerActivity::class.java).apply {
-                val currentQuestion = mQuestions!![position]
+                val currentQuestion = questions!![position]
                 putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
                 putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
                 putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
@@ -72,58 +72,58 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        mActivitySearchBinding.searchButton.setOnClickListener {
-            if (TextUtils.isEmpty(mActivitySearchBinding.searchTextInputEditText.text.toString())) {
-                mActivitySearchBinding.searchTextInputEditText.error = getString(R.string.type_a_search_query)
+        binding.searchButton.setOnClickListener {
+            if (TextUtils.isEmpty(binding.searchTextInputEditText.text.toString())) {
+                binding.searchTextInputEditText.error = getString(R.string.type_a_search_query)
             } else {
-                mSearchInput = mActivitySearchBinding.searchTextInputEditText.text.toString()
+                searchInput = binding.searchTextInputEditText.text.toString()
                 val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
                 setQuery()
             }
         }
         val searchAdapter = SearchAdapter()
-        mSearchViewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
-        mSearchViewModel.responseLiveData.observe(this, { searchResponse: SearchResponse ->
+        searchViewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
+        searchViewModel.responseLiveData.observe(this, { searchResponse: SearchResponse ->
             when (searchResponse.networkState) {
                 AppConstants.LOADING -> onLoading()
                 AppConstants.LOADED -> {
                     onLoaded()
-                    mQuestions = searchResponse.questions
+                    questions = searchResponse.questions
                     searchAdapter.setQuestions(searchResponse.questions)
                 }
                 AppConstants.NO_MATCHING_RESULT -> onNoMatchingResult()
                 AppConstants.FAILED -> onError()
             }
         })
-        mActivitySearchBinding.rvSearchResults.adapter = searchAdapter
+        binding.rvSearchResults.adapter = searchAdapter
         searchAdapter.setOnClickListener(mOnClickListener)
     }
 
     private fun setQuery() {
-        mSearchViewModel.setQuery(mSearchInput!!)
+        searchViewModel.setQuery(searchInput!!)
     }
 
-    private fun onLoading() = mActivitySearchBinding.apply {
+    private fun onLoading() = binding.apply {
         searchPbFetchData.visibility = View.VISIBLE
         rvSearchResults.visibility = View.INVISIBLE
         searchTvError.visibility = View.INVISIBLE
     }
 
-    private fun onLoaded() = mActivitySearchBinding.apply {
+    private fun onLoaded() = binding.apply {
         searchPbFetchData.visibility = View.INVISIBLE
         rvSearchResults.visibility = View.VISIBLE
         searchTvError.visibility = View.INVISIBLE
     }
 
-    private fun onNoMatchingResult() = mActivitySearchBinding.apply {
+    private fun onNoMatchingResult() = binding.apply {
         searchPbFetchData.visibility = View.INVISIBLE
         rvSearchResults.visibility = View.INVISIBLE
         searchTvError.visibility = View.VISIBLE
         searchTvError.setText(R.string.no_matching_result)
     }
 
-    private fun onError() = mActivitySearchBinding.apply {
+    private fun onError() = binding.apply {
         searchPbFetchData.visibility = View.INVISIBLE
         rvSearchResults.visibility = View.INVISIBLE
         searchTvError.visibility = View.VISIBLE
