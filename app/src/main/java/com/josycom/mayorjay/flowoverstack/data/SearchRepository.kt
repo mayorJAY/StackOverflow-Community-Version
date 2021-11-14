@@ -1,8 +1,8 @@
-package com.josycom.mayorjay.flowoverstack.repository
+package com.josycom.mayorjay.flowoverstack.data
 
 import androidx.lifecycle.MutableLiveData
-import com.josycom.mayorjay.flowoverstack.model.QuestionsResponse
-import com.josycom.mayorjay.flowoverstack.model.SearchResponse
+import com.josycom.mayorjay.flowoverstack.network.QuestionsResponse
+import com.josycom.mayorjay.flowoverstack.network.SearchResponse
 import com.josycom.mayorjay.flowoverstack.network.ApiService
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.ThreadExecutor

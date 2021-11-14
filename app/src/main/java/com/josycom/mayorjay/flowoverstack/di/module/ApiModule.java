@@ -1,7 +1,5 @@
 package com.josycom.mayorjay.flowoverstack.di.module;
 
-import android.os.Build;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.josycom.mayorjay.flowoverstack.BuildConfig;

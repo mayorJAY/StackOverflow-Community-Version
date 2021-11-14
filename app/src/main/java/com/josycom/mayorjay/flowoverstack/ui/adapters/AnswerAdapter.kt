@@ -1,9 +1,9 @@
-package com.josycom.mayorjay.flowoverstack.adapters
+package com.josycom.mayorjay.flowoverstack.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.josycom.mayorjay.flowoverstack.adapters.AnswerAdapter.AnswerViewHolder
+import com.josycom.mayorjay.flowoverstack.ui.adapters.AnswerAdapter.AnswerViewHolder
 import com.josycom.mayorjay.flowoverstack.databinding.AnswerItemBinding
 import com.josycom.mayorjay.flowoverstack.model.Answer
 import com.josycom.mayorjay.flowoverstack.util.AppUtils

@@ -84,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/margin_small"
-        android:background="#dadada"
+        android:background="@color/colorViewLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_answer_name_item" />
 

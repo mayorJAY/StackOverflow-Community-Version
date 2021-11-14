@@ -1,51 +1,46 @@
-package com.josycom.mayorjay.flowoverstack.adapters
+package com.josycom.mayorjay.flowoverstack.ui.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.adapters.SearchAdapter.SearchViewHolder
+import com.josycom.mayorjay.flowoverstack.ui.adapters.QuestionAdapter.QuestionViewHolder
 import com.josycom.mayorjay.flowoverstack.databinding.QuestionItemBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import org.jsoup.Jsoup
 
-class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
+class QuestionAdapter : PagedListAdapter<Question, QuestionViewHolder>(DIFF_CALLBACK) {
 
-    private var mQuestions: List<Question>? = null
-
-    companion object {
-        private var mOnClickListener: View.OnClickListener? = null
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
         val questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SearchViewHolder(questionItemBinding)
+        return QuestionViewHolder(questionItemBinding)
     }
 
-    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        if (mQuestions != null) {
-            val currentQuestion = mQuestions!![position]
-            holder.bind(currentQuestion)
-        }
+    override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     fun setOnClickListener(onClickListener: View.OnClickListener?) {
         mOnClickListener = onClickListener
     }
 
-    override fun getItemCount(): Int {
-        return if (mQuestions != null) mQuestions!!.size else 0
+    companion object {
+        private var mOnClickListener: View.OnClickListener? = null
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<Question> = object : DiffUtil.ItemCallback<Question>() {
+            override fun areItemsTheSame(oldItem: Question, newItem: Question): Boolean = oldItem.questionId == newItem.questionId
+
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(oldItem: Question, newItem: Question): Boolean = oldItem == newItem
+        }
     }
 
-    fun setQuestions(questions: List<Question>?) {
-        mQuestions = questions
-        notifyDataSetChanged()
-    }
-
-    inner class SearchViewHolder(private val mQuestionItemBinding: QuestionItemBinding) : RecyclerView.ViewHolder(mQuestionItemBinding.root) {
+    class QuestionViewHolder(private val mQuestionItemBinding: QuestionItemBinding) : RecyclerView.ViewHolder(mQuestionItemBinding.root) {
 
         init {
             mQuestionItemBinding.root.tag = this

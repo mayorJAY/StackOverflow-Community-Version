@@ -23,6 +23,7 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityMainBinding
+import com.josycom.mayorjay.flowoverstack.ui.fragment.PopularTagsDialogFragment
 import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsFragment
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import dagger.android.AndroidInjection
@@ -124,30 +125,39 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         when (item.itemId) {
             R.id.action_filter_by_recency -> {
                 if (item.title == getString(R.string.action_filter_by_recency)) {
-                    switchView(getString(R.string.recent_questions), AppConstants.SORT_BY_CREATION)
+                    switchView(getString(R.string.recent_questions), AppConstants.SORT_BY_CREATION, "")
                     item.setTitle(R.string.action_filter_by_activity)
                 } else if (item.title == getString(R.string.action_filter_by_activity)) {
-                    switchView(getString(R.string.active_questions), AppConstants.SORT_BY_ACTIVITY)
+                    switchView(getString(R.string.active_questions), AppConstants.SORT_BY_ACTIVITY, "")
                     item.setTitle(R.string.action_filter_by_recency)
                 }
                 return true
             }
             R.id.action_filter_by_hot -> {
-                switchView(getString(R.string.hot_questions), AppConstants.SORT_BY_HOT)
+                switchView(getString(R.string.hot_questions), AppConstants.SORT_BY_HOT, "")
             }
             R.id.action_filter_by_vote -> {
-                switchView(getString(R.string.voted_questions), AppConstants.SORT_BY_VOTES)
+                switchView(getString(R.string.voted_questions), AppConstants.SORT_BY_VOTES, "")
+            }
+            R.id.action_filter_by_popular_tags -> {
+                val dialog = PopularTagsDialogFragment()
+                dialog.setTagSelectionListener(tagSelectionListener)
+                dialog.show(supportFragmentManager, "")
+            }
+            R.id.action_filter_by_tag_name -> {
+                //Do something
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun switchView(title: String, sortCondition: String) {
+    private fun switchView(title: String, sortCondition: String, tagName: String) {
         if (findViewById<View?>(R.id.fragment_container) != null) {
             fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction!!.replace(R.id.fragment_container, QuestionsFragment()).commit()
             QuestionsFragment.title = title
             QuestionsFragment.sortCondition = sortCondition
+            QuestionsFragment.tagName = tagName
         }
     }
 
@@ -237,5 +247,11 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     companion object {
         private const val APP_UPDATE = 10
+    }
+
+    private val tagSelectionListener = object: PopularTagsDialogFragment.TagSelectionCallback {
+        override fun onTagSelected(tagName: String) {
+            switchView(getString(R.string.questions, tagName), AppConstants.SORT_BY_ACTIVITY, tagName)
+        }
     }
 }

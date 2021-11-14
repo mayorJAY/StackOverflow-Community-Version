@@ -1,9 +1,9 @@
-package com.josycom.mayorjay.flowoverstack.viewmodel
+package com.josycom.mayorjay.flowoverstack.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.josycom.mayorjay.flowoverstack.repository.SearchRepository
+import com.josycom.mayorjay.flowoverstack.data.SearchRepository
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(private val mSearchRepository: SearchRepository) : ViewModel() {

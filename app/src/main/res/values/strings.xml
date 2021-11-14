@@ -47,4 +47,10 @@
     <string name="recognised_text">Recognised Text</string>
     <string name="recognise">Recognise</string>
     <string name="ocr">OCR</string>
+    <string name="filter_by_popular_tags">Filter by Popular Tags</string>
+    <string name="filter_by_tag_name">Filter by Tag Name</string>
+    <string name="questions"> %s questions</string>
+    <string name="popular_tags">Popular Tags</string>
+    <string name="select_a_tag_to_view_the_related_questions">Select a Tag to view the related Questions</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -1,8 +1,8 @@
-package com.josycom.mayorjay.flowoverstack.viewmodel
+package com.josycom.mayorjay.flowoverstack.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.josycom.mayorjay.flowoverstack.repository.AnswerRepository
+import com.josycom.mayorjay.flowoverstack.data.AnswerRepository
 import javax.inject.Inject
 
 class CustomAnswerViewModelFactory @Inject constructor(private val answerRepository: AnswerRepository) : ViewModelProvider.Factory {
