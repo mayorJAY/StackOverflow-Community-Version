@@ -9,5 +9,5 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class TagsDialogFragmentModule {
 
     @ContributesAndroidInjector
-    abstract TagsDialogFragment contributePopularTagsDialogFragment();
+    abstract TagsDialogFragment contributeTagsDialogFragment();
 }
