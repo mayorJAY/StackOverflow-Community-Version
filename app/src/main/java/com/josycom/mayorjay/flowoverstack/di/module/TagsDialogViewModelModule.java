@@ -16,7 +16,7 @@ public class TagsDialogViewModelModule {
     @Provides
     @IntoMap
     @ViewModelKey(TagsDialogViewModel.class)
-    ViewModel bindPopularTagsDialogViewModel(int page, int pageSize, String siteKey, TagRepository tagRepository) {
+    ViewModel bindTagsDialogViewModel(int page, int pageSize, String siteKey, TagRepository tagRepository) {
         return new TagsDialogViewModel(tagRepository, page, pageSize, siteKey);
     }
 }
