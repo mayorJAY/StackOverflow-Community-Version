@@ -76,10 +76,11 @@ class SearchActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(binding.searchTextInputEditText.text.toString())) {
                 binding.searchTextInputEditText.error = getString(R.string.type_a_search_query)
             } else {
-                searchInput = binding.searchTextInputEditText.text.toString()
+                searchInput = binding.searchTextInputEditText.text.toString().trim()
                 val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
                 setQuery()
+                binding.ivLookup.visibility = View.INVISIBLE
             }
         }
         val searchAdapter = SearchAdapter()

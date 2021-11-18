@@ -9,11 +9,11 @@ import com.josycom.mayorjay.flowoverstack.model.Tag
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PopularTagsDialogViewModel @Inject constructor(tagRepository: TagRepository, page: Int, pageSize: Int, inName: String, siteKey: String) : ViewModel() {
+class TagsDialogViewModel @Inject constructor(private val tagRepository: TagRepository, val page: Int, val pageSize: Int, val siteKey: String) : ViewModel() {
 
     var pagingDataFlow: Flow<PagingData<Tag>>? = null
 
-    init {
+    fun fetchTags(inName: String) {
         tagRepository.init(page, pageSize, inName, siteKey)
         pagingDataFlow = tagRepository.tagResult?.cachedIn(viewModelScope)
     }

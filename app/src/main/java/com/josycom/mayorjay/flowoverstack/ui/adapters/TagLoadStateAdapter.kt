@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.josycom.mayorjay.flowoverstack.databinding.PopularTagLoadStateFooterViewItemBinding
+import com.josycom.mayorjay.flowoverstack.databinding.TagLoadStateFooterViewItemBinding
 
-class PopularTagLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<PopularTagLoadStateAdapter.PopularTagLoadStateViewHolder>() {
+class TagLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<TagLoadStateAdapter.PopularTagLoadStateViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): PopularTagLoadStateViewHolder {
-        val view = PopularTagLoadStateFooterViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = TagLoadStateFooterViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PopularTagLoadStateViewHolder(view, retry)
     }
 
@@ -19,7 +19,7 @@ class PopularTagLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapt
         holder.bind(loadState)
     }
 
-    class PopularTagLoadStateViewHolder(private val binding: PopularTagLoadStateFooterViewItemBinding, private val retry: () -> Unit) : RecyclerView.ViewHolder(binding.root) {
+    class PopularTagLoadStateViewHolder(private val binding: TagLoadStateFooterViewItemBinding, private val retry: () -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.btRetry.setOnClickListener { retry.invoke() }

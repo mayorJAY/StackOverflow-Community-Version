@@ -8,13 +8,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.databinding.PopularTagItemBinding
+import com.josycom.mayorjay.flowoverstack.databinding.TagItemBinding
 import com.josycom.mayorjay.flowoverstack.model.Tag
 
-class PopularTagsAdapter: PagingDataAdapter<Tag, PopularTagsAdapter.PopularTagViewHolder>(DIFF_CALLBACK) {
+class TagsAdapter: PagingDataAdapter<Tag, TagsAdapter.PopularTagViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularTagViewHolder {
-        val view = PopularTagItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = TagItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PopularTagViewHolder(view)
     }
 
@@ -40,7 +40,7 @@ class PopularTagsAdapter: PagingDataAdapter<Tag, PopularTagsAdapter.PopularTagVi
     }
 
 
-    class PopularTagViewHolder(private val binding: PopularTagItemBinding): RecyclerView.ViewHolder(binding.root) {
+    class PopularTagViewHolder(private val binding: TagItemBinding): RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.root.tag = this

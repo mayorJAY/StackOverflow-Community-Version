@@ -21,6 +21,7 @@
     <string name="tv_asked_text">Asked:</string>
     <string name="search_stack_overflow">Search Stack Overflow</string>
     <string name="no_matching_result">Oops! No Matching Result. Rephrase your search query or Use fewer words</string>
+    <string name="no_matching_result_rephrase">Oops! No Matching Result. Rephrase your search query</string>
     <string name="scroll_up_button">scroll up button</string>
     <string name="by">By:</string>
     <string name="no_answers_yet">No Answers Yet</string>
@@ -53,4 +54,6 @@
     <string name="popular_tags">Popular Tags</string>
     <string name="select_a_tag_to_view_the_related_questions">Select a Tag to view the related Questions</string>
     <string name="retry">Retry</string>
+    <string name="search_tag_name">Search Tag Name</string>
+    <string name="input_tag_name">Input tag name</string>
 </resources>

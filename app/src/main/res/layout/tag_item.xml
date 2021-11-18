@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:showIn="@layout/popular_tags_dialog_fragment">
+    tools:showIn="@layout/tags_dialog_fragment">
 
     <TextView
         android:id="@+id/tv_tag_name"

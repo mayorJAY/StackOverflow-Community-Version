@@ -5,21 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.PopularTagsDialogFragment">
+    tools:context=".ui.fragment.TagsDialogFragment">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/popular_tags"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="@dimen/_18ssp"
+        android:textSize="@dimen/_16ssp"
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_text_input_layout"
+            style="@style/Widget.FlowOverStack.TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_weight="0.98"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:hint="@string/input_tag_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_text_input_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/bt_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:layout_weight="0.02"
+            android:text="@string/search_description"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_info"
@@ -32,6 +71,7 @@
         android:paddingEnd="@dimen/_5sdp"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintBottom_toBottomOf="@id/layout_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -39,11 +79,11 @@
         android:id="@+id/rv_popular_tags"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_info"
+        app:layout_constraintTop_toBottomOf="@id/layout_search"
         app:layout_constraintBottom_toTopOf="@id/view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/popular_tag_item"/>
+        tools:listitem="@layout/tag_item"/>
 
     <View
         android:id="@+id/view"
@@ -60,6 +100,7 @@
         android:layout_height="wrap_content"
         style="?android:attr/progressBarStyle"
         app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -73,6 +114,7 @@
         android:text="@string/search_error_message"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
+        android:visibility="invisible"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,8 +127,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/retry"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/tv_error"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_lookup"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/look_up"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

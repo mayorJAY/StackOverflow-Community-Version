@@ -23,7 +23,7 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityMainBinding
-import com.josycom.mayorjay.flowoverstack.ui.fragment.PopularTagsDialogFragment
+import com.josycom.mayorjay.flowoverstack.ui.fragment.TagsDialogFragment
 import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsFragment
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import dagger.android.AndroidInjection
@@ -140,12 +140,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
                 switchView(getString(R.string.voted_questions), AppConstants.SORT_BY_VOTES, "")
             }
             R.id.action_filter_by_popular_tags -> {
-                val dialog = PopularTagsDialogFragment()
-                dialog.setTagSelectionListener(tagSelectionListener)
-                dialog.show(supportFragmentManager, "")
+                switchView(getString(R.string.popular_tags), true)
             }
             R.id.action_filter_by_tag_name -> {
-                //Do something
+                switchView(getString(R.string.search_tag_name), false)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -159,6 +157,13 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
             QuestionsFragment.sortCondition = sortCondition
             QuestionsFragment.tagName = tagName
         }
+    }
+
+    private fun switchView(title: String, isPopularTagOption: Boolean) {
+        val dialog = TagsDialogFragment()
+        dialog.setTagSelectionListener(tagSelectionListener)
+        dialog.setInitItems(title, isPopularTagOption)
+        dialog.show(supportFragmentManager, "")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -249,7 +254,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         private const val APP_UPDATE = 10
     }
 
-    private val tagSelectionListener = object: PopularTagsDialogFragment.TagSelectionCallback {
+    private val tagSelectionListener = object: TagsDialogFragment.TagSelectionCallback {
         override fun onTagSelected(tagName: String) {
             switchView(getString(R.string.questions, tagName), AppConstants.SORT_BY_ACTIVITY, tagName)
         }
