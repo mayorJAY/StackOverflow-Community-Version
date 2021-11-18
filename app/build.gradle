@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: "androidx.navigation.safeargs"
 
@@ -13,6 +14,7 @@ android {
         targetSdkVersion 30
         versionCode 6
         versionName "1.6"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,21 +33,25 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
 
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.navigation:navigation-fragment:2.3.0'
-    implementation 'androidx.navigation:navigation-ui:2.3.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'org.jsoup:jsoup:1.12.1'
+    implementation 'org.jsoup:jsoup:1.13.1'
 
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
@@ -56,49 +62,50 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 
     // Logging
     implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
     implementation 'com.squareup.okhttp3:okhttp:4.7.2'
 
     // Paging library
-    implementation 'android.arch.paging:runtime:1.0.1'
+//    implementation 'android.arch.paging:runtime:1.0.1'
+    implementation 'androidx.paging:paging-runtime:3.1.0-rc01'
 
     // ViewModel
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'
 
     // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata:2.4.0"
 
     // RxAndroid and RxJava
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.3'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.7'
 
     // SwipeRefreshLayout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     // Firebase analytics
-    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+    implementation 'com.google.firebase:firebase-analytics:20.0.0'
 
     // Firebase crashlytics
     apply plugin: 'com.google.firebase.crashlytics'
-    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.4'
 
     // Unit tests
-    testImplementation 'junit:junit:4.13'
-    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'androidx.test:core:1.4.0'
     testImplementation 'org.robolectric:robolectric:4.3.1'
-    testImplementation "org.mockito:mockito-core:2.23.0"
+    testImplementation "org.mockito:mockito-core:3.12.4"
     testImplementation "com.squareup.okhttp3:mockwebserver:4.0.0"
 
     // Instrumentation tests
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
     androidTestImplementation 'com.android.support:support-annotations:28.0.0'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
 
     // MarkdownView
     implementation 'com.github.mukeshsolanki:MarkdownView-Android:1.0.8'
@@ -107,7 +114,7 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
     // ML Kit
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.3'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:17.0.0'
 
     // Dagger
     implementation 'com.google.dagger:dagger:2.35.1'
@@ -117,9 +124,12 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.35.1'
 
     // Play core
-    implementation 'com.google.android.play:core:1.10.0'
+    implementation 'com.google.android.play:core:1.10.2'
 
     // Kotlin
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // Kotlin Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 }

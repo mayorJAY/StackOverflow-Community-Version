@@ -8,13 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.adapters.AnswerAdapter
+import com.josycom.mayorjay.flowoverstack.ui.adapters.AnswerAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityAnswerBinding
 import com.josycom.mayorjay.flowoverstack.model.Answer
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
-import com.josycom.mayorjay.flowoverstack.viewmodel.AnswerViewModel
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomAnswerViewModelFactory
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.AnswerViewModel
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomAnswerViewModelFactory
 import dagger.android.AndroidInjection
 import org.jsoup.Jsoup
 import javax.inject.Inject

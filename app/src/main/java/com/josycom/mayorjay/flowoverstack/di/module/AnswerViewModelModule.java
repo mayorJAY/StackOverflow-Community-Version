@@ -3,8 +3,8 @@ package com.josycom.mayorjay.flowoverstack.di.module;
 import androidx.lifecycle.ViewModel;
 
 import com.josycom.mayorjay.flowoverstack.di.ViewModelKey;
-import com.josycom.mayorjay.flowoverstack.repository.AnswerRepository;
-import com.josycom.mayorjay.flowoverstack.viewmodel.AnswerViewModel;
+import com.josycom.mayorjay.flowoverstack.data.AnswerRepository;
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.AnswerViewModel;
 
 import dagger.Module;
 import dagger.Provides;

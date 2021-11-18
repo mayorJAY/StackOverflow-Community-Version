@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.adapters.SearchAdapter
+import com.josycom.mayorjay.flowoverstack.ui.adapters.SearchAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.ActivitySearchBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
-import com.josycom.mayorjay.flowoverstack.model.SearchResponse
+import com.josycom.mayorjay.flowoverstack.network.SearchResponse
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomSearchViewModelFactory
-import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomSearchViewModelFactory
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.SearchViewModel
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
@@ -76,10 +76,11 @@ class SearchActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(binding.searchTextInputEditText.text.toString())) {
                 binding.searchTextInputEditText.error = getString(R.string.type_a_search_query)
             } else {
-                searchInput = binding.searchTextInputEditText.text.toString()
+                searchInput = binding.searchTextInputEditText.text.toString().trim()
                 val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
                 setQuery()
+                binding.ivLookup.visibility = View.INVISIBLE
             }
         }
         val searchAdapter = SearchAdapter()

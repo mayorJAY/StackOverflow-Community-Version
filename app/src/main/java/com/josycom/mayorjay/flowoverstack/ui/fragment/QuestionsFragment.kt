@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.adapters.QuestionAdapter
+import com.josycom.mayorjay.flowoverstack.ui.adapters.QuestionAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory
-import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionViewModel
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomQuestionViewModelFactory
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.QuestionViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -46,6 +46,7 @@ class QuestionsFragment : Fragment() {
                 AppConstants.ORDER_DESCENDING,
                 sortCondition,
                 AppConstants.SITE,
+                tagName,
                 AppConstants.QUESTION_FILTER,
                 AppConstants.API_KEY
         )
@@ -78,7 +79,7 @@ class QuestionsFragment : Fragment() {
 
         onClickListener = View.OnClickListener {
             val viewHolder = it.tag as RecyclerView.ViewHolder
-            val position = viewHolder.adapterPosition
+            val position = viewHolder.bindingAdapterPosition
             Intent(context, AnswerActivity::class.java).apply {
                 val currentQuestion = questions[position]
                 if (currentQuestion != null) {
@@ -158,5 +159,6 @@ class QuestionsFragment : Fragment() {
     companion object {
         var title = ""
         var sortCondition = ""
+        var tagName = ""
     }
 }

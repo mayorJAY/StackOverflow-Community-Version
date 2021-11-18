@@ -27,14 +27,15 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.adapters.SearchAdapter
+import com.josycom.mayorjay.flowoverstack.ui.adapters.SearchAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityOcrBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomSearchViewModelFactory
-import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomSearchViewModelFactory
+import com.josycom.mayorjay.flowoverstack.ui.viewmodel.SearchViewModel
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import dagger.android.AndroidInjection
@@ -71,6 +72,7 @@ class OcrActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (allPermissionsGranted()) {
                 startCamera()
@@ -200,7 +202,7 @@ class OcrActivity : AppCompatActivity() {
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, resultUri)
                 val image = InputImage.fromBitmap(bitmap, 0)
-                val recognizer = TextRecognition.getClient()
+                val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
                 recognizer.process(image)
                         .addOnSuccessListener { text: Text ->
                             binding.ocrProgressBar.visibility = View.GONE

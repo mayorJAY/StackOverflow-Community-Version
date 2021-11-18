@@ -1,9 +1,9 @@
-package com.josycom.mayorjay.flowoverstack.repository
+package com.josycom.mayorjay.flowoverstack.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.josycom.mayorjay.flowoverstack.model.Answer
-import com.josycom.mayorjay.flowoverstack.model.AnswerResponse
+import com.josycom.mayorjay.flowoverstack.network.AnswerResponse
 import com.josycom.mayorjay.flowoverstack.network.ApiService
 import com.josycom.mayorjay.flowoverstack.util.ThreadExecutor
 import retrofit2.Call

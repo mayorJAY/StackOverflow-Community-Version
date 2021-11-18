@@ -1,6 +1,6 @@
-package com.josycom.mayorjay.flowoverstack.viewmodel
+package com.josycom.mayorjay.flowoverstack.ui.viewmodel
 
-import com.josycom.mayorjay.flowoverstack.repository.AnswerRepository
+import com.josycom.mayorjay.flowoverstack.data.AnswerRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import com.josycom.mayorjay.flowoverstack.model.Answer

@@ -4,4 +4,8 @@
         <item quantity="one">%d answer</item>
         <item quantity="other">%d answers</item>
     </plurals>
+    <plurals name="questions">
+        <item quantity="one">%d question</item>
+        <item quantity="other">%d questions</item>
+    </plurals>
 </resources>

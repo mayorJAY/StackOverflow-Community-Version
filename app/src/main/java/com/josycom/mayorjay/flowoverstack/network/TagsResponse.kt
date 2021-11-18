@@ -1,13 +1,14 @@
-package com.josycom.mayorjay.flowoverstack.model
+package com.josycom.mayorjay.flowoverstack.network
 
 import com.google.gson.annotations.SerializedName
+import com.josycom.mayorjay.flowoverstack.model.Tag
 
-class QuestionsResponse {
+class TagsResponse {
+    @SerializedName("items")
+    var items: List<Tag> = emptyList()
+
     @SerializedName("has_more")
     var hasMore: Boolean? = null
-
-    @SerializedName("items")
-    var items: List<Question>? = null
 
     @SerializedName("quota_max")
     var quotaMax: Int? = null
