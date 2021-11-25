@@ -53,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
         }
         val mOnClickListener = View.OnClickListener {
             val viewHolder = it.tag as RecyclerView.ViewHolder
-            val position = viewHolder.adapterPosition
+            val position = viewHolder.bindingAdapterPosition
             Intent(applicationContext, AnswerActivity::class.java).apply {
                 val currentQuestion = questions!![position]
                 putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
@@ -128,7 +128,7 @@ class SearchActivity : AppCompatActivity() {
         searchPbFetchData.visibility = View.INVISIBLE
         rvSearchResults.visibility = View.INVISIBLE
         searchTvError.visibility = View.VISIBLE
-        searchTvError.setText(R.string.search_error_message)
+        searchTvError.setText(R.string.network_error_message)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

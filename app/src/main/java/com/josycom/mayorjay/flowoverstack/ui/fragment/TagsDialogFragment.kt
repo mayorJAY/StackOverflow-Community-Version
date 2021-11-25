@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.ui.adapters.TagsAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.TagsDialogFragmentBinding
-import com.josycom.mayorjay.flowoverstack.ui.adapters.TagLoadStateAdapter
+import com.josycom.mayorjay.flowoverstack.ui.adapters.PagingLoadStateAdapter
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomTagsViewModelFactory
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.TagsDialogViewModel
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -86,7 +86,7 @@ class TagsDialogFragment : DialogFragment() {
         val popularTagAdapter = TagsAdapter()
         binding.rvPopularTags.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = popularTagAdapter.withLoadStateFooter(TagLoadStateAdapter { popularTagAdapter.retry() })
+            adapter = popularTagAdapter.withLoadStateFooter(PagingLoadStateAdapter { popularTagAdapter.retry() })
         }
 
         lifecycleScope.launch {

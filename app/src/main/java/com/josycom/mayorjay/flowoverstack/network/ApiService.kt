@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET(AppConstants.QUESTIONS_END_POINT)
-    fun getQuestionsForAll(
+    suspend fun getQuestionsForAll(
             @Query("page") page: Int,
             @Query("pagesize") pageSize: Int,
             @Query("order") order: String?,
@@ -17,7 +17,7 @@ interface ApiService {
             @Query("site") site: String?,
             @Query("tagged") tagged: String?,
             @Query(value = "filter", encoded = true) filter: String?,
-            @Query("key") siteKey: String?): Call<QuestionsResponse?>
+            @Query("key") siteKey: String?): QuestionsResponse
 
     @GET(AppConstants.ANSWERS_END_POINT)
     fun getAnswersToQuestion(

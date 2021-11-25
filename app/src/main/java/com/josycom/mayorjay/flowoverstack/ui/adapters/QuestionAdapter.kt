@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,7 +15,7 @@ import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import org.jsoup.Jsoup
 
-class QuestionAdapter : PagedListAdapter<Question, QuestionViewHolder>(DIFF_CALLBACK) {
+class QuestionAdapter : PagingDataAdapter<Question, QuestionViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
         val questionItemBinding = QuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -43,12 +43,12 @@ class QuestionAdapter : PagedListAdapter<Question, QuestionViewHolder>(DIFF_CALL
     class QuestionViewHolder(private val mQuestionItemBinding: QuestionItemBinding) : RecyclerView.ViewHolder(mQuestionItemBinding.root) {
 
         init {
-            mQuestionItemBinding.root.tag = this
             mQuestionItemBinding.root.setOnClickListener(mOnClickListener)
         }
 
         fun bind(question: Question?) {
             if (question != null) {
+                mQuestionItemBinding.root.tag = question
                 val owner = question.owner
                 val profileImage = owner?.profileImage
                 val tagList = question.tags
