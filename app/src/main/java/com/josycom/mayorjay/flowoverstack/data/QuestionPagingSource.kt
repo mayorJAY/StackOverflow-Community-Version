@@ -7,7 +7,7 @@ import com.josycom.mayorjay.flowoverstack.network.ApiService
 import retrofit2.HttpException
 import java.io.IOException
 
-class QuestionPagingSource internal constructor(private val page: Int, private val pageSize: Int, private val order: String, private val sortCondition: String,
+class QuestionPagingSource(private val page: Int, private val pageSize: Int, private val order: String, private val sortCondition: String,
                                                 private val site: String, private val tagged: String, private val filter: String, private val siteKey: String,
                                                 private val apiService: ApiService) : PagingSource<Int, Question>() {
 
@@ -23,7 +23,7 @@ class QuestionPagingSource internal constructor(private val page: Int, private v
         return try {
             val response = apiService.getQuestionsForAll(position, pageSize, order, sortCondition, site, tagged, filter, siteKey)
             val responseItems: List<Question> = response.items
-            val nextKey = if (responseItems.isEmpty()) {
+            val nextKey = if (responseItems.isEmpty() || responseItems.size <= pageSize) {
                 null
             } else {
                 position + (params.loadSize / pageSize)

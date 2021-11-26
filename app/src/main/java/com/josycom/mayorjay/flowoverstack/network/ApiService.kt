@@ -20,13 +20,13 @@ interface ApiService {
             @Query("key") siteKey: String?): QuestionsResponse
 
     @GET(AppConstants.ANSWERS_END_POINT)
-    fun getAnswersToQuestion(
+    suspend fun getAnswersToQuestion(
             @Path("question_id") id: Int,
             @Query("order") order: String?,
             @Query("sort") sortCondition: String?,
             @Query("site") site: String?,
             @Query(value = "filter", encoded = true) filter: String?,
-            @Query("key") siteKey: String?): Call<AnswerResponse?>
+            @Query("key") siteKey: String?): AnswerResponse
 
     @GET(AppConstants.SEARCH_END_POINT)
     fun getQuestionsWithTextInTitle(@Query("intitle") inTitle: String?): Call<QuestionsResponse?>

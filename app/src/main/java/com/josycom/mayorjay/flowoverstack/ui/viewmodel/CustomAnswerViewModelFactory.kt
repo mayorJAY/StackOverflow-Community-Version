@@ -7,14 +7,14 @@ import javax.inject.Inject
 
 class CustomAnswerViewModelFactory @Inject constructor(private val answerRepository: AnswerRepository) : ViewModelProvider.Factory {
 
-    private var order: String? = null
-    private var sortCondition: String? = null
-    private var site: String? = null
-    private var filter: String? = null
+    private var order: String = ""
+    private var sortCondition: String = ""
+    private var site: String = ""
+    private var filter: String = ""
     private var questionId = 0
-    private var siteKey: String? = null
+    private var siteKey: String = ""
 
-    fun setInputs(questionId: Int, order: String?, sortCondition: String?, site: String?, filter: String?, siteKey: String?) {
+    fun setInputs(questionId: Int, order: String, sortCondition: String, site: String, filter: String, siteKey: String) {
         this.questionId = questionId
         this.order = order
         this.sortCondition = sortCondition

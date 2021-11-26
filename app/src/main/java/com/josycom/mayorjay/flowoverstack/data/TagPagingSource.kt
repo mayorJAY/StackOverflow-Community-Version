@@ -21,7 +21,7 @@ class TagPagingSource(private val page: Int, private val pageSize: Int, private 
         return try {
             val response = apiService.getAllPopularTags(position, pageSize, inName, siteKey)
             val responseItems: List<Tag> = response.items
-            val nextKey = if (responseItems.isEmpty()) {
+            val nextKey = if (responseItems.isEmpty() || responseItems.size <= pageSize) {
                 null
             } else {
                 position + (params.loadSize / pageSize)
