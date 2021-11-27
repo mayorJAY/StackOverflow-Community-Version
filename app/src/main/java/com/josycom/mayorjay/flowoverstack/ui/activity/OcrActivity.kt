@@ -63,6 +63,7 @@ class OcrActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOcrBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.PAGE_SIZE)
         checkPermissionAndStartCamera()
         activateViewHolder()
         setupRecyclerView()

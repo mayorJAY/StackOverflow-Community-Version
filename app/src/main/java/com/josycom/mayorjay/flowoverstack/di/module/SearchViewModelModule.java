@@ -16,7 +16,7 @@ public class SearchViewModelModule {
     @Provides
     @IntoMap
     @ViewModelKey(SearchViewModel.class)
-    ViewModel bindSearchViewModel(SearchRepository searchRepository) {
-        return new SearchViewModel(searchRepository);
+    ViewModel bindSearchViewModel(int page, int pageSize, SearchRepository searchRepository) {
+        return new SearchViewModel(page, pageSize, searchRepository);
     }
 }

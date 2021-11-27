@@ -5,7 +5,7 @@ interface AppConstants {
         const val BASE_URL = "https://api.stackexchange.com"
         const val QUESTIONS_END_POINT = "/2.3/questions"
         const val ANSWERS_END_POINT = "/2.3/questions/{question_id}/answers"
-        const val SEARCH_END_POINT = "/2.3/search?pagesize=100&order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT&key=1ZLMY6ESrAkq5*odMs3zQw(("
+        const val SEARCH_END_POINT = "/2.3/search?order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wwYGT&key=1ZLMY6ESrAkq5*odMs3zQw(("
         const val TAGS_END_POINT = "/2.3/tags?order=desc&sort=popular&site=stackoverflow"
         const val SITE = "stackoverflow"
         const val FIRST_PAGE = 1

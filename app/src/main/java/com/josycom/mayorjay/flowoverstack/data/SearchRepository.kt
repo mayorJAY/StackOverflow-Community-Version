@@ -17,9 +17,9 @@ class SearchRepository @Inject constructor(private val apiService: ApiService) {
 
     private val mResponse = MutableLiveData<SearchResponse>()
 
-    private fun getQuestionsWithTextInTitle(inTitle: String) {
+    private fun getQuestionsWithTextInTitle(inTitle: String, page: Int, pageSize: Int) {
         mResponse.postValue(SearchResponse(AppConstants.LOADING, null))
-        val call = apiService.getQuestionsWithTextInTitle(inTitle)
+        val call = apiService.getQuestionsWithTextInTitle(inTitle, page, pageSize)
         call.enqueue(object : Callback<QuestionsResponse?> {
             override fun onResponse(call: Call<QuestionsResponse?>, response: Response<QuestionsResponse?>) {
                 val questionsResponse = response.body()
@@ -39,8 +39,8 @@ class SearchRepository @Inject constructor(private val apiService: ApiService) {
         })
     }
 
-    fun getResponse(inTitle: String): MutableLiveData<SearchResponse> {
-        ThreadExecutor.mExecutor.execute { getQuestionsWithTextInTitle(inTitle) }
+    fun getResponse(inTitle: String, page: Int, pageSize: Int): MutableLiveData<SearchResponse> {
+        ThreadExecutor.mExecutor.execute { getQuestionsWithTextInTitle(inTitle, page, pageSize) }
         return mResponse
     }
 }

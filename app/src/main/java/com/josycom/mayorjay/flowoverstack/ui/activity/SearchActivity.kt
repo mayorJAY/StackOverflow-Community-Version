@@ -37,6 +37,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.PAGE_SIZE)
         binding.apply {
             rvSearchResults.layoutManager = LinearLayoutManager(this@SearchActivity)
             rvSearchResults.setHasFixedSize(true)
