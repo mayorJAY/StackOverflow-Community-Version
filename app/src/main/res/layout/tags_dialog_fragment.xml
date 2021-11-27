@@ -111,7 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_medium"
-        android:text="@string/search_error_message"
+        android:text="@string/network_error_message"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:visibility="invisible"

@@ -11,14 +11,14 @@ import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.databinding.TagItemBinding
 import com.josycom.mayorjay.flowoverstack.model.Tag
 
-class TagsAdapter: PagingDataAdapter<Tag, TagsAdapter.PopularTagViewHolder>(DIFF_CALLBACK) {
+class TagsAdapter: PagingDataAdapter<Tag, TagsAdapter.TagViewHolder>(DIFF_CALLBACK) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularTagViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
         val view = TagItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PopularTagViewHolder(view)
+        return TagViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: PopularTagViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         val tag = getItem(position)
         if (tag != null) {
             holder.bind(tag)
@@ -40,7 +40,7 @@ class TagsAdapter: PagingDataAdapter<Tag, TagsAdapter.PopularTagViewHolder>(DIFF
     }
 
 
-    class PopularTagViewHolder(private val binding: TagItemBinding): RecyclerView.ViewHolder(binding.root) {
+    class TagViewHolder(private val binding: TagItemBinding): RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.root.tag = this

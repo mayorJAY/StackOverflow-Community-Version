@@ -37,6 +37,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.SEARCH_PAGE_SIZE)
         binding.apply {
             rvSearchResults.layoutManager = LinearLayoutManager(this@SearchActivity)
             rvSearchResults.setHasFixedSize(true)
@@ -53,8 +55,8 @@ class SearchActivity : AppCompatActivity() {
         }
         val mOnClickListener = View.OnClickListener {
             val viewHolder = it.tag as RecyclerView.ViewHolder
-            val position = viewHolder.adapterPosition
-            Intent(applicationContext, AnswerActivity::class.java).apply {
+            val position = viewHolder.bindingAdapterPosition
+            Intent(this, AnswerActivity::class.java).apply {
                 val currentQuestion = questions!![position]
                 putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
                 putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
@@ -128,7 +130,7 @@ class SearchActivity : AppCompatActivity() {
         searchPbFetchData.visibility = View.INVISIBLE
         rvSearchResults.visibility = View.INVISIBLE
         searchTvError.visibility = View.VISIBLE
-        searchTvError.setText(R.string.search_error_message)
+        searchTvError.setText(R.string.network_error_message)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

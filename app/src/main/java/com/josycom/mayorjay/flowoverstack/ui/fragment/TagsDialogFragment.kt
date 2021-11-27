@@ -13,12 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.ui.adapters.TagsAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.TagsDialogFragmentBinding
-import com.josycom.mayorjay.flowoverstack.ui.adapters.TagLoadStateAdapter
+import com.josycom.mayorjay.flowoverstack.ui.adapters.PagingLoadStateAdapter
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomTagsViewModelFactory
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.TagsDialogViewModel
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -61,7 +62,16 @@ class TagsDialogFragment : DialogFragment() {
         if (isPopularTagOption) {
             fetchAndDisplayTags("")
         }
+        setupListeners()
+    }
 
+    private fun initViews() {
+        binding.tvTitle.text = title
+        binding.layoutSearch.visibility = if (isPopularTagOption) View.INVISIBLE else View.VISIBLE
+        binding.tvInfo.visibility = if (isPopularTagOption) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun setupListeners() {
         binding.btSearch.setOnClickListener {
             val query = binding.searchTextInputEditText.text.toString().trim().toLowerCase()
             if (StringUtil.isBlank(query)) {
@@ -74,19 +84,14 @@ class TagsDialogFragment : DialogFragment() {
         }
     }
 
-    private fun initViews() {
-        binding.tvTitle.text = title
-        binding.layoutSearch.visibility = if (isPopularTagOption) View.INVISIBLE else View.VISIBLE
-        binding.tvInfo.visibility = if (isPopularTagOption) View.VISIBLE else View.INVISIBLE
-    }
-
     private fun fetchAndDisplayTags(inName: String) {
         viewModel.fetchTags(inName)
         binding.ivLookup.visibility = View.INVISIBLE
         val popularTagAdapter = TagsAdapter()
         binding.rvPopularTags.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = popularTagAdapter.withLoadStateFooter(TagLoadStateAdapter { popularTagAdapter.retry() })
+            itemAnimator = DefaultItemAnimator()
+            adapter = popularTagAdapter.withLoadStateFooter(PagingLoadStateAdapter { popularTagAdapter.retry() })
         }
 
         lifecycleScope.launch {
@@ -106,7 +111,7 @@ class TagsDialogFragment : DialogFragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.pagingDataFlow?.collectLatest {
+                viewModel.tagDataFlow?.collectLatest {
                     popularTagAdapter.submitData(it)
                 }
             }

@@ -63,6 +63,7 @@ class OcrActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOcrBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.SEARCH_PAGE_SIZE)
         checkPermissionAndStartCamera()
         activateViewHolder()
         setupRecyclerView()
@@ -340,7 +341,7 @@ class OcrActivity : AppCompatActivity() {
         ocrProgressBar.visibility = View.INVISIBLE
         ocrRecyclerview.visibility = View.INVISIBLE
         ocrTvError.visibility = View.VISIBLE
-        ocrTvError.setText(R.string.search_error_message)
+        ocrTvError.setText(R.string.network_error_message)
     }
 
     override fun onBackPressed() {

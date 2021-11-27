@@ -1,7 +1,10 @@
 package com.josycom.mayorjay.flowoverstack.ui.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.ui.adapters.AnswerAdapter.AnswerViewHolder
 import com.josycom.mayorjay.flowoverstack.databinding.AnswerItemBinding
@@ -9,9 +12,7 @@ import com.josycom.mayorjay.flowoverstack.model.Answer
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import org.jsoup.Jsoup
 
-class AnswerAdapter : RecyclerView.Adapter<AnswerViewHolder>() {
-
-    private var mAnswers: List<Answer>? = null
+class AnswerAdapter : PagingDataAdapter<Answer, AnswerViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
         val answerItemBinding = AnswerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -19,19 +20,19 @@ class AnswerAdapter : RecyclerView.Adapter<AnswerViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: AnswerViewHolder, position: Int) {
-        if (mAnswers != null) {
-            val currentAnswer = mAnswers!![position]
+        val currentAnswer = getItem(position)
+        if (currentAnswer != null) {
             holder.bind(currentAnswer)
         }
     }
 
-    fun setAnswers(answers: List<Answer>?) {
-        mAnswers = answers
-        notifyDataSetChanged()
-    }
+    companion object {
+        private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<Answer>() {
+            override fun areItemsTheSame(oldItem: Answer, newItem: Answer): Boolean = oldItem.answerId == newItem.answerId
 
-    override fun getItemCount(): Int {
-        return if (mAnswers != null) mAnswers!!.size else 0
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(oldItem: Answer, newItem: Answer): Boolean = oldItem == newItem
+        }
     }
 
     class AnswerViewHolder(private val mAnswerItemBinding: AnswerItemBinding) : RecyclerView.ViewHolder(mAnswerItemBinding.root) {
