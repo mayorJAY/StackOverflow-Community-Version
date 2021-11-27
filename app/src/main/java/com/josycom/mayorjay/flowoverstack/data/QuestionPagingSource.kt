@@ -23,7 +23,7 @@ class QuestionPagingSource(private val page: Int, private val pageSize: Int, pri
         return try {
             val response = apiService.getQuestionsForAll(position, pageSize, order, sortCondition, site, tagged, filter, siteKey)
             val responseItems: List<Question> = response.items
-            val nextKey = if (responseItems.isEmpty() || responseItems.size <= pageSize) {
+            val nextKey = if (responseItems.isEmpty()) {
                 null
             } else {
                 position + (params.loadSize / pageSize)

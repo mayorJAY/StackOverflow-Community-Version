@@ -27,7 +27,7 @@ class AnswerAdapter : PagingDataAdapter<Answer, AnswerViewHolder>(DIFF_CALLBACK)
     }
 
     companion object {
-        val DIFF_CALLBACK = object: DiffUtil.ItemCallback<Answer>() {
+        private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<Answer>() {
             override fun areItemsTheSame(oldItem: Answer, newItem: Answer): Boolean = oldItem.answerId == newItem.answerId
 
             @SuppressLint("DiffUtilEquals")
