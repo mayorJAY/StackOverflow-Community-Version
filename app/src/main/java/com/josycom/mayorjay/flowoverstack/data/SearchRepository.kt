@@ -24,7 +24,7 @@ class SearchRepository @Inject constructor(private val apiService: ApiService) {
             override fun onResponse(call: Call<QuestionsResponse?>, response: Response<QuestionsResponse?>) {
                 val questionsResponse = response.body()
                 if (questionsResponse != null) {
-                    if (questionsResponse.items!!.isNotEmpty()) {
+                    if (questionsResponse.items.isNotEmpty()) {
                         mResponse.setValue(SearchResponse(AppConstants.LOADED, questionsResponse.items))
                     } else {
                         mResponse.setValue(SearchResponse(AppConstants.NO_MATCHING_RESULT, null))

@@ -11,10 +11,10 @@ import javax.inject.Inject
 
 class TagsDialogViewModel @Inject constructor(private val tagRepository: TagRepository, val page: Int, val pageSize: Int, val siteKey: String) : ViewModel() {
 
-    var pagingDataFlow: Flow<PagingData<Tag>>? = null
+    var tagDataFlow: Flow<PagingData<Tag>>? = null
 
     fun fetchTags(inName: String) {
         tagRepository.init(page, pageSize, inName, siteKey)
-        pagingDataFlow = tagRepository.tagResult?.cachedIn(viewModelScope)
+        tagDataFlow = tagRepository.tagDataFlow?.cachedIn(viewModelScope)
     }
 }

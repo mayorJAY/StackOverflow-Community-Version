@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
@@ -61,7 +62,16 @@ class TagsDialogFragment : DialogFragment() {
         if (isPopularTagOption) {
             fetchAndDisplayTags("")
         }
+        setupListeners()
+    }
 
+    private fun initViews() {
+        binding.tvTitle.text = title
+        binding.layoutSearch.visibility = if (isPopularTagOption) View.INVISIBLE else View.VISIBLE
+        binding.tvInfo.visibility = if (isPopularTagOption) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun setupListeners() {
         binding.btSearch.setOnClickListener {
             val query = binding.searchTextInputEditText.text.toString().trim().toLowerCase()
             if (StringUtil.isBlank(query)) {
@@ -74,18 +84,13 @@ class TagsDialogFragment : DialogFragment() {
         }
     }
 
-    private fun initViews() {
-        binding.tvTitle.text = title
-        binding.layoutSearch.visibility = if (isPopularTagOption) View.INVISIBLE else View.VISIBLE
-        binding.tvInfo.visibility = if (isPopularTagOption) View.VISIBLE else View.INVISIBLE
-    }
-
     private fun fetchAndDisplayTags(inName: String) {
         viewModel.fetchTags(inName)
         binding.ivLookup.visibility = View.INVISIBLE
         val popularTagAdapter = TagsAdapter()
         binding.rvPopularTags.apply {
             layoutManager = LinearLayoutManager(activity)
+            itemAnimator = DefaultItemAnimator()
             adapter = popularTagAdapter.withLoadStateFooter(PagingLoadStateAdapter { popularTagAdapter.retry() })
         }
 
@@ -106,7 +111,7 @@ class TagsDialogFragment : DialogFragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.pagingDataFlow?.collectLatest {
+                viewModel.tagDataFlow?.collectLatest {
                     popularTagAdapter.submitData(it)
                 }
             }

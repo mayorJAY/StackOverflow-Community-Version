@@ -12,9 +12,9 @@ import javax.inject.Singleton
 @Singleton
 class TagRepository @Inject constructor(private val apiService: ApiService) {
 
-    var tagResult: Flow<PagingData<Tag>>? = null
+    var tagDataFlow: Flow<PagingData<Tag>>? = null
 
     fun init(page: Int, pageSize: Int, inName: String, siteKey: String) {
-        tagResult = Pager(PagingConfig(pageSize, enablePlaceholders = false), pagingSourceFactory = { TagPagingSource(page, pageSize, inName, siteKey, apiService) }).flow
+        tagDataFlow = Pager(PagingConfig(pageSize, enablePlaceholders = false), pagingSourceFactory = { TagPagingSource(page, pageSize, inName, siteKey, apiService) }).flow
     }
 }

@@ -38,7 +38,7 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.PAGE_SIZE)
+        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.SEARCH_PAGE_SIZE)
         binding.apply {
             rvSearchResults.layoutManager = LinearLayoutManager(this@SearchActivity)
             rvSearchResults.setHasFixedSize(true)
@@ -56,7 +56,7 @@ class SearchActivity : AppCompatActivity() {
         val mOnClickListener = View.OnClickListener {
             val viewHolder = it.tag as RecyclerView.ViewHolder
             val position = viewHolder.bindingAdapterPosition
-            Intent(applicationContext, AnswerActivity::class.java).apply {
+            Intent(this, AnswerActivity::class.java).apply {
                 val currentQuestion = questions!![position]
                 putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
                 putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))

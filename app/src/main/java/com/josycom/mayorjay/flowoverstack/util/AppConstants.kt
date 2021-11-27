@@ -10,6 +10,7 @@ interface AppConstants {
         const val SITE = "stackoverflow"
         const val FIRST_PAGE = 1
         const val PAGE_SIZE = 50
+        const val SEARCH_PAGE_SIZE = 100
         const val SPLASH_TIME = 1500L
         const val ORDER_DESCENDING = "desc"
         const val QUESTION_FILTER = "!9Z(-wwYGT"
