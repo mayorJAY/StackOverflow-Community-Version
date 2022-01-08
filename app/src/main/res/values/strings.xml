@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FlowOver Stack</string>
+    <string name="app_name">StackOverflow: Community Version</string>
 
     <string name="network_error_message">Something is not right! Please check your network</string>
     <string name="action_search">Search</string>

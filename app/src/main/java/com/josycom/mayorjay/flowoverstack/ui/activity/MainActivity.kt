@@ -183,8 +183,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private fun checkForTablet() {
         val isTablet = resources.getBoolean(R.bool.isTablet)
         if (isTablet) {
-            binding.scanToSearch.textSize = 15f
-            binding.typeToSearch.textSize = 15f
+            binding.scanToSearch.textSize = 14f
+            binding.typeToSearch.textSize = 14f
         }
     }
 

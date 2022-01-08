@@ -78,7 +78,8 @@ class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
                 } else {
                     mQuestionItemBinding.tvVotesCountItem.text = mQuestionItemBinding.root.context.getString(R.string.plus_score, question.score)
                 }
-                mQuestionItemBinding.tvTagsListItem.text = AppUtils.getFormattedTags(tagList!!)
+                val tags = tagList ?: listOf()
+                mQuestionItemBinding.tvTagsListItem.text = AppUtils.getFormattedTags(tags)
             }
         }
     }
