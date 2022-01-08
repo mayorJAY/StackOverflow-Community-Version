@@ -32,18 +32,9 @@ object AppUtils {
 
     fun toNormalDate(seconds: Long): String? {
         val date = Date(seconds * 1000L)
-        val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val simpleDateFormat = SimpleDateFormat("MMM dd yyyy", Locale.getDefault())
         return simpleDateFormat.format(date)
     }
 
-    fun getFormattedTags(tagList: List<String>): String {
-        val builder = StringBuilder()
-        for (i in tagList.indices) {
-            builder.append(tagList[i])
-            if (i != tagList.size - 1) {
-                builder.append(", ")
-            }
-        }
-        return builder.toString()
-    }
+    fun getFormattedTags(tagList: List<String>): String = tagList.joinToString(", ")
 }
