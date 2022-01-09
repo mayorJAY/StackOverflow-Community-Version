@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -94,12 +95,12 @@ class TagsDialogFragment : DialogFragment() {
             adapter = popularTagAdapter.withLoadStateFooter(PagingLoadStateAdapter { popularTagAdapter.retry() })
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             popularTagAdapter.loadStateFlow.collect {
-                binding.pbPopularTags.visibility = if (it.source.refresh is LoadState.Loading) View.VISIBLE else View.GONE
-                binding.tvError.visibility = if (it.source.refresh is LoadState.Error) View.VISIBLE else View.GONE
-                binding.btRetry.visibility = if (it.source.refresh is LoadState.Error) View.VISIBLE else View.GONE
-                binding.tvInfo.visibility = if (it.source.refresh !is LoadState.Loading && it.source.refresh !is LoadState.Error && isPopularTagOption) View.VISIBLE else View.GONE
+                binding.pbPopularTags.isVisible = it.source.refresh is LoadState.Loading
+                binding.tvError.isVisible = it.source.refresh is LoadState.Error
+                binding.btRetry.isVisible = it.source.refresh is LoadState.Error
+                binding.tvInfo.isVisible = it.source.refresh !is LoadState.Loading && it.source.refresh !is LoadState.Error && isPopularTagOption
                 if (it.source.refresh is LoadState.NotLoading && popularTagAdapter.itemCount <= 0) {
                     binding.tvError.visibility = View.VISIBLE
                     binding.tvError.setText(R.string.no_matching_result_rephrase)
@@ -109,7 +110,7 @@ class TagsDialogFragment : DialogFragment() {
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.tagDataFlow?.collectLatest {
                     popularTagAdapter.submitData(it)

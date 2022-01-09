@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -58,17 +59,13 @@ class QuestionAdapter : PagingDataAdapter<Question, QuestionViewHolder>(DIFF_CAL
                         .into(mQuestionItemBinding.ivAvatarItem)
                 mQuestionItemBinding.tvQuestionItem.text = Jsoup.parse(question.title).text()
                 mQuestionItemBinding.tvViewsCountItem.text = question.viewCount.toString()
-                mQuestionItemBinding.tvDateItem.text = AppUtils.toNormalDate(question.creationDate!!.toLong())
-                if (question.isAnswered == true) {
-                    mQuestionItemBinding.answered.visibility = View.VISIBLE
-                } else {
-                    mQuestionItemBinding.answered.visibility = View.GONE
-                }
+                mQuestionItemBinding.tvDateItem.text = AppUtils.toNormalDate(question.creationDate?.toLong() ?: 0L)
+                mQuestionItemBinding.answered.isVisible = question.isAnswered == true
                 val answers = question.answerCount
                 val resources = mQuestionItemBinding.root.context.resources
-                val answerCount = resources.getQuantityString(R.plurals.answers, answers!!, answers)
+                val answerCount = resources.getQuantityString(R.plurals.answers, answers ?: 0, answers)
                 mQuestionItemBinding.tvAnswersCountItem.text = answerCount
-                if (question.score!! <= 0) {
+                if (question.score ?: 0 <= 0) {
                     mQuestionItemBinding.tvVotesCountItem.text = question.score.toString()
                 } else {
                     mQuestionItemBinding.tvVotesCountItem.text = mQuestionItemBinding.root.context.getString(R.string.plus_score, question.score)

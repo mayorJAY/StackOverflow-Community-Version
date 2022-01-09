@@ -3,6 +3,7 @@ package com.josycom.mayorjay.flowoverstack.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -26,9 +27,9 @@ class PagingLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<P
         }
 
         fun bind(loadState: LoadState) {
-            binding.pbFooter.visibility = if (loadState is LoadState.Loading) View.VISIBLE else View.GONE
-            binding.btRetry.visibility = if (loadState is LoadState.Error) View.VISIBLE else View.GONE
-            binding.tvErrorMsg.visibility = if (loadState is LoadState.Error) View.VISIBLE else View.GONE
+            binding.pbFooter.isVisible = loadState is LoadState.Loading
+            binding.btRetry.isVisible = loadState is LoadState.Error
+            binding.tvErrorMsg.isVisible = loadState is LoadState.Error
         }
     }
 }

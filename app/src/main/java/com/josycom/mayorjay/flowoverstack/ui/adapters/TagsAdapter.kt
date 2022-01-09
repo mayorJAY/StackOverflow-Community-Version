@@ -19,10 +19,7 @@ class TagsAdapter: PagingDataAdapter<Tag, TagsAdapter.TagViewHolder>(DIFF_CALLBA
     }
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
-        val tag = getItem(position)
-        if (tag != null) {
-            holder.bind(tag)
-        }
+        getItem(position)?.let { holder.bind(it) }
     }
 
     fun setOnClickListener(listener: View.OnClickListener?) {
@@ -50,7 +47,11 @@ class TagsAdapter: PagingDataAdapter<Tag, TagsAdapter.TagViewHolder>(DIFF_CALLBA
         fun bind(tag: Tag) {
             with(binding) {
                 tvTagName.text = tag.name
-                tvTagCount.text = binding.root.context.resources.getQuantityString(R.plurals.questions, tag.count!!.toInt(), tag.count!!.toInt())
+                tvTagCount.text = root.context.resources.getQuantityString(
+                    R.plurals.questions,
+                    tag.count?.toInt() ?: 0,
+                    tag.count?.toInt() ?: 0
+                )
             }
         }
     }
