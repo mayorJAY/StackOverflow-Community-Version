@@ -4,7 +4,7 @@
 
 # StackOverflow - Community Version
 
-An Android StackOverflow client application implemented using the MVVM pattern, Retrofit2, LiveData, ViewModel, Repository pattern, View Binding. Users can get to view Questions which have been asked on Stack Overflow; picking a particular Question makes the user view it in details as well as the Answers provided. These Questions can be filtered by any of these four categories; Active, Recent, Hot or Voted. Questions that have an accepted Answer are easily identified.
+An Android StackOverflow client application implemented using the MVVM pattern, Retrofit2, LiveData, Flow, ViewModel, Repository pattern, View Binding. Users can get to view Questions which have been asked on Stack Overflow; picking a particular Question makes the user view it in details as well as the Answers provided. These Questions can be filtered by any of these four categories; Active, Recent, Hot or Voted. Questions that have an accepted Answer are easily identified.
 Users can also search for a particular problem they are having by typing in any search query of choice. Questions are curated based on the search query and presented to the user; again, the user can pick a particular Question to view the provided Answers.
 # Tech Stack
 
@@ -19,10 +19,12 @@ Users can also search for a particular problem they are having by typing in any 
 * [MarkdownView](https://github.com/mukeshsolanki/MarkdownView-Android) which is a simple library that helps to display Markdown text or files on Android as a HTML page just like GitHub
 * [ML Kit OCR](https://developers.google.com/ml-kit/vision/text-recognition) which is a library that recognizes text in any captured image
 * [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper) which is an image cropping library for Android, optimized for camera and gallery.
-* [Dagger](https://developer.android.com/training/dependency-injection/dagger-android) for DI
+* [Dagger](https://developer.android.com/training/dependency-injection/dagger-android) for Dependency Injection
+* [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines) for executing network calls asynchronously
+* [Kotlin flow](https://developer.android.com/kotlin/flow) for emitting live updates from a network call sequentially
 # Installation
 
-FlowOver Stack requires a minimum API level of 21. Clone the repository. You will need an API key from [Stack Exchange API](https://api.stackexchange.com/) to receive a higher request quota. Locate the StringConstants.java file and edit the following line to add your API key:
+This App requires a minimum API level of 21. Clone the repository. You will need an API key from [Stack Exchange API](https://api.stackexchange.com/) to receive a higher request quota. Locate the StringConstants.java file and edit the following line to add your API key:
 
 ````
 API_KEY = "YOUR_API_KEY"
