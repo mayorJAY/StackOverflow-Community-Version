@@ -3,6 +3,8 @@ package com.josycom.mayorjay.flowoverstack.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.josycom.mayorjay.flowoverstack.R
@@ -28,7 +30,7 @@ class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         if (questions != null) {
-            val currentQuestion = questions!![position]
+            val currentQuestion = questions?.get(position)
             holder.bind(currentQuestion)
         }
     }
@@ -39,7 +41,7 @@ class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (questions != null) questions!!.size else 0
+        return if (questions != null) questions?.size ?: 0 else 0
     }
 
     fun setQuestions(questions: List<Question>?) {
@@ -67,17 +69,19 @@ class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
                         .into(binding.ivAvatarItem)
                 binding.tvQuestionItem.text = Jsoup.parse(question.title).text()
                 binding.tvViewsCountItem.text = question.viewCount.toString()
-                binding.tvDateItem.text = AppUtils.toNormalDate(question.creationDate!!.toLong())
+                binding.tvDateItem.text = AppUtils.toNormalDate(question.creationDate?.toLong()
+                        ?: 0L)
                 if (question.isAnswered == true) {
-                    binding.answered.visibility = View.VISIBLE
+                    binding.answered.isVisible = true
                 } else {
-                    binding.answered.visibility = View.INVISIBLE
+                    binding.answered.isInvisible = true
                 }
                 val answers = question.answerCount
                 val resources = binding.root.context.resources
-                val answerCount = resources.getQuantityString(R.plurals.answers, answers!!, answers)
+                val answerCount = resources.getQuantityString(R.plurals.answers, answers
+                        ?: 0, answers)
                 binding.tvAnswersCountItem.text = answerCount
-                if (question.score!! <= 0) {
+                if (question.score ?: 0 <= 0) {
                     binding.tvVotesCountItem.text = question.score.toString()
                 } else {
                     binding.tvVotesCountItem.text = binding.root.context.getString(R.string.plus_score, question.score)

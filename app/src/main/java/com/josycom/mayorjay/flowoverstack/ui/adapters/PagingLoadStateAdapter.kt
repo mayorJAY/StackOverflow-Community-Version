@@ -1,7 +1,6 @@
 package com.josycom.mayorjay.flowoverstack.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.paging.LoadState

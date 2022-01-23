@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -94,7 +96,7 @@ class AnswerActivity : AppCompatActivity() {
                 AppUtils.directLinkToBrowser(this@AnswerActivity, ownerQuestionLink)
             }
             ivShare.setOnClickListener {
-                AppUtils.shareContent(questionLink!!, this@AnswerActivity)
+                AppUtils.shareContent(questionLink ?: "", this@AnswerActivity)
             }
         }
     }
@@ -109,13 +111,13 @@ class AnswerActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             answerAdapter.loadStateFlow.collect {
-                binding.pbFetchData.visibility = if (it.source.refresh is LoadState.Loading) View.VISIBLE else View.GONE
-                binding.tvError.visibility = if (it.source.refresh is LoadState.Error) View.VISIBLE else View.GONE
-                binding.btRetry.visibility = if (it.source.refresh is LoadState.Error) View.VISIBLE else View.GONE
+                binding.pbFetchData.isVisible = it.source.refresh is LoadState.Loading
+                binding.tvError.isVisible = it.source.refresh is LoadState.Error
+                binding.btRetry.isVisible = it.source.refresh is LoadState.Error
                 if (it.source.refresh is LoadState.NotLoading && answerAdapter.itemCount <= 0) {
-                    binding.tvNoAnswerQuestionDetail.visibility = View.VISIBLE
+                    binding.tvNoAnswerQuestionDetail.isVisible = true
                 } else {
-                    binding.tvNoAnswerQuestionDetail.visibility = View.INVISIBLE
+                    binding.tvNoAnswerQuestionDetail.isInvisible = true
                 }
             }
         }

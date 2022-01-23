@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Lifecycle
@@ -18,9 +19,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.ui.adapters.TagsAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.TagsDialogFragmentBinding
 import com.josycom.mayorjay.flowoverstack.ui.adapters.PagingLoadStateAdapter
+import com.josycom.mayorjay.flowoverstack.ui.adapters.TagsAdapter
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomTagsViewModelFactory
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.TagsDialogViewModel
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -68,8 +69,8 @@ class TagsDialogFragment : DialogFragment() {
 
     private fun initViews() {
         binding.tvTitle.text = title
-        binding.layoutSearch.visibility = if (isPopularTagOption) View.INVISIBLE else View.VISIBLE
-        binding.tvInfo.visibility = if (isPopularTagOption) View.VISIBLE else View.INVISIBLE
+        binding.layoutSearch.isInvisible = isPopularTagOption
+        binding.tvInfo.isInvisible = !isPopularTagOption
     }
 
     private fun setupListeners() {
@@ -87,7 +88,7 @@ class TagsDialogFragment : DialogFragment() {
 
     private fun fetchAndDisplayTags(inName: String) {
         viewModel.fetchTags(inName)
-        binding.ivLookup.visibility = View.INVISIBLE
+        binding.ivLookup.isInvisible = true
         val popularTagAdapter = TagsAdapter()
         binding.rvPopularTags.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -102,10 +103,10 @@ class TagsDialogFragment : DialogFragment() {
                 binding.btRetry.isVisible = it.source.refresh is LoadState.Error
                 binding.tvInfo.isVisible = it.source.refresh !is LoadState.Loading && it.source.refresh !is LoadState.Error && isPopularTagOption
                 if (it.source.refresh is LoadState.NotLoading && popularTagAdapter.itemCount <= 0) {
-                    binding.tvError.visibility = View.VISIBLE
+                    binding.tvError.isVisible = true
                     binding.tvError.setText(R.string.no_matching_result_rephrase)
                 } else {
-                    binding.tvError.visibility = View.INVISIBLE
+                    binding.tvError.isInvisible = true
                 }
             }
         }

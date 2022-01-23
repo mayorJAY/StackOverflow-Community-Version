@@ -7,6 +7,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -27,9 +29,10 @@ import javax.inject.Inject
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private var searchInput: String? = null
-    private var questions: List<Question>? = null
+    private var searchInput: String = ""
+    private var questions: List<Question>? = listOf()
     private lateinit var searchViewModel: SearchViewModel
+
     @Inject
     lateinit var viewModelFactory: CustomSearchViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +46,12 @@ class SearchActivity : AppCompatActivity() {
             rvSearchResults.layoutManager = LinearLayoutManager(this@SearchActivity)
             rvSearchResults.setHasFixedSize(true)
             rvSearchResults.itemAnimator = DefaultItemAnimator()
-            searchScrollUpFab.visibility = View.INVISIBLE
+            searchScrollUpFab.isInvisible = true
             searchNestedScrollview.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
                 if (scrollY > 0) {
-                    searchScrollUpFab.visibility = View.VISIBLE
+                    searchScrollUpFab.isVisible = true
                 } else {
-                    searchScrollUpFab.visibility = View.INVISIBLE
+                    searchScrollUpFab.isInvisible = true
                 }
             }
             searchScrollUpFab.setOnClickListener { searchNestedScrollview.scrollTo(0, 0) }
@@ -60,9 +63,9 @@ class SearchActivity : AppCompatActivity() {
             } else {
                 searchInput = binding.searchTextInputEditText.text.toString().trim()
                 val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+                inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                 setQuery()
-                binding.ivLookup.visibility = View.INVISIBLE
+                binding.ivLookup.isInvisible = true
             }
         }
         val searchAdapter = SearchAdapter()
@@ -87,9 +90,10 @@ class SearchActivity : AppCompatActivity() {
         val viewHolder = it.tag as RecyclerView.ViewHolder
         val position = viewHolder.bindingAdapterPosition
         Intent(this, AnswerActivity::class.java).apply {
-            val currentQuestion = questions!![position]
+            val currentQuestion = questions?.get(position) ?: Question()
             putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
-            putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
+            putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate?.toLong()
+                    ?: 0L))
             putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
             putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
             putExtra(AppConstants.EXTRA_QUESTION_ID, currentQuestion.questionId)
@@ -108,37 +112,37 @@ class SearchActivity : AppCompatActivity() {
     private val shareClickListener = View.OnClickListener { v ->
         val currentQuestion = v.tag as? Question
         if (currentQuestion != null) {
-            AppUtils.shareContent(currentQuestion.link!!, this)
+            AppUtils.shareContent(currentQuestion.link ?: "", this)
         }
     }
 
     private fun setQuery() {
-        searchViewModel.setQuery(searchInput!!)
+        searchViewModel.setQuery(searchInput)
     }
 
     private fun onLoading() = binding.apply {
-        searchPbFetchData.visibility = View.VISIBLE
-        rvSearchResults.visibility = View.INVISIBLE
-        searchTvError.visibility = View.INVISIBLE
+        searchPbFetchData.isVisible = true
+        rvSearchResults.isInvisible = true
+        searchTvError.isInvisible = true
     }
 
     private fun onLoaded() = binding.apply {
-        searchPbFetchData.visibility = View.INVISIBLE
-        rvSearchResults.visibility = View.VISIBLE
-        searchTvError.visibility = View.INVISIBLE
+        searchPbFetchData.isInvisible = true
+        rvSearchResults.isVisible = true
+        searchTvError.isInvisible = true
     }
 
     private fun onNoMatchingResult() = binding.apply {
-        searchPbFetchData.visibility = View.INVISIBLE
-        rvSearchResults.visibility = View.INVISIBLE
-        searchTvError.visibility = View.VISIBLE
+        searchPbFetchData.isInvisible = true
+        rvSearchResults.isInvisible = true
+        searchTvError.isVisible = true
         searchTvError.setText(R.string.no_matching_result)
     }
 
     private fun onError() = binding.apply {
-        searchPbFetchData.visibility = View.INVISIBLE
-        rvSearchResults.visibility = View.INVISIBLE
-        searchTvError.visibility = View.VISIBLE
+        searchPbFetchData.isInvisible = true
+        rvSearchResults.isInvisible = true
+        searchTvError.isVisible = true
         searchTvError.setText(R.string.network_error_message)
     }
 

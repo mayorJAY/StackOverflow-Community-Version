@@ -50,9 +50,10 @@ class AnswerAdapter : PagingDataAdapter<Answer, AnswerViewHolder>(DIFF_CALLBACK)
         fun bind(answer: Answer) {
             binding.ivShare.tag = answer
             binding.tvVotesItem.text = answer.score.toString()
-            binding.tvAnswerNameItem.text = answer.owner!!.displayName
+            binding.tvAnswerNameItem.text = answer.owner?.displayName
             if (answer.creationDate != null) {
-                binding.tvAnswerDateItem.text = AppUtils.toNormalDate(answer.creationDate!!.toLong())
+                binding.tvAnswerDateItem.text = AppUtils.toNormalDate(answer.creationDate?.toLong()
+                        ?: 0L)
             }
             binding.tvAnswerBodyItem.text = Jsoup.parse(answer.body).text()
         }

@@ -67,7 +67,8 @@ class QuestionAdapter : PagingDataAdapter<Question, QuestionViewHolder>(DIFF_CAL
                 binding.answered.isVisible = question.isAnswered == true
                 val answers = question.answerCount
                 val resources = binding.root.context.resources
-                val answerCount = resources.getQuantityString(R.plurals.answers, answers!!, answers)
+                val answerCount = resources.getQuantityString(R.plurals.answers, answers
+                        ?: 0, answers)
                 binding.tvAnswersCountItem.text = answerCount
                 if (question.score ?: 0 <= 0) {
                     binding.tvVotesCountItem.text = question.score.toString()

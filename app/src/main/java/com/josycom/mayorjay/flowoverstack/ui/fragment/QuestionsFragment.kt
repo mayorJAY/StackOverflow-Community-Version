@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -77,11 +79,15 @@ class QuestionsFragment : Fragment() {
 
     private fun initViews() {
         (activity as AppCompatActivity).supportActionBar?.title = title
-        binding.activityScrollUpFab.visibility = View.INVISIBLE
-        binding.activityRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        binding.activityScrollUpFab.isInvisible = true
+        binding.activityRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                binding.activityScrollUpFab.visibility = if (dy > 0) View.VISIBLE else View.INVISIBLE
+                if (dy > 0) {
+                    binding.activityScrollUpFab.isVisible = true
+                } else {
+                    binding.activityScrollUpFab.isInvisible = true
+                }
             }
         })
         binding.activityScrollUpFab.setOnClickListener {
@@ -97,7 +103,7 @@ class QuestionsFragment : Fragment() {
             adapter = questionAdapter.withLoadStateFooter(PagingLoadStateAdapter { questionAdapter.retry() })
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             questionAdapter.loadStateFlow.collect {
                 if (it.source.refresh is LoadState.Loading) onLoading()
                 if (it.source.refresh is LoadState.Error) onError()
@@ -105,7 +111,7 @@ class QuestionsFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.questionDataFlow?.collectLatest {
                     questionAdapter.submitData(it)
@@ -123,7 +129,8 @@ class QuestionsFragment : Fragment() {
             if (currentQuestion != null) {
                 putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
                 if (currentQuestion.creationDate != null) {
-                    putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
+                    putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate?.toLong()
+                            ?: 0L))
                 }
                 putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
                 putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
@@ -144,29 +151,29 @@ class QuestionsFragment : Fragment() {
     private val shareClickListener = View.OnClickListener { v ->
         val currentQuestion = v.tag as? Question
         if (currentQuestion != null) {
-            AppUtils.shareContent(currentQuestion.link!!, requireContext())
+            AppUtils.shareContent(currentQuestion.link ?: "", requireContext())
         }
     }
 
     private fun onLoaded() = binding.apply {
-        activityPbFetchData.visibility = View.INVISIBLE
-        activityRecyclerView.visibility = View.VISIBLE
-        activityTvError.visibility = View.INVISIBLE
-        btRetry.visibility = View.INVISIBLE
+        activityPbFetchData.isInvisible = true
+        activityRecyclerView.isVisible = true
+        activityTvError.isInvisible = true
+        btRetry.isInvisible = true
     }
 
     private fun onError() = binding.apply {
-        activityPbFetchData.visibility = View.INVISIBLE
-        activityRecyclerView.visibility = View.INVISIBLE
-        activityTvError.visibility = View.VISIBLE
-        btRetry.visibility = View.VISIBLE
+        activityPbFetchData.isInvisible = true
+        activityRecyclerView.isInvisible = true
+        activityTvError.isVisible = true
+        btRetry.isVisible = true
     }
 
     private fun onLoading() = binding.apply {
-        activityPbFetchData.visibility = View.VISIBLE
-        activityRecyclerView.visibility = View.VISIBLE
-        activityTvError.visibility = View.INVISIBLE
-        btRetry.visibility = View.INVISIBLE
+        activityPbFetchData.isVisible = true
+        activityRecyclerView.isVisible = true
+        activityTvError.isInvisible = true
+        btRetry.isInvisible = true
     }
 
     companion object {
