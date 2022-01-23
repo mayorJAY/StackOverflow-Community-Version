@@ -19,8 +19,8 @@
             android:id="@+id/answered"
             android:layout_width="@dimen/_14sdp"
             android:layout_height="@dimen/_14sdp"
-            android:layout_marginStart="8dp"
-            android:visibility="gone"
+            android:layout_marginStart="5dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date_item"
             app:layout_constraintStart_toEndOf="@+id/tv_date_item"
             app:layout_constraintTop_toTopOf="@+id/tv_date_item"
@@ -62,11 +62,22 @@
                 android:scaleType="fitXY" />
         </androidx.cardview.widget.CardView>
 
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/share_image"
+            android:src="@drawable/ic_share"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_date_item"
+            app:layout_constraintEnd_toEndOf="@+id/avatar_card"
+            app:layout_constraintStart_toStartOf="@+id/avatar_card"
+            app:layout_constraintTop_toTopOf="@+id/tv_date_item" />
+
         <TextView
             android:id="@+id/tv_answers_count_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="5dp"
             android:textSize="@dimen/_9ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_votes_count_item"
             app:layout_constraintStart_toEndOf="@+id/tv_votes_count_item"
@@ -77,7 +88,7 @@
             android:id="@+id/iv_view_icon"
             android:layout_width="@dimen/_10sdp"
             android:layout_height="@dimen/_10sdp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="5dp"
             android:contentDescription="@string/view_indicator_icon"
             android:src="@drawable/ic_view"
             app:layout_constraintBottom_toBottomOf="@+id/tv_answers_count_item"
@@ -100,7 +111,7 @@
             android:id="@+id/iv_date_icon"
             android:layout_width="@dimen/_10sdp"
             android:layout_height="@dimen/_10sdp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="5dp"
             android:contentDescription="@string/view_indicator_icon"
             android:src="@drawable/ic_date"
             app:layout_constraintBottom_toBottomOf="@+id/tv_answers_count_item"
@@ -153,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/tag_bg"
             android:backgroundTint="@color/colorPrimary"
             android:padding="@dimen/_4sdp"

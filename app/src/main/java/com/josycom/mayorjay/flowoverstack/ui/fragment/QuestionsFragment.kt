@@ -16,15 +16,15 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.josycom.mayorjay.flowoverstack.ui.adapters.QuestionAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.ui.adapters.PagingLoadStateAdapter
-import com.josycom.mayorjay.flowoverstack.util.AppConstants
-import com.josycom.mayorjay.flowoverstack.util.AppUtils
+import com.josycom.mayorjay.flowoverstack.ui.adapters.QuestionAdapter
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomQuestionViewModelFactory
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.QuestionViewModel
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -113,12 +113,12 @@ class QuestionsFragment : Fragment() {
             }
         }
 
-        questionAdapter.setOnClickListener(onClickListener)
+        questionAdapter.setOnClickListeners(viewHolderClickListener, shareClickListener)
         binding.btRetry.setOnClickListener { questionAdapter.retry() }
     }
 
-    private val onClickListener = View.OnClickListener { v ->
-        Intent(context, AnswerActivity::class.java).apply {
+    private val viewHolderClickListener = View.OnClickListener { v ->
+        Intent(requireContext(), AnswerActivity::class.java).apply {
             val currentQuestion = v?.tag as? Question
             if (currentQuestion != null) {
                 putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
@@ -129,6 +129,7 @@ class QuestionsFragment : Fragment() {
                 putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
                 putExtra(AppConstants.EXTRA_QUESTION_ID, currentQuestion.questionId)
                 putExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, currentQuestion.score)
+                putExtra(AppConstants.EXTRA_QUESTION_LINK, currentQuestion.link)
                 val questionOwner = currentQuestion.owner
                 if (questionOwner != null) {
                     putExtra(AppConstants.EXTRA_QUESTION_NAME, questionOwner.displayName)
@@ -137,6 +138,13 @@ class QuestionsFragment : Fragment() {
                 }
             }
             startActivity(this)
+        }
+    }
+
+    private val shareClickListener = View.OnClickListener { v ->
+        val currentQuestion = v.tag as? Question
+        if (currentQuestion != null) {
+            AppUtils.shareContent(currentQuestion.link!!, requireContext())
         }
     }
 

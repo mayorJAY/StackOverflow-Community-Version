@@ -29,21 +29,20 @@ import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.ui.adapters.SearchAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityOcrBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
-import com.josycom.mayorjay.flowoverstack.util.AppConstants
-import com.josycom.mayorjay.flowoverstack.util.AppUtils
+import com.josycom.mayorjay.flowoverstack.ui.adapters.SearchAdapter
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomSearchViewModelFactory
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.SearchViewModel
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import dagger.android.AndroidInjection
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
 
 class OcrActivity : AppCompatActivity() {
@@ -54,7 +53,6 @@ class OcrActivity : AppCompatActivity() {
     private var questions: List<Question>? = null
     private var searchInput: String? = null
     private lateinit var searchViewModel: SearchViewModel
-    private lateinit var onClickListener: View.OnClickListener
     @Inject
     lateinit var viewModelFactory: CustomSearchViewModelFactory
 
@@ -65,7 +63,6 @@ class OcrActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.SEARCH_PAGE_SIZE)
         checkPermissionAndStartCamera()
-        activateViewHolder()
         setupRecyclerView()
         hideAndShowScrollFab()
         activateSearchButton()
@@ -168,6 +165,10 @@ class OcrActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_CANCELED) {
+            finish()
+            return
+        }
         binding.ivCroppedImage.visibility = View.VISIBLE
         val bitmap = BitmapFactory.decodeFile(photoPath)
         if (requestCode == CAMERA_REQUEST_CODE) {
@@ -177,8 +178,6 @@ class OcrActivity : AppCompatActivity() {
                 CropImage.activity(uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .start(this)
-            } else if (bitmap == null) {
-                startActivity(Intent(this, MainActivity::class.java))
             }
         } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
@@ -256,7 +255,36 @@ class OcrActivity : AppCompatActivity() {
             }
         })
         binding.ocrRecyclerview.adapter = searchAdapter
-        searchAdapter.setOnClickListener(onClickListener)
+        searchAdapter.setOnClickListener(viewHolderClickListener, shareClickListener)
+    }
+
+    private val viewHolderClickListener = View.OnClickListener {
+        val viewHolder = it.tag as RecyclerView.ViewHolder
+        val position = viewHolder.adapterPosition
+        Intent(this, AnswerActivity::class.java).apply {
+            val currentQuestion = questions!![position]
+            putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
+            putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
+            putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
+            putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
+            putExtra(AppConstants.EXTRA_QUESTION_ID, currentQuestion.questionId)
+            putExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, currentQuestion.score)
+            putExtra(AppConstants.EXTRA_QUESTION_LINK, currentQuestion.link)
+            val questionOwner = currentQuestion.owner
+            if (questionOwner != null) {
+                putExtra(AppConstants.EXTRA_QUESTION_NAME, questionOwner.displayName)
+                putExtra(AppConstants.EXTRA_AVATAR_ADDRESS, questionOwner.profileImage)
+                putExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK, questionOwner.link)
+            }
+            startActivity(this)
+        }
+    }
+
+    private val shareClickListener = View.OnClickListener { v ->
+        val currentQuestion = v.tag as? Question
+        if (currentQuestion != null) {
+            AppUtils.shareContent(currentQuestion.link!!, this)
+        }
     }
 
     private fun hideAndShowScrollFab() {
@@ -270,29 +298,6 @@ class OcrActivity : AppCompatActivity() {
                 }
             }
             ocrScrollUpFab.setOnClickListener { ocrNestedScrollview.scrollTo(0, 0) }
-        }
-    }
-
-    private fun activateViewHolder() {
-        onClickListener = View.OnClickListener {
-            val viewHolder = it.tag as RecyclerView.ViewHolder
-            val position = viewHolder.adapterPosition
-            Intent(applicationContext, AnswerActivity::class.java).apply {
-                val currentQuestion = questions!![position]
-                putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
-                putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
-                putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
-                putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
-                putExtra(AppConstants.EXTRA_QUESTION_ID, currentQuestion.questionId)
-                putExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, currentQuestion.score)
-                val questionOwner = currentQuestion.owner
-                if (questionOwner != null) {
-                    putExtra(AppConstants.EXTRA_QUESTION_NAME, questionOwner.displayName)
-                    putExtra(AppConstants.EXTRA_AVATAR_ADDRESS, questionOwner.profileImage)
-                    putExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK, questionOwner.link)
-                }
-                startActivity(this)
-            }
         }
     }
 
@@ -328,6 +333,7 @@ class OcrActivity : AppCompatActivity() {
         ocrScanFab.visibility = View.VISIBLE
         btSearch.visibility = View.INVISIBLE
         ocrTextInputEditText.visibility = View.INVISIBLE
+        ivCroppedImage.visibility = View.INVISIBLE
     }
 
     private fun onNoMatchingResult() = binding.apply {

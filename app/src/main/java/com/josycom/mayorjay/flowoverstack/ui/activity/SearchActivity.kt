@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.ui.adapters.SearchAdapter
 import com.josycom.mayorjay.flowoverstack.databinding.ActivitySearchBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
 import com.josycom.mayorjay.flowoverstack.network.SearchResponse
-import com.josycom.mayorjay.flowoverstack.util.AppConstants
-import com.josycom.mayorjay.flowoverstack.util.AppUtils
+import com.josycom.mayorjay.flowoverstack.ui.adapters.SearchAdapter
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomSearchViewModelFactory
 import com.josycom.mayorjay.flowoverstack.ui.viewmodel.SearchViewModel
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
@@ -53,26 +53,6 @@ class SearchActivity : AppCompatActivity() {
             }
             searchScrollUpFab.setOnClickListener { searchNestedScrollview.scrollTo(0, 0) }
         }
-        val mOnClickListener = View.OnClickListener {
-            val viewHolder = it.tag as RecyclerView.ViewHolder
-            val position = viewHolder.bindingAdapterPosition
-            Intent(this, AnswerActivity::class.java).apply {
-                val currentQuestion = questions!![position]
-                putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
-                putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
-                putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
-                putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
-                putExtra(AppConstants.EXTRA_QUESTION_ID, currentQuestion.questionId)
-                putExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, currentQuestion.score)
-                val questionOwner = currentQuestion.owner
-                if (questionOwner != null) {
-                    putExtra(AppConstants.EXTRA_QUESTION_NAME, questionOwner.displayName)
-                    putExtra(AppConstants.EXTRA_AVATAR_ADDRESS, questionOwner.profileImage)
-                    putExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK, questionOwner.link)
-                }
-                startActivity(this)
-            }
-        }
 
         binding.searchButton.setOnClickListener {
             if (TextUtils.isEmpty(binding.searchTextInputEditText.text.toString())) {
@@ -100,7 +80,36 @@ class SearchActivity : AppCompatActivity() {
             }
         })
         binding.rvSearchResults.adapter = searchAdapter
-        searchAdapter.setOnClickListener(mOnClickListener)
+        searchAdapter.setOnClickListener(viewHolderClickListener, shareClickListener)
+    }
+
+    private val viewHolderClickListener = View.OnClickListener {
+        val viewHolder = it.tag as RecyclerView.ViewHolder
+        val position = viewHolder.bindingAdapterPosition
+        Intent(this, AnswerActivity::class.java).apply {
+            val currentQuestion = questions!![position]
+            putExtra(AppConstants.EXTRA_QUESTION_TITLE, currentQuestion.title)
+            putExtra(AppConstants.EXTRA_QUESTION_DATE, AppUtils.toNormalDate(currentQuestion.creationDate!!.toLong()))
+            putExtra(AppConstants.EXTRA_QUESTION_FULL_TEXT, currentQuestion.body)
+            putExtra(AppConstants.EXTRA_QUESTION_ANSWERS_COUNT, currentQuestion.answerCount)
+            putExtra(AppConstants.EXTRA_QUESTION_ID, currentQuestion.questionId)
+            putExtra(AppConstants.EXTRA_QUESTION_VOTES_COUNT, currentQuestion.score)
+            putExtra(AppConstants.EXTRA_QUESTION_LINK, currentQuestion.link)
+            val questionOwner = currentQuestion.owner
+            if (questionOwner != null) {
+                putExtra(AppConstants.EXTRA_QUESTION_NAME, questionOwner.displayName)
+                putExtra(AppConstants.EXTRA_AVATAR_ADDRESS, questionOwner.profileImage)
+                putExtra(AppConstants.EXTRA_QUESTION_OWNER_LINK, questionOwner.link)
+            }
+            startActivity(this)
+        }
+    }
+
+    private val shareClickListener = View.OnClickListener { v ->
+        val currentQuestion = v.tag as? Question
+        if (currentQuestion != null) {
+            AppUtils.shareContent(currentQuestion.link!!, this)
+        }
     }
 
     private fun setQuery() {

@@ -56,6 +56,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_name_question_detail" />
 
+            <ImageView
+                android:id="@+id/iv_share"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:contentDescription="@string/share_image"
+                android:src="@drawable/ic_share"
+                app:layout_constraintEnd_toEndOf="@+id/tv_date_question_detail"
+                app:layout_constraintStart_toStartOf="@+id/tv_date_question_detail"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date_question_detail" />
+
             <TextView
                 android:id="@+id/tv_name_question_detail"
                 android:layout_width="wrap_content"
@@ -79,17 +90,18 @@
                 android:textSize="@dimen/_8ssp"
                 app:layout_constraintStart_toStartOf="@+id/tv_name_question_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name_question_detail"
+                app:layout_constraintBottom_toBottomOf="@+id/avatar_card"
                 tools:text="+100" />
 
             <com.mukesh.MarkdownView
                 android:id="@+id/mark_down_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/avatar_card" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_share" />
 
             <View
                 android:id="@+id/v_divider"
