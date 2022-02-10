@@ -11,6 +11,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -23,8 +25,8 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityMainBinding
-import com.josycom.mayorjay.flowoverstack.ui.fragment.TagsDialogFragment
 import com.josycom.mayorjay.flowoverstack.ui.fragment.QuestionsFragment
+import com.josycom.mayorjay.flowoverstack.ui.fragment.TagsDialogFragment
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -68,7 +70,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         if (!isFragmentDisplayed) {
             if (findViewById<View?>(R.id.fragment_container) != null) {
                 fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction!!.add(R.id.fragment_container, QuestionsFragment()).commit()
+                fragmentTransaction?.add(R.id.fragment_container, QuestionsFragment())?.commit()
                 QuestionsFragment.sortCondition = AppConstants.SORT_BY_ACTIVITY
                 QuestionsFragment.title = getString(R.string.active_questions)
                 isFragmentDisplayed = true
@@ -94,10 +96,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
             searchFab.setImageDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_search))
             scanToSearch.startAnimation(fabClose)
             scanToSearch.isClickable = false
-            scanToSearch.visibility = View.INVISIBLE
+            scanToSearch.isInvisible = true
             typeToSearch.startAnimation(fabClose)
             typeToSearch.isClickable = false
-            typeToSearch.visibility = View.INVISIBLE
+            typeToSearch.isInvisible = true
         }
         isFabOpen = false
     }
@@ -107,10 +109,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
             searchFab.setImageDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_close))
             scanToSearch.startAnimation(fabOpen)
             scanToSearch.isClickable = true
-            scanToSearch.visibility = View.VISIBLE
+            scanToSearch.isVisible = true
             typeToSearch.startAnimation(fabOpen)
             typeToSearch.isClickable = true
-            typeToSearch.visibility = View.VISIBLE
+            typeToSearch.isVisible = true
         }
         isFabOpen = true
     }
@@ -152,7 +154,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private fun switchView(title: String, sortCondition: String, tagName: String) {
         if (findViewById<View?>(R.id.fragment_container) != null) {
             fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction!!.replace(R.id.fragment_container, QuestionsFragment()).commit()
+            fragmentTransaction?.replace(R.id.fragment_container, QuestionsFragment())?.commit()
             QuestionsFragment.title = title
             QuestionsFragment.sortCondition = sortCondition
             QuestionsFragment.tagName = tagName
@@ -191,7 +193,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     override fun onPause() {
         super.onPause()
         if (appUpdateManager != null) {
-            appUpdateManager!!.unregisterListener(installStateUpdatedListener)
+            appUpdateManager?.unregisterListener(installStateUpdatedListener)
         }
     }
 
@@ -201,7 +203,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
                 popupSnackBarForCompleteUpdate()
             } else if (state.installStatus() == InstallStatus.INSTALLED) {
                 if (appUpdateManager != null) {
-                    appUpdateManager!!.unregisterListener(this)
+                    appUpdateManager?.unregisterListener(this)
                 }
             } else {
                 Log.i("UpdateInstaller", "InstallStateUpdatedListener >>>>> " + state.installStatus())
@@ -211,12 +213,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     private fun checkForUpdate() {
         appUpdateManager = AppUpdateManagerFactory.create(this)
-        appUpdateManager!!.registerListener(installStateUpdatedListener)
-        appUpdateManager!!.appUpdateInfo.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
+        appUpdateManager?.registerListener(installStateUpdatedListener)
+        appUpdateManager?.appUpdateInfo?.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                 try {
-                    appUpdateManager!!.startUpdateFlowForResult(
+                    appUpdateManager?.startUpdateFlowForResult(
                             appUpdateInfo, AppUpdateType.FLEXIBLE, this@MainActivity, APP_UPDATE)
                 } catch (e: SendIntentException) {
                     e.printStackTrace()
@@ -233,7 +235,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         Snackbar.make(findViewById(R.id.main_root_layout), "An update has just been downloaded", Snackbar.LENGTH_INDEFINITE).apply {
             setAction("Restart") {
                 if (appUpdateManager != null) {
-                    appUpdateManager!!.completeUpdate()
+                    appUpdateManager?.completeUpdate()
                 }
             }
             setActionTextColor(resources.getColor(R.color.colorPrimaryText))

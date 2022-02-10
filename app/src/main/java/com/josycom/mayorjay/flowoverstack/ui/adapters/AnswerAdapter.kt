@@ -2,13 +2,14 @@ package com.josycom.mayorjay.flowoverstack.ui.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.josycom.mayorjay.flowoverstack.ui.adapters.AnswerAdapter.AnswerViewHolder
 import com.josycom.mayorjay.flowoverstack.databinding.AnswerItemBinding
 import com.josycom.mayorjay.flowoverstack.model.Answer
+import com.josycom.mayorjay.flowoverstack.ui.adapters.AnswerAdapter.AnswerViewHolder
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import org.jsoup.Jsoup
 
@@ -26,8 +27,13 @@ class AnswerAdapter : PagingDataAdapter<Answer, AnswerViewHolder>(DIFF_CALLBACK)
         }
     }
 
+    fun setOnClickListener(shareOnClickListener: View.OnClickListener?) {
+        shareClickListener = shareOnClickListener
+    }
+
     companion object {
-        private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<Answer>() {
+        private var shareClickListener: View.OnClickListener? = null
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Answer>() {
             override fun areItemsTheSame(oldItem: Answer, newItem: Answer): Boolean = oldItem.answerId == newItem.answerId
 
             @SuppressLint("DiffUtilEquals")
@@ -35,15 +41,21 @@ class AnswerAdapter : PagingDataAdapter<Answer, AnswerViewHolder>(DIFF_CALLBACK)
         }
     }
 
-    class AnswerViewHolder(private val mAnswerItemBinding: AnswerItemBinding) : RecyclerView.ViewHolder(mAnswerItemBinding.root) {
+    class AnswerViewHolder(private val binding: AnswerItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.ivShare.setOnClickListener(shareClickListener)
+        }
 
         fun bind(answer: Answer) {
-            mAnswerItemBinding.tvVotesItem.text = answer.score.toString()
-            mAnswerItemBinding.tvAnswerNameItem.text = answer.owner!!.displayName
+            binding.ivShare.tag = answer
+            binding.tvVotesItem.text = answer.score.toString()
+            binding.tvAnswerNameItem.text = answer.owner?.displayName
             if (answer.creationDate != null) {
-                mAnswerItemBinding.tvAnswerDateItem.text = AppUtils.toNormalDate(answer.creationDate!!.toLong())
+                binding.tvAnswerDateItem.text = AppUtils.toNormalDate(answer.creationDate?.toLong()
+                        ?: 0L)
             }
-            mAnswerItemBinding.tvAnswerBodyItem.text = Jsoup.parse(answer.body).text()
+            binding.tvAnswerBodyItem.text = Jsoup.parse(answer.body).text()
         }
     }
 }

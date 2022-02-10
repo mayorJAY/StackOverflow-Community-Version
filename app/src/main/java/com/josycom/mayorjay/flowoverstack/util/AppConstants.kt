@@ -29,6 +29,7 @@ interface AppConstants {
         const val EXTRA_QUESTION_FULL_TEXT = "question_full_text"
         const val EXTRA_QUESTION_OWNER_LINK = "question_owner_link"
         const val EXTRA_QUESTION_VOTES_COUNT = "question_votes"
+        const val EXTRA_QUESTION_LINK = "question_link"
         const val WEBVIEW_EXTRA_OBJECT = "key.EXTRA_OBJC"
         const val LOADING = "loading"
         const val LOADED = "loaded"

@@ -3,21 +3,24 @@ package com.josycom.mayorjay.flowoverstack.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.ui.adapters.SearchAdapter.SearchViewHolder
 import com.josycom.mayorjay.flowoverstack.databinding.QuestionItemBinding
 import com.josycom.mayorjay.flowoverstack.model.Question
+import com.josycom.mayorjay.flowoverstack.ui.adapters.SearchAdapter.SearchViewHolder
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import org.jsoup.Jsoup
 
 class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
 
-    private var mQuestions: List<Question>? = null
+    private var questions: List<Question>? = null
 
     companion object {
-        private var mOnClickListener: View.OnClickListener? = null
+        private var clickListener: View.OnClickListener? = null
+        private var shareClickListener: View.OnClickListener? = null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -26,60 +29,65 @@ class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        if (mQuestions != null) {
-            val currentQuestion = mQuestions!![position]
+        if (questions != null) {
+            val currentQuestion = questions?.get(position)
             holder.bind(currentQuestion)
         }
     }
 
-    fun setOnClickListener(onClickListener: View.OnClickListener?) {
-        mOnClickListener = onClickListener
+    fun setOnClickListener(onClickListener: View.OnClickListener?, shareOnClickListener: View.OnClickListener?) {
+        clickListener = onClickListener
+        shareClickListener = shareOnClickListener
     }
 
     override fun getItemCount(): Int {
-        return if (mQuestions != null) mQuestions!!.size else 0
+        return if (questions != null) questions?.size ?: 0 else 0
     }
 
     fun setQuestions(questions: List<Question>?) {
-        mQuestions = questions
+        this.questions = questions
         notifyDataSetChanged()
     }
 
-    inner class SearchViewHolder(private val mQuestionItemBinding: QuestionItemBinding) : RecyclerView.ViewHolder(mQuestionItemBinding.root) {
+    inner class SearchViewHolder(private val binding: QuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            mQuestionItemBinding.root.tag = this
-            mQuestionItemBinding.root.setOnClickListener(mOnClickListener)
+            binding.root.tag = this
+            binding.root.setOnClickListener(clickListener)
+            binding.ivShare.setOnClickListener(shareClickListener)
         }
 
         fun bind(question: Question?) {
             if (question != null) {
+                binding.ivShare.tag = question
                 val owner = question.owner
                 val profileImage = owner?.profileImage
                 val tagList = question.tags
-                Glide.with(mQuestionItemBinding.root.context)
+                Glide.with(binding.root.context)
                         .load(profileImage)
                         .placeholder(R.drawable.loading)
-                        .into(mQuestionItemBinding.ivAvatarItem)
-                mQuestionItemBinding.tvQuestionItem.text = Jsoup.parse(question.title).text()
-                mQuestionItemBinding.tvViewsCountItem.text = question.viewCount.toString()
-                mQuestionItemBinding.tvDateItem.text = AppUtils.toNormalDate(question.creationDate!!.toLong())
+                        .into(binding.ivAvatarItem)
+                binding.tvQuestionItem.text = Jsoup.parse(question.title).text()
+                binding.tvViewsCountItem.text = question.viewCount.toString()
+                binding.tvDateItem.text = AppUtils.toNormalDate(question.creationDate?.toLong()
+                        ?: 0L)
                 if (question.isAnswered == true) {
-                    mQuestionItemBinding.answered.visibility = View.VISIBLE
+                    binding.answered.isVisible = true
                 } else {
-                    mQuestionItemBinding.answered.visibility = View.GONE
+                    binding.answered.isInvisible = true
                 }
                 val answers = question.answerCount
-                val resources = mQuestionItemBinding.root.context.resources
-                val answerCount = resources.getQuantityString(R.plurals.answers, answers!!, answers)
-                mQuestionItemBinding.tvAnswersCountItem.text = answerCount
-                if (question.score!! <= 0) {
-                    mQuestionItemBinding.tvVotesCountItem.text = question.score.toString()
+                val resources = binding.root.context.resources
+                val answerCount = resources.getQuantityString(R.plurals.answers, answers
+                        ?: 0, answers)
+                binding.tvAnswersCountItem.text = answerCount
+                if (question.score ?: 0 <= 0) {
+                    binding.tvVotesCountItem.text = question.score.toString()
                 } else {
-                    mQuestionItemBinding.tvVotesCountItem.text = mQuestionItemBinding.root.context.getString(R.string.plus_score, question.score)
+                    binding.tvVotesCountItem.text = binding.root.context.getString(R.string.plus_score, question.score)
                 }
                 val tags = tagList ?: listOf()
-                mQuestionItemBinding.tvTagsListItem.text = AppUtils.getFormattedTags(tags)
+                binding.tvTagsListItem.text = AppUtils.getFormattedTags(tags)
             }
         }
     }

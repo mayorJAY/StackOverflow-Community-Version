@@ -1,9 +1,9 @@
 package com.josycom.mayorjay.flowoverstack.data
 
 import androidx.lifecycle.MutableLiveData
+import com.josycom.mayorjay.flowoverstack.network.ApiService
 import com.josycom.mayorjay.flowoverstack.network.QuestionsResponse
 import com.josycom.mayorjay.flowoverstack.network.SearchResponse
-import com.josycom.mayorjay.flowoverstack.network.ApiService
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.ThreadExecutor
 import retrofit2.Call
@@ -17,7 +17,7 @@ class SearchRepository @Inject constructor(private val apiService: ApiService) {
 
     private val mResponse = MutableLiveData<SearchResponse>()
 
-    private fun getQuestionsWithTextInTitle(inTitle: String, page: Int, pageSize: Int) {
+    private fun getQuestionsWithTextInTitle(inTitle: String?, page: Int, pageSize: Int) {
         mResponse.postValue(SearchResponse(AppConstants.LOADING, null))
         val call = apiService.getQuestionsWithTextInTitle(inTitle, page, pageSize)
         call.enqueue(object : Callback<QuestionsResponse?> {
@@ -39,7 +39,7 @@ class SearchRepository @Inject constructor(private val apiService: ApiService) {
         })
     }
 
-    fun getResponse(inTitle: String, page: Int, pageSize: Int): MutableLiveData<SearchResponse> {
+    fun getResponse(inTitle: String?, page: Int, pageSize: Int): MutableLiveData<SearchResponse> {
         ThreadExecutor.mExecutor.execute { getQuestionsWithTextInTitle(inTitle, page, pageSize) }
         return mResponse
     }

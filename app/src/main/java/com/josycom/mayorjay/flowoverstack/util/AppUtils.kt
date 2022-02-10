@@ -1,13 +1,13 @@
 package com.josycom.mayorjay.flowoverstack.util
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.josycom.mayorjay.flowoverstack.ui.activity.WebViewActivity
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 /**
  * FlowOverStack
@@ -38,4 +38,11 @@ object AppUtils {
     }
 
     fun getFormattedTags(tagList: List<String>): String = tagList.joinToString(", ")
+
+    fun shareContent(content: String, context: Context) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, content)
+        context.startActivity(Intent.createChooser(intent, "Share Via"))
+    }
 }

@@ -57,8 +57,8 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/activity_scroll_up_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:backgroundTint="@color/colorPrimaryLight"
         android:contentDescription="@string/scroll_up_button"
@@ -66,8 +66,7 @@
         android:src="@drawable/ic_action_scroll_up"
         android:visibility="invisible"
         app:backgroundTint="@color/colorPrimaryLight"
-        app:fabCustomSize="@dimen/_20sdp"
-        app:fabSize="auto"
+        app:fabCustomSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:maxImageSize="@dimen/_20sdp"

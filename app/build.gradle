@@ -69,8 +69,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.7.2'
 
     // Paging library
-//    implementation 'android.arch.paging:runtime:1.0.1'
-    implementation 'androidx.paging:paging-runtime:3.1.0-rc01'
+    implementation 'androidx.paging:paging-runtime:3.1.0'
 
     // ViewModel
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'

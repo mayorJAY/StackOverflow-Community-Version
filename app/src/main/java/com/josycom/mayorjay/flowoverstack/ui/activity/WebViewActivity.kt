@@ -1,30 +1,30 @@
 package com.josycom.mayorjay.flowoverstack.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.webkit.WebView
-import android.widget.ProgressBar
-import android.os.Bundle
-import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.util.AppConstants
-import android.graphics.PorterDuff
 import android.annotation.SuppressLint
-import android.webkit.WebViewClient
-import android.graphics.Bitmap
-import android.webkit.WebChromeClient
 import android.app.Activity
 import android.content.Context
-import android.view.WindowManager
-import androidx.annotation.ColorInt
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Build
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.ActionBar
+import android.view.WindowManager
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.ProgressBar
+import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
+import com.josycom.mayorjay.flowoverstack.R
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
-import java.lang.Exception
 import java.net.URI
 import java.net.URISyntaxException
 
@@ -32,7 +32,6 @@ class WebViewActivity : AppCompatActivity() {
 
     private var url: String? = null
     private lateinit var webView: WebView
-    private lateinit var actionBar: ActionBar
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,11 +55,10 @@ class WebViewActivity : AppCompatActivity() {
     private fun initToolbar() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_clear)
-        toolbar.navigationIcon!!.setColorFilter(resources.getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
-        actionBar = supportActionBar!!
-        actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setHomeButtonEnabled(true)
-        actionBar.title = null
+        toolbar.navigationIcon?.setColorFilter(resources.getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.title = null
         changeOverflowMenuIconColor(toolbar, resources.getColor(R.color.colorPrimary))
         setSystemBarColor(this)
         setSystemBarLight(this)
@@ -78,22 +76,22 @@ class WebViewActivity : AppCompatActivity() {
         webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
-                actionBar.title = null
-                actionBar.subtitle = getHostName(url)
-                progressBar.visibility = View.VISIBLE
+                supportActionBar?.title = null
+                supportActionBar?.subtitle = getHostName(url)
+                progressBar.isVisible = true
             }
 
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
-                actionBar.title = view.title
-                progressBar.visibility = View.INVISIBLE
+                supportActionBar?.title = view.title
+                progressBar.isInvisible = true
             }
         }
-        webView.loadUrl(url!!)
+        webView.loadUrl(url ?: "")
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, progress: Int) {
                 progressBar.progress = progress + 10
-                if (progress >= 100) actionBar.title = view.title
+                if (progress >= 100) supportActionBar?.title = view.title
             }
         }
     }
@@ -150,7 +148,7 @@ class WebViewActivity : AppCompatActivity() {
         try {
             val drawable = toolbar.overflowIcon
             drawable?.mutate()
-            drawable!!.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+            drawable?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -4,9 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
     tools:showIn="@layout/activity_answer">
 
     <TextView
@@ -83,12 +80,22 @@
         app:layout_constraintStart_toEndOf="@+id/iv_vote_icon"
         app:layout_constraintTop_toBottomOf="@+id/tv_answer_body_item" />
 
+    <ImageView
+        android:id="@+id/iv_share"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/share_image"
+        android:src="@drawable/ic_share"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_vote_icon" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/margin_small"
         android:background="@color/colorViewLine"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answer_name_item" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_share" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
