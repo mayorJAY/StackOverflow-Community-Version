@@ -12,14 +12,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/answered"
             android:layout_width="@dimen/_14sdp"
             android:layout_height="@dimen/_14sdp"
-            android:layout_marginStart="8dp"
-            android:visibility="gone"
+            android:layout_marginStart="5dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date_item"
             app:layout_constraintStart_toEndOf="@+id/tv_date_item"
             app:layout_constraintTop_toTopOf="@+id/tv_date_item"
@@ -34,18 +35,18 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/poppins_bold"
             android:text="@string/search_stack_overflow"
             android:textColor="@color/blackText"
-            android:textSize="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp"
             app:layout_constraintEnd_toStartOf="@+id/avatar_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/avatar_card"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             app:cardCornerRadius="4dp"
@@ -61,11 +62,22 @@
                 android:scaleType="fitXY" />
         </androidx.cardview.widget.CardView>
 
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/share_image"
+            android:src="@drawable/ic_share"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_date_item"
+            app:layout_constraintEnd_toEndOf="@+id/avatar_card"
+            app:layout_constraintStart_toStartOf="@+id/avatar_card"
+            app:layout_constraintTop_toTopOf="@+id/tv_date_item" />
+
         <TextView
             android:id="@+id/tv_answers_count_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="5dp"
             android:textSize="@dimen/_9ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_votes_count_item"
             app:layout_constraintStart_toEndOf="@+id/tv_votes_count_item"
@@ -76,7 +88,7 @@
             android:id="@+id/iv_view_icon"
             android:layout_width="@dimen/_10sdp"
             android:layout_height="@dimen/_10sdp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="5dp"
             android:contentDescription="@string/view_indicator_icon"
             android:src="@drawable/ic_view"
             app:layout_constraintBottom_toBottomOf="@+id/tv_answers_count_item"
@@ -94,6 +106,29 @@
             app:layout_constraintStart_toEndOf="@+id/iv_view_icon"
             app:layout_constraintTop_toTopOf="@+id/tv_votes_count_item"
             tools:text="4650" />
+
+        <ImageView
+            android:id="@+id/iv_date_icon"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginStart="5dp"
+            android:contentDescription="@string/view_indicator_icon"
+            android:src="@drawable/ic_date"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_answers_count_item"
+            app:layout_constraintStart_toEndOf="@+id/tv_views_count_item"
+            app:layout_constraintTop_toTopOf="@+id/tv_answers_count_item"
+            app:tint="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/tv_date_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="@string/tv_example_date_item"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_views_count_item"
+            app:layout_constraintStart_toEndOf="@+id/iv_date_icon"
+            app:layout_constraintTop_toTopOf="@+id/tv_views_count_item" />
 
         <ImageView
             android:id="@+id/iv_tag_icon"
@@ -125,22 +160,11 @@
             tools:text="tensorflow" />
 
         <TextView
-            android:id="@+id/tv_date_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/tv_example_date_item"
-            android:textSize="@dimen/_9ssp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_views_count_item"
-            app:layout_constraintStart_toEndOf="@+id/tv_views_count_item"
-            app:layout_constraintTop_toTopOf="@+id/tv_views_count_item" />
-
-        <TextView
             android:id="@+id/tv_votes_count_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/tag_bg"
             android:backgroundTint="@color/colorPrimary"
             android:padding="@dimen/_4sdp"

@@ -6,6 +6,11 @@ import com.josycom.mayorjay.flowoverstack.AppController;
 import com.josycom.mayorjay.flowoverstack.di.module.AnswerActivityModule;
 import com.josycom.mayorjay.flowoverstack.di.module.MainActivityModule;
 import com.josycom.mayorjay.flowoverstack.di.module.ApiModule;
+import com.josycom.mayorjay.flowoverstack.di.module.SearchViewModelFactoryModule;
+import com.josycom.mayorjay.flowoverstack.di.module.SearchViewModelModule;
+import com.josycom.mayorjay.flowoverstack.di.module.TagsDialogFragmentModule;
+import com.josycom.mayorjay.flowoverstack.di.module.TagsDialogViewModelModule;
+import com.josycom.mayorjay.flowoverstack.di.module.TagsViewModelFactoryModule;
 import com.josycom.mayorjay.flowoverstack.di.module.QuestionViewModelFactoryModule;
 import com.josycom.mayorjay.flowoverstack.di.module.QuestionViewModelModule;
 import com.josycom.mayorjay.flowoverstack.di.module.QuestionsFragmentModule;
@@ -16,17 +21,22 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.support.AndroidSupportInjectionModule;
+import dagger.android.AndroidInjectionModule;
 
 @Component(modules = {
-        AndroidSupportInjectionModule.class,
+        AndroidInjectionModule.class,
         MainActivityModule.class,
         AnswerActivityModule.class,
         SearchActivityModule.class,
+        SearchViewModelModule.class,
+        SearchViewModelFactoryModule.class,
         QuestionsFragmentModule.class,
-        ApiModule.class,
+        QuestionViewModelModule.class,
         QuestionViewModelFactoryModule.class,
-        QuestionViewModelModule.class})
+        ApiModule.class,
+        TagsDialogFragmentModule.class,
+        TagsDialogViewModelModule.class,
+        TagsViewModelFactoryModule.class})
 @Singleton
 public interface AppComponent {
 

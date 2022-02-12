@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.AnswerActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/answer_constraint"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_question_detail"
@@ -23,22 +19,21 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/poppins_bold"
                 android:text="@string/example_question"
                 android:textColor="@color/blackText"
-                android:textSize="@dimen/_11ssp"
+                android:textSize="@dimen/_12ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/avatar_card"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="4dp"
                 app:cardElevation="0dp"
-                android:onClick="openProfileOnWeb"
                 app:layout_constraintStart_toStartOf="@+id/tv_question_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_question_detail">
 
@@ -61,17 +56,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_name_question_detail" />
 
+            <ImageView
+                android:id="@+id/iv_share"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:contentDescription="@string/share_image"
+                android:src="@drawable/ic_share"
+                app:layout_constraintEnd_toEndOf="@+id/tv_date_question_detail"
+                app:layout_constraintStart_toStartOf="@+id/tv_date_question_detail"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date_question_detail" />
+
             <TextView
                 android:id="@+id/tv_name_question_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/montserrat"
                 android:maxLines="3"
-                android:onClick="openProfileOnWeb"
                 android:text="@string/tv_example_name_item"
                 android:textColor="@color/blueText"
-                android:textSize="@dimen/_10ssp"
+                android:textSize="@dimen/_9ssp"
                 app:layout_constraintStart_toEndOf="@+id/avatar_card"
                 app:layout_constraintTop_toTopOf="@+id/avatar_card" />
 
@@ -81,22 +85,23 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/tag_bg"
                 android:backgroundTint="@color/colorPrimary"
-                android:padding="@dimen/_5sdp"
+                android:padding="@dimen/_3sdp"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/_9ssp"
+                android:textSize="@dimen/_8ssp"
                 app:layout_constraintStart_toStartOf="@+id/tv_name_question_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name_question_detail"
+                app:layout_constraintBottom_toBottomOf="@+id/avatar_card"
                 tools:text="+100" />
 
             <com.mukesh.MarkdownView
                 android:id="@+id/mark_down_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/avatar_card" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_share" />
 
             <View
                 android:id="@+id/v_divider"
@@ -106,31 +111,70 @@
                 android:background="@color/blackText"
                 app:layout_constraintTop_toBottomOf="@+id/mark_down_view" />
 
+            <TextView
+                android:id="@+id/tv_no_answer_question_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:text="@string/no_answers_yet"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/v_divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_answers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="@dimen/margin_medium"
+                tools:listitem="@layout/answer_item"
+                app:layout_constraintTop_toBottomOf="@id/v_divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ProgressBar
+                android:id="@+id/pb_fetch_data"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/tv_no_answer_question_detail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_medium"
+                android:text="@string/network_error_message"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/tv_no_answer_question_detail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <Button
+                android:id="@+id/bt_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retry"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/tv_error"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_no_answer_question_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_large"
-            android:layout_marginBottom="@dimen/margin_large"
-            android:text="@string/no_answers_yet"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:visibility="invisible"
-            android:layout_below="@+id/answer_constraint"
-            android:textColor="@color/colorPrimary"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@+id/answer_constraint"
-            android:id="@+id/rv_answers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="@dimen/margin_medium"
-            tools:listitem="@layout/answer_item"/>
-
-    </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

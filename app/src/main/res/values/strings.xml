@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">FlowOver Stack</string>
+    <string name="app_name">StackOverflow: Community Version</string>
 
-    <string name="question_error_message">Something is not right! Please check your network or Swipe down to refresh</string>
-    <string name="search_error_message">Something is not right! Please check your network</string>
+    <string name="network_error_message">Something is not right! Please check your network</string>
     <string name="action_search">Search</string>
     <string name="action_filter_by_activity">Filter by Activity</string>
     <string name="action_filter_by_recency">Filter by Recency</string>
@@ -21,6 +20,7 @@
     <string name="tv_asked_text">Asked:</string>
     <string name="search_stack_overflow">Search Stack Overflow</string>
     <string name="no_matching_result">Oops! No Matching Result. Rephrase your search query or Use fewer words</string>
+    <string name="no_matching_result_rephrase">Oops! No Matching Result. Rephrase your search query</string>
     <string name="scroll_up_button">scroll up button</string>
     <string name="by">By:</string>
     <string name="no_answers_yet">No Answers Yet</string>
@@ -34,7 +34,7 @@
     <string name="type_a_search_query">Type a search query</string>
     <string name="search_description">Search</string>
     <string name="read_more">Read More</string>
-    <string name="plus_score">+</string>
+    <string name="plus_score">+%d</string>
     <string name="answers_description">answers</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_open_in_browser">Open in Browser</string>
@@ -47,4 +47,13 @@
     <string name="recognised_text">Recognised Text</string>
     <string name="recognise">Recognise</string>
     <string name="ocr">OCR</string>
+    <string name="filter_by_popular_tags">Filter by Popular Tags</string>
+    <string name="filter_by_tag_name">Filter by Tag Name</string>
+    <string name="questions"> %s questions</string>
+    <string name="popular_tags">Popular Tags</string>
+    <string name="select_a_tag_to_view_the_related_questions">Select a Tag to view the related Questions</string>
+    <string name="retry">Retry</string>
+    <string name="search_tag_name">Search Tag Name</string>
+    <string name="input_tag_name">Input tag name</string>
+    <string name="share_image">Share image</string>
 </resources>
