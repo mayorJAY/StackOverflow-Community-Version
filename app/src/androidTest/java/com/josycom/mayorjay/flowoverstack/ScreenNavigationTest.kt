@@ -8,7 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.josycom.mayorjay.flowoverstack.ui.activity.MainActivity
+import com.josycom.mayorjay.flowoverstack.view.home.QuestionActivity
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -19,8 +19,8 @@ import org.junit.runner.RunWith
 class ScreenNavigationTest {
 
     @get:Rule
-    val scenarioRule = ActivityScenarioRule(MainActivity::class.java)
-    private var scenario: ActivityScenario<MainActivity>? = null
+    val scenarioRule = ActivityScenarioRule(QuestionActivity::class.java)
+    private var scenario: ActivityScenario<QuestionActivity>? = null
 
     @Before
     fun setup() {

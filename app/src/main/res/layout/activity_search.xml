@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.SearchActivity">
+    tools:context=".view.search.SearchActivity">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/search_nested_scrollview"
@@ -108,11 +108,12 @@
         app:maxImageSize="36dp"
         app:tint="@color/colorPrimaryText" />
 
-    <ImageView
+    <TextView
         android:id="@+id/iv_lookup"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/look_up"/>
+        android:text="@string/lookup_emoji"
+        android:textSize="@dimen/_100ssp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

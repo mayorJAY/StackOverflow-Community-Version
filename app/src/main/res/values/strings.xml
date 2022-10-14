@@ -1,6 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">StackOverflow: Community Version</string>
-
     <string name="network_error_message">Something is not right! Please check your network</string>
     <string name="action_search">Search</string>
     <string name="action_filter_by_activity">Filter by Activity</string>
@@ -25,6 +24,7 @@
     <string name="by">By:</string>
     <string name="no_answers_yet">No Answers Yet</string>
     <string name="app_logo">App logo</string>
+    <string name="question">Question</string>
     <string name="active_questions">Active Questions</string>
     <string name="recent_questions">Recent Questions</string>
     <string name="hot_questions">Hot Questions</string>
@@ -36,6 +36,7 @@
     <string name="read_more">Read More</string>
     <string name="plus_score">+%d</string>
     <string name="answers_description">answers</string>
+    <string name="answer">Answer</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_open_in_browser">Open in Browser</string>
     <string name="answered_icon">Answered icon</string>
@@ -49,11 +50,32 @@
     <string name="ocr">OCR</string>
     <string name="filter_by_popular_tags">Filter by Popular Tags</string>
     <string name="filter_by_tag_name">Filter by Tag Name</string>
-    <string name="questions"> %s questions</string>
+    <string name="questions">%s questions</string>
     <string name="popular_tags">Popular Tags</string>
     <string name="select_a_tag_to_view_the_related_questions">Select a Tag to view the related Questions</string>
     <string name="retry">Retry</string>
     <string name="search_tag_name">Search Tag Name</string>
     <string name="input_tag_name">Input tag name</string>
     <string name="share_image">Share image</string>
+    <string name="no_text_found">No text found, scan again</string>
+    <string name="text_could_not_be_recognized">Oops!, that text could not be recognized. Scan again</string>
+    <string name="app_permissions">App Permissions</string>
+    <string name="this_application_requires_access_permission">This application requires access to your camera and storage to function!</string>
+    <string name="no">No</string>
+    <string name="ask_me">Ask Me</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="cannot_open_url">Oops, cannot open URL</string>
+    <string name="restart">Restart</string>
+    <string name="update_downloaded">An update has just been downloaded</string>
+    <string name="an_error_occurred">Oops! an error occurred, try again</string>
+    <string name="share_content">Hi, check out this %s on SO:\n%s \n\nDownload StackOverflow Community Version and get to browse SO easily:\n%s</string>
+    <string name="share_app">Download StackOverflow Community Version and get to browse SO easily:\n%s</string>
+    <string name="app_info">App Info</string>
+    <string name="lookup_emoji">&#x261D;&#xFE0F;</string>
+    <string name="share">Share</string>
+    <string name="connect">Connect</string>
+    <string name="contact">Contact</string>
+    <string name="twitter_url" tools:ignore="Typos">https://twitter.com/mayorjay1</string>
+    <string name="email_add">joseolu4gsm@yahoo.com</string>
+    <string name="version">v%s</string>
 </resources>
