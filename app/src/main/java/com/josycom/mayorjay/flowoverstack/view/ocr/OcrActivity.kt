@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -152,11 +151,7 @@ class OcrActivity : AppCompatActivity() {
 
     private fun returnToMainActivity() {
         startActivity(Intent(this, QuestionActivity::class.java))
-        Snackbar.make(
-            findViewById(R.id.main_root_layout),
-            getString(R.string.permission_denied),
-            Snackbar.LENGTH_SHORT
-        ).show()
+        AppUtils.showToast(this, getString(R.string.permission_denied))
     }
 
     private fun allPermissionsGranted(): Boolean {
@@ -360,7 +355,6 @@ class OcrActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         finish()
     }
 

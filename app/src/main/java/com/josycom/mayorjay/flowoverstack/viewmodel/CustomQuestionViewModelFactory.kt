@@ -34,7 +34,7 @@ class CustomQuestionViewModelFactory @Inject constructor(private val questionRep
                 questionRepository, page, pageSize,
                 order, sortCondition, site, tagged, filter, siteKey
             ) as T
-            else -> throw IllegalArgumentException("Wrong Class Provided")
+            else -> throw IllegalArgumentException("Wrong Class Provided $modelClass")
         }
     }
 }

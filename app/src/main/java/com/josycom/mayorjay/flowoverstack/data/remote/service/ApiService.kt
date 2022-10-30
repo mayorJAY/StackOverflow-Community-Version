@@ -32,9 +32,12 @@ interface ApiService {
             @Query("key") siteKey: String?): AnswerResponse
 
     @GET(AppConstants.SEARCH_END_POINT)
-    fun getQuestionsWithTextInTitle(@Query("intitle") inTitle: String?,
-                                    @Query("page") page: Int,
-                                    @Query("pagesize") pageSize: Int): Call<QuestionsResponse?>
+    fun getQuestionsWithTextInTitle(
+        @Query("intitle") inTitle: String?,
+        @Query("page") page: Int,
+        @Query("pagesize") pageSize: Int,
+        @Query("key") siteKey: String? = AppConstants.API_KEY
+    ): Call<QuestionsResponse?>
 
     @GET(AppConstants.TAGS_END_POINT)
     suspend fun getAllPopularTags(

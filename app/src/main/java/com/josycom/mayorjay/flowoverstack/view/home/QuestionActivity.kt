@@ -1,5 +1,6 @@
 package com.josycom.mayorjay.flowoverstack.view.home
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
 import android.os.Bundle
@@ -7,12 +8,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -23,6 +26,8 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.josycom.mayorjay.flowoverstack.R
+import com.josycom.mayorjay.flowoverstack.data.repository.PreferenceRepositoryImpl
+import com.josycom.mayorjay.flowoverstack.data.repository.dataStore
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityQuestionBinding
 import com.josycom.mayorjay.flowoverstack.databinding.LayoutInfoDialogBinding
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -30,10 +35,15 @@ import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import com.josycom.mayorjay.flowoverstack.view.ocr.OcrActivity
 import com.josycom.mayorjay.flowoverstack.view.search.SearchActivity
 import com.josycom.mayorjay.flowoverstack.view.tag.TagsDialogFragment
+import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionActivityViewModel
+import com.josycom.mayorjay.flowoverstack.viewmodel.ViewModelProviderFactory
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -48,6 +58,10 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
     private var fabOpen: Animation? = null
     private var fabClose: Animation? = null
     private var appUpdateManager: AppUpdateManager? = null
+    private var job: Job? = null
+    private val viewModel: QuestionActivityViewModel by viewModels {
+        ViewModelProviderFactory(PreferenceRepositoryImpl(applicationContext.dataStore))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -55,18 +69,18 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
         binding = ActivityQuestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+        initViews(savedInstanceState)
+        getAppOpenCounts()
+        observeAppOpenCount()
+        setupListeners()
+        startJob()
+    }
+
+    private fun initViews(savedInstanceState: Bundle?) {
+        checkForTablet()
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open)
         fabClose = AnimationUtils.loadAnimation(this, R.anim.fab_close)
-        checkForTablet()
-        binding.searchFab.setOnClickListener { fabAction() }
-        binding.scanToSearch.setOnClickListener {
-            startActivity(Intent(this, OcrActivity::class.java))
-            hideFabActions()
-        }
-        binding.typeToSearch.setOnClickListener {
-            startActivity(Intent(this, SearchActivity::class.java))
-            hideFabActions()
-        }
         savedInstanceState?.let { isFragmentDisplayed = it.getBoolean(AppConstants.FRAGMENT_STATE) }
         if (!isFragmentDisplayed) {
             fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -77,17 +91,45 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
         }
     }
 
+    private fun setupListeners() {
+        binding.searchFab.setOnClickListener { fabAction() }
+        binding.scanToSearch.setOnClickListener {
+            startActivity(Intent(this, OcrActivity::class.java))
+            hideFabActions()
+        }
+        binding.typeToSearch.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
+            hideFabActions()
+        }
+    }
+
+    private fun startJob() {
+        job = lifecycleScope.launch {
+            delay(500)
+            displayAppRatingPrompt()
+        }
+    }
+
+    private fun getAppOpenCounts() {
+        viewModel.getAppOpenCountPref(AppConstants.APP_OPEN_COUNT_PREF_KEY)
+    }
+
+    private fun observeAppOpenCount() {
+        viewModel.appOpenCountLiveData?.observe(this) { value ->
+            viewModel.appOpenCount = value ?: 0
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         checkForUpdate()
     }
 
     private fun fabAction() {
-        if (isFabOpen) {
+        if (isFabOpen)
             hideFabActions()
-        } else {
+        else
             showFabActions()
-        }
     }
 
     private fun hideFabActions() {
@@ -210,15 +252,21 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
         appUpdateManager?.unregisterListener(installStateUpdatedListener)
     }
 
-    private val installStateUpdatedListener: InstallStateUpdatedListener = object : InstallStateUpdatedListener {
-        override fun onStateUpdate(state: InstallState) {
-            when {
-                state.installStatus() == InstallStatus.DOWNLOADED -> {
-                    popupSnackBarForCompleteUpdate()
-                }
-                state.installStatus() == InstallStatus.INSTALLED -> {
-                    appUpdateManager?.unregisterListener(this)
-                }
+    override fun onDestroy() {
+        super.onDestroy()
+        job?.cancel()
+    }
+
+    private val installStateUpdatedListener: InstallStateUpdatedListener =
+        object : InstallStateUpdatedListener {
+            override fun onStateUpdate(state: InstallState) {
+                when {
+                    state.installStatus() == InstallStatus.DOWNLOADED -> {
+                        popupSnackBarForCompleteUpdate()
+                    }
+                    state.installStatus() == InstallStatus.INSTALLED -> {
+                        appUpdateManager?.unregisterListener(this)
+                    }
                 else -> {
                     Timber.i("UpdateInstaller >>> InstallStateUpdatedListener >>>>> " + state.installStatus())
                 }
@@ -312,27 +360,48 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
             binding.ivConnect.setOnClickListener {
                 AppUtils.launchViewIntent(
                     this@QuestionActivity,
-                    getString(R.string.twitter_url)
+                    AppConstants.TWITTER_URL
                 )
             }
             binding.tvConnect.setOnClickListener {
                 AppUtils.launchViewIntent(
                     this@QuestionActivity,
-                    getString(R.string.twitter_url)
+                    AppConstants.TWITTER_URL
                 )
             }
             binding.ivContact.setOnClickListener {
                 AppUtils.launchEmailIntent(
                     this@QuestionActivity,
-                    getString(R.string.email_add)
+                    AppConstants.EMAIL_ADDRESS
                 )
             }
             binding.tvContact.setOnClickListener {
                 AppUtils.launchEmailIntent(
                     this@QuestionActivity,
-                    getString(R.string.email_add)
+                    AppConstants.EMAIL_ADDRESS
                 )
             }
-        }.show()
+            show()
+        }
+    }
+
+    private fun displayAppRatingPrompt() {
+        val currentAppOpenCount = viewModel.appOpenCount.plus(1)
+        viewModel.saveAppOpenCounts(AppConstants.APP_OPEN_COUNT_PREF_KEY, currentAppOpenCount)
+        if (currentAppOpenCount == 5 || currentAppOpenCount == 10) {
+            AlertDialog.Builder(this).apply {
+                setCancelable(false)
+                setTitle(getString(R.string.app_rating))
+                setMessage(getString(R.string.app_rating_msg))
+                setNegativeButton(getString(R.string.i_am_good)) { _: DialogInterface, _: Int -> }
+                setPositiveButton(getString(R.string.i_will_rate)) { _: DialogInterface, _: Int ->
+                    AppUtils.launchViewIntent(
+                        this@QuestionActivity,
+                        AppConstants.PLAY_STORE_URL
+                    )
+                }
+                show()
+            }
+        }
     }
 }

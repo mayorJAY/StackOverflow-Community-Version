@@ -23,7 +23,7 @@ class CustomSearchViewModelFactory @Inject constructor(private val searchReposit
                 pageSize,
                 searchRepository
             ) as T
-            else -> throw IllegalArgumentException("Wrong Class Provided")
+            else -> throw IllegalArgumentException("Wrong Class Provided $modelClass")
         }
     }
 }

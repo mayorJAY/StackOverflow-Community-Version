@@ -26,7 +26,7 @@ class CustomTagsViewModelFactory @Inject constructor(private val tagRepository: 
                 pageSize,
                 siteKey
             ) as T
-            else -> throw IllegalArgumentException("Wrong Class Provided")
+            else -> throw IllegalArgumentException("Wrong Class Provided $modelClass")
         }
     }
 }

@@ -9,7 +9,8 @@ import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.view.answer.WebViewActivity
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 /**
  * FlowOverStack
@@ -59,6 +60,6 @@ object AppUtils {
 
     fun launchEmailIntent(context: Context, address: String) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$address"))
-        context.startActivity(Intent.createChooser(intent, "Send Via"))
+        context.startActivity(Intent.createChooser(intent, "Send With"))
     }
 }

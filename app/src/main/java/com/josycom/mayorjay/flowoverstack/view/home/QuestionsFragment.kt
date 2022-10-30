@@ -27,7 +27,6 @@ import com.josycom.mayorjay.flowoverstack.view.answer.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory
 import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionViewModel
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject

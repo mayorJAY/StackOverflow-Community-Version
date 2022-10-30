@@ -75,7 +75,9 @@
     <string name="share">Share</string>
     <string name="connect">Connect</string>
     <string name="contact">Contact</string>
-    <string name="twitter_url" tools:ignore="Typos">https://twitter.com/mayorjay1</string>
-    <string name="email_add">joseolu4gsm@yahoo.com</string>
     <string name="version">v%s</string>
+    <string name="app_rating">App Rating</string>
+    <string name="app_rating_msg">Hey, it looks like you\'re a frequent user of StackOverflow Community Version! If you have a couple seconds, please rate this app on Google Play Store. Every rating goes a long way towards motivating us to continue improving the app!</string>
+    <string name="i_will_rate">Sure, I\'ll Rate</string>
+    <string name="i_am_good">No, I\'m Good</string>
 </resources>
