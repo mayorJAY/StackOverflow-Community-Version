@@ -2,9 +2,9 @@ package com.josycom.mayorjay.flowoverstack.di.module;
 
 import androidx.lifecycle.ViewModel;
 
-import com.josycom.mayorjay.flowoverstack.data.SearchRepository;
+import com.josycom.mayorjay.flowoverstack.data.repository.SearchRepository;
 import com.josycom.mayorjay.flowoverstack.di.ViewModelKey;
-import com.josycom.mayorjay.flowoverstack.ui.viewmodel.SearchViewModel;
+import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel;
 
 import dagger.Module;
 import dagger.Provides;

@@ -2,9 +2,9 @@ package com.josycom.mayorjay.flowoverstack.di.module;
 
 import androidx.lifecycle.ViewModel;
 
-import com.josycom.mayorjay.flowoverstack.data.TagRepository;
+import com.josycom.mayorjay.flowoverstack.data.repository.TagRepository;
 import com.josycom.mayorjay.flowoverstack.di.ViewModelKey;
-import com.josycom.mayorjay.flowoverstack.ui.viewmodel.TagsDialogViewModel;
+import com.josycom.mayorjay.flowoverstack.viewmodel.TagsDialogViewModel;
 
 import dagger.Module;
 import dagger.Provides;

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.home.QuestionActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_main"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/scan_to_search"
+        style="@style/Widget.FlowOverStack.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="120dp"
+        android:width="200dp"
+        android:height="30dp"
+        android:clickable="false"
+        android:text="@string/scan_to_search"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorPrimaryText"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_camera"
+        app:iconTint="@color/colorPrimary"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="1dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/type_to_search"
+        style="@style/Widget.FlowOverStack.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="80dp"
+        android:width="190dp"
+        android:height="30dp"
+        android:clickable="false"
+        android:text="@string/type_to_search"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorPrimaryText"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_keyboard"
+        app:iconTint="@color/colorPrimary"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="1dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/search_fab"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/colorPrimaryLight"
+        app:backgroundTint="@color/colorPrimaryLight"
+        app:elevation="6dp"
+        app:fabCustomSize="50dp"
+        app:fabSize="auto"
+        app:maxImageSize="30dp"
+        app:srcCompat="@drawable/ic_search"
+        app:tint="@color/colorPrimaryText" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

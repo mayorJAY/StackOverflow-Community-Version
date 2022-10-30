@@ -3,7 +3,7 @@ package com.josycom.mayorjay.flowoverstack.di.module;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.josycom.mayorjay.flowoverstack.BuildConfig;
-import com.josycom.mayorjay.flowoverstack.network.ApiService;
+import com.josycom.mayorjay.flowoverstack.data.remote.service.ApiService;
 import com.josycom.mayorjay.flowoverstack.util.AppConstants;
 
 import javax.inject.Singleton;
@@ -32,6 +32,8 @@ public class ApiModule {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        } else {
+            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
         }
         return interceptor;
     }

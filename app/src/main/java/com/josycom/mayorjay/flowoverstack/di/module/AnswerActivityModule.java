@@ -1,6 +1,6 @@
 package com.josycom.mayorjay.flowoverstack.di.module;
 
-import com.josycom.mayorjay.flowoverstack.ui.activity.AnswerActivity;
+import com.josycom.mayorjay.flowoverstack.view.answer.AnswerActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

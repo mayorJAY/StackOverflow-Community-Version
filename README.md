@@ -4,8 +4,8 @@
 
 # StackOverflow - Community Version
 
-An Android StackOverflow client application implemented using the MVVM pattern, Retrofit2, LiveData, Flow, ViewModel, Repository pattern, View Binding. Users can get to view Questions which have been asked on Stack Overflow; picking a particular Question makes the user view it in details as well as the Answers provided. These Questions can be filtered by any of these four categories; Active, Recent, Hot or Voted. Questions that have an accepted Answer are easily identified.
-Users can also search for a particular problem they are having by typing in any search query of choice. Questions are curated based on the search query and presented to the user; again, the user can pick a particular Question to view the provided Answers. Users also have the options to keep tab on a tag, filter out questions by tags, search for any tag of interest, share questions and answers with themselves or other developers.
+An Android StackOverflow client application implemented using the MVVM architecture, Retrofit2, LiveData, Flow, ViewModel, Repository pattern, View Binding. Users can get to view Questions which have been asked on Stack Overflow; picking a particular Question makes the user view it in detail as well as the Answers provided. These Questions can be filtered by any of these four categories; Active, Recent, Hot or Voted. Questions that have an accepted Answer are easily identified.
+Users can also search for a particular problem they are having by typing in a search query or by capturing an image and performing an OCR on it. Questions are curated based on the search query and presented to the user; again, the user can pick a particular Question to view the provided Answers. Users also have the options to keep a tab on a Tag, filter out questions by Tags, search for any Tag of interest, share questions and answers with themselves or other developers.
 # Tech Stack
 
 * [Retrofit](https://square.github.io/retrofit/) which is a type-safe REST client for Android which makes it easier to consume RESTful web services
@@ -22,6 +22,7 @@ Users can also search for a particular problem they are having by typing in any 
 * [Dagger](https://developer.android.com/training/dependency-injection/dagger-android) for Dependency Injection
 * [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines) for executing network calls asynchronously
 * [Kotlin flow](https://developer.android.com/kotlin/flow) for emitting live updates from a network call sequentially
+* [Preferences DataStore](https://developer.android.com/topic/libraries/architecture/datastore) for storing and retrieving key-value pairs of primitive data types
 # Installation
 
 This App requires a minimum API level of 21. Clone the repository. You will need an API key from [Stack Exchange API](https://api.stackexchange.com/) to receive a higher request quota. Locate the StringConstants.java file and edit the following line to add your API key:

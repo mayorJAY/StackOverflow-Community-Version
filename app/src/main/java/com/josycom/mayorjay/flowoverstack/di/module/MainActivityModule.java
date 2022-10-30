@@ -1,6 +1,6 @@
 package com.josycom.mayorjay.flowoverstack.di.module;
 
-import com.josycom.mayorjay.flowoverstack.ui.activity.MainActivity;
+import com.josycom.mayorjay.flowoverstack.view.home.QuestionActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,7 +10,7 @@ public abstract class MainActivityModule {
 
 
     @ContributesAndroidInjector(modules = QuestionsFragmentModule.class)
-    abstract MainActivity contributeMainAndroidInjector();
+    abstract QuestionActivity contributeMainAndroidInjector();
 
 }
 
