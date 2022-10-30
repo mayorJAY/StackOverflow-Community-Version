@@ -87,6 +87,8 @@
         android:layout_marginTop="5dp"
         android:contentDescription="@string/share_image"
         android:src="@drawable/ic_share"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_vote_icon" />
 

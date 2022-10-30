@@ -2,7 +2,7 @@ package com.josycom.mayorjay.flowoverstack.di.module;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import com.josycom.mayorjay.flowoverstack.ui.viewmodel.CustomTagsViewModelFactory;
+import com.josycom.mayorjay.flowoverstack.viewmodel.CustomTagsViewModelFactory;
 
 import dagger.Binds;
 import dagger.Module;
@@ -11,5 +11,5 @@ import dagger.Module;
 public abstract class TagsViewModelFactoryModule {
 
     @Binds
-    abstract ViewModelProvider.Factory bindViewModelFactory(CustomTagsViewModelFactory customPopularTagViewModelFactory);
+    abstract ViewModelProvider.Factory bindViewModelFactory(CustomTagsViewModelFactory customTagsViewModelFactory);
 }

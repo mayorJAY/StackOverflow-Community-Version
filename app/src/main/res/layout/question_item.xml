@@ -68,6 +68,8 @@
             android:layout_height="30dp"
             android:contentDescription="@string/share_image"
             android:src="@drawable/ic_share"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date_item"
             app:layout_constraintEnd_toEndOf="@+id/avatar_card"
             app:layout_constraintStart_toStartOf="@+id/avatar_card"

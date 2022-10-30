@@ -1,6 +1,6 @@
 package com.josycom.mayorjay.flowoverstack.di.module;
 
-import com.josycom.mayorjay.flowoverstack.ui.fragment.TagsDialogFragment;
+import com.josycom.mayorjay.flowoverstack.view.tag.TagsDialogFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

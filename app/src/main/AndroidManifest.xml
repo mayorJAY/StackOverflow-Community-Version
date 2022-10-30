@@ -8,38 +8,40 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".AppController"
+        android:name=".MyApplication"
         android:allowBackup="false"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.OcrActivity"
+        <activity
+            android:name=".view.ocr.OcrActivity"
             android:label="@string/ocr"
-            android:parentActivityName=".ui.activity.MainActivity">
+            android:parentActivityName=".view.home.QuestionActivity">
 
         </activity>
-        <activity android:name=".ui.activity.WebViewActivity">
+        <activity android:name=".view.answer.WebViewActivity">
 
         </activity>
         <activity
-            android:name=".ui.activity.SearchActivity"
+            android:name=".view.search.SearchActivity"
             android:label="@string/action_search"
-            android:parentActivityName=".ui.activity.MainActivity">
+            android:parentActivityName=".view.home.QuestionActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.josycom.mayorjay.flowoverstack.ui.activity.MainActivity" />
+                android:value="com.josycom.mayorjay.flowoverstack.view.home.QuestionActivity" />
         </activity>
         <activity
-            android:name=".ui.activity.AnswerActivity"
+            android:name=".view.answer.AnswerActivity"
             android:label="@string/read_more"
-            android:parentActivityName=".ui.activity.MainActivity">
+            android:parentActivityName=".view.home.QuestionActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.josycom.mayorjay.flowoverstack.ui.activity.MainActivity" />
+                android:value="com.josycom.mayorjay.flowoverstack.view.home.QuestionActivity" />
         </activity>
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".view.init.SplashActivity"
+            android:exported="true"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".view.home.QuestionActivity"
             android:label="@string/home"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">

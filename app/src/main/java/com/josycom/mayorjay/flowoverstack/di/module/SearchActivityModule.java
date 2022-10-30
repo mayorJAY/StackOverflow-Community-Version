@@ -1,7 +1,7 @@
 package com.josycom.mayorjay.flowoverstack.di.module;
 
-import com.josycom.mayorjay.flowoverstack.ui.activity.OcrActivity;
-import com.josycom.mayorjay.flowoverstack.ui.activity.SearchActivity;
+import com.josycom.mayorjay.flowoverstack.view.ocr.OcrActivity;
+import com.josycom.mayorjay.flowoverstack.view.search.SearchActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
