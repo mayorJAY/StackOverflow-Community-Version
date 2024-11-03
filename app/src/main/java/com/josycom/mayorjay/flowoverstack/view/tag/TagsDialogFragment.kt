@@ -1,6 +1,5 @@
 package com.josycom.mayorjay.flowoverstack.view.tag
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
@@ -21,45 +20,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.databinding.TagsDialogFragmentBinding
 import com.josycom.mayorjay.flowoverstack.view.home.PagingLoadStateAdapter
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomTagsViewModelFactory
 import com.josycom.mayorjay.flowoverstack.viewmodel.TagsDialogViewModel
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
-import dagger.android.support.AndroidSupportInjection
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.jsoup.internal.StringUtil
 import java.util.Locale
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class TagsDialogFragment : DialogFragment() {
 
     private lateinit var activity: AppCompatActivity
-    private lateinit var viewModel: TagsDialogViewModel
+    private val viewModel: TagsDialogViewModel by viewModels()
     private lateinit var binding: TagsDialogFragmentBinding
-    @Inject
-    lateinit var viewModelFactory: CustomTagsViewModelFactory
     private var tagSelectionCallback: TagSelectionCallback? = null
     private var title: String = ""
     private var isPopularTagOption: Boolean = false
 
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-
-        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.PAGE_SIZE, AppConstants.API_KEY)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         activity = getActivity() as AppCompatActivity
-        binding = TagsDialogFragmentBinding.inflate(LayoutInflater.from(activity))
+        binding = TagsDialogFragmentBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(TagsDialogViewModel::class.java)
         initViews()
         if (isPopularTagOption) {
             fetchAndDisplayTags("")
@@ -88,7 +75,7 @@ class TagsDialogFragment : DialogFragment() {
     }
 
     private fun fetchAndDisplayTags(inName: String) {
-        viewModel.fetchTags(inName)
+        viewModel.fetchTags(inName, AppConstants.FIRST_PAGE, AppConstants.PAGE_SIZE, AppConstants.API_KEY)
         binding.ivLookup.isInvisible = true
         val popularTagAdapter = TagsAdapter()
         binding.rvPopularTags.apply {

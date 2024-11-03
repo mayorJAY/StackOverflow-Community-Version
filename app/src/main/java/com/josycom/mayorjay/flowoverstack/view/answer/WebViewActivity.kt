@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -23,21 +22,26 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.josycom.mayorjay.flowoverstack.R
+import com.josycom.mayorjay.flowoverstack.databinding.ActivityWebViewBinding
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.net.URI
 import java.net.URISyntaxException
 
+@AndroidEntryPoint
 class WebViewActivity : AppCompatActivity() {
 
-    private var url: String? = null
+    private lateinit var binding: ActivityWebViewBinding
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
+    private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web_view)
+        binding = ActivityWebViewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // get extra object
         url = intent.getStringExtra(AppConstants.WEBVIEW_EXTRA_OBJECT)
@@ -47,8 +51,8 @@ class WebViewActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
-        webView = findViewById(R.id.webView)
-        progressBar = findViewById(R.id.progressBar)
+        webView = binding.webView
+        progressBar = binding.progressBar
         progressBar.progressDrawable.setColorFilter(resources.getColor(R.color.colorPrimaryLight), PorterDuff.Mode.SRC_IN)
         progressBar.setBackgroundColor(Color.parseColor("#1A000000"))
     }
@@ -88,7 +92,7 @@ class WebViewActivity : AppCompatActivity() {
                 progressBar.isInvisible = true
             }
         }
-        webView.loadUrl(url ?: "")
+        webView.loadUrl(url.orEmpty())
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, progress: Int) {
                 progressBar.progress = progress + 10
@@ -137,12 +141,10 @@ class WebViewActivity : AppCompatActivity() {
     }
 
     private fun setSystemBarColor(act: Activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window = act.window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = Color.parseColor("#f2f2f2")
-        }
+        val window = act.window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = Color.parseColor("#f2f2f2")
     }
 
     private fun changeOverflowMenuIconColor(toolbar: Toolbar, @ColorInt color: Int) {
@@ -155,7 +157,7 @@ class WebViewActivity : AppCompatActivity() {
         }
     }
 
-    fun getHostName(url: String): String {
+    private fun getHostName(url: String): String {
         return try {
             val uri = URI(url)
             var newUrl = uri.host
@@ -167,24 +169,22 @@ class WebViewActivity : AppCompatActivity() {
         }
     }
 
+    private fun setSystemBarLight(act: Activity) {
+        val view = act.findViewById<View>(android.R.id.content)
+        var flags = view.systemUiVisibility
+        flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        view.systemUiVisibility = flags
+    }
+
+    private fun changeMenuIconColor(menu: Menu, @ColorInt color: Int) {
+        for (i in 0 until menu.size()) {
+            val drawable = menu.getItem(i).icon ?: continue
+            drawable.mutate()
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
+    }
+
     companion object {
-        fun setSystemBarLight(act: Activity) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val view = act.findViewById<View>(android.R.id.content)
-                var flags = view.systemUiVisibility
-                flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                view.systemUiVisibility = flags
-            }
-        }
-
-        fun changeMenuIconColor(menu: Menu, @ColorInt color: Int) {
-            for (i in 0 until menu.size()) {
-                val drawable = menu.getItem(i).icon ?: continue
-                drawable.mutate()
-                drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-            }
-        }
-
         fun navigate(activity: Activity, url: String?) {
             activity.startActivity(getIntent(activity, url))
         }
