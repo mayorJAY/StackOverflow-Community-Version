@@ -1,18 +1,16 @@
 package com.josycom.mayorjay.flowoverstack.view.ocr
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -23,7 +21,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -41,35 +38,27 @@ import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.databinding.ActivityOcrBinding
 import com.josycom.mayorjay.flowoverstack.data.model.Question
-import com.josycom.mayorjay.flowoverstack.view.search.SearchAdapter
-import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel
+import com.josycom.mayorjay.flowoverstack.databinding.ActivityOcrBinding
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import com.josycom.mayorjay.flowoverstack.view.answer.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.view.home.QuestionActivity
+import com.josycom.mayorjay.flowoverstack.view.search.SearchAdapter
+import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @AndroidEntryPoint
 class OcrActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOcrBinding
-    private var photoPath: String? = null
+    private var photoUri: Uri? = null
     private val requiredPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private var questions: List<Question>? = listOf()
     private var searchInput: String = ""
     private val searchViewModel: SearchViewModel by viewModels()
-
-    private val permissionRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        beginImageCapture()
-    }
 
     private val imageCaptureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         beginImageCropping(result)
@@ -95,18 +84,6 @@ class OcrActivity : AppCompatActivity() {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (allPermissionsGranted()) {
                 startCamera()
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                try {
-                    val intent = Intent()
-                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    val uri = Uri.fromParts("package", this.packageName, null)
-                    intent.setData(uri)
-                    permissionRequestLauncher.launch(intent)
-                } catch (ex: Exception) {
-                    val intent = Intent()
-                    intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                    permissionRequestLauncher.launch(intent)
-                }
             } else {
                 returnToMainActivity()
                 finish()
@@ -133,33 +110,19 @@ class OcrActivity : AppCompatActivity() {
         }
     }
 
-    private fun beginImageCapture() {
-        if (allPermissionsGranted()) {
-            startCamera()
-        } else {
-            returnToMainActivity()
-            finish()
-        }
-    }
-
     private fun beginImageCropping(result: ActivityResult) {
         if (result.resultCode == RESULT_CANCELED) {
             finish()
         } else {
-            val bitmap = BitmapFactory.decodeFile(photoPath)
-            if (result.resultCode == RESULT_OK && bitmap != null && photoPath != null) {
-                val file = File(photoPath.orEmpty())
-                val uri = Uri.fromFile(file)
-                imageCropperLauncher.launch(
-                    CropImageContractOptions(
-                        uri = uri,
-                        cropImageOptions = CropImageOptions().apply {
-                            guidelines = CropImageView.Guidelines.ON
-                            outputCompressFormat = Bitmap.CompressFormat.JPEG
-                        }
-                    )
+            imageCropperLauncher.launch(
+                CropImageContractOptions(
+                    uri = photoUri,
+                    cropImageOptions = CropImageOptions().apply {
+                        guidelines = CropImageView.Guidelines.ON
+                        outputCompressFormat = Bitmap.CompressFormat.JPEG
+                    }
                 )
-            }
+            )
         }
     }
 
@@ -187,31 +150,13 @@ class OcrActivity : AppCompatActivity() {
         }
         val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (captureIntent.resolveActivity(packageManager) != null) {
-            var photo: File? = null
-            try {
-                photo = createImageFile()
-            } catch (e: IOException) {
-                Timber.e(e)
+            val values = ContentValues().apply {
+                put(MediaStore.Images.Media.TITLE, "OCR Image")
+                put(MediaStore.Images.Media.DESCRIPTION, "Captured OCR Image")
             }
-            if (photo != null) {
-                val photoUri = FileProvider.getUriForFile(this, "com.josycom.mayorjay.flowoverstack.fileprovider", photo)
-                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                imageCaptureLauncher.launch(captureIntent)
-            }
-        }
-    }
-
-    private fun createImageFile(): File? {
-        return try {
-            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-            val imageFileName = "JPEG_" + timeStamp + "_"
-            val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            val image = File.createTempFile(imageFileName, ".jpg", storageDir)
-            photoPath = image.absolutePath
-            image
-        } catch (ex: IOException) {
-            Timber.e(ex)
-            null
+            photoUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            imageCaptureLauncher.launch(captureIntent)
         }
     }
 
@@ -221,12 +166,12 @@ class OcrActivity : AppCompatActivity() {
     }
 
     private fun allPermissionsGranted(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // Android is 11 (R) or above
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Android is 10 (Q) or above
             val camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            camera == PackageManager.PERMISSION_GRANTED && Environment.isExternalStorageManager()
+            camera == PackageManager.PERMISSION_GRANTED
         } else {
-            // Below Android 11
+            // Below Android 10
             val camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             camera == PackageManager.PERMISSION_GRANTED && write == PackageManager.PERMISSION_GRANTED
