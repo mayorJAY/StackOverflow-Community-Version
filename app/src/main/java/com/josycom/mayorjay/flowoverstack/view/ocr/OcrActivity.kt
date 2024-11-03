@@ -4,27 +4,38 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -33,23 +44,20 @@ import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityOcrBinding
 import com.josycom.mayorjay.flowoverstack.data.model.Question
 import com.josycom.mayorjay.flowoverstack.view.search.SearchAdapter
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomSearchViewModelFactory
 import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import com.josycom.mayorjay.flowoverstack.view.answer.AnswerActivity
 import com.josycom.mayorjay.flowoverstack.view.home.QuestionActivity
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
-import dagger.android.AndroidInjection
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class OcrActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOcrBinding
@@ -57,18 +65,24 @@ class OcrActivity : AppCompatActivity() {
     private val requiredPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private var questions: List<Question>? = listOf()
     private var searchInput: String = ""
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModels()
 
-    @Inject
-    lateinit var viewModelFactory: CustomSearchViewModelFactory
+    private val permissionRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        beginImageCapture()
+    }
+
+    private val imageCaptureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        beginImageCropping(result)
+    }
+
+    private val imageCropperLauncher = registerForActivityResult(CropImageContract()) { result ->
+        beginImageAnalysis(result)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityOcrBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.SEARCH_PAGE_SIZE)
-        searchViewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
         checkPermissionAndStartCamera()
         setupRecyclerView()
         hideAndShowScrollFab()
@@ -81,6 +95,18 @@ class OcrActivity : AppCompatActivity() {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (allPermissionsGranted()) {
                 startCamera()
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                try {
+                    val intent = Intent()
+                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    val uri = Uri.fromParts("package", this.packageName, null)
+                    intent.setData(uri)
+                    permissionRequestLauncher.launch(intent)
+                } catch (ex: Exception) {
+                    val intent = Intent()
+                    intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                    permissionRequestLauncher.launch(intent)
+                }
             } else {
                 returnToMainActivity()
                 finish()
@@ -100,14 +126,54 @@ class OcrActivity : AppCompatActivity() {
                     startActivity(Intent(this, QuestionActivity::class.java))
                 }
                 .setPositiveButton(getString(R.string.ask_me)) { _: DialogInterface?, _: Int ->
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(requiredPermissions, PERMISSION_REQUEST_CODE)
-                    }
+                    ActivityCompat.requestPermissions(this, requiredPermissions, PERMISSION_REQUEST_CODE)
                 }.show()
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(requiredPermissions, PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, requiredPermissions, PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    private fun beginImageCapture() {
+        if (allPermissionsGranted()) {
+            startCamera()
+        } else {
+            returnToMainActivity()
+            finish()
+        }
+    }
+
+    private fun beginImageCropping(result: ActivityResult) {
+        if (result.resultCode == RESULT_CANCELED) {
+            finish()
+        } else {
+            val bitmap = BitmapFactory.decodeFile(photoPath)
+            if (result.resultCode == RESULT_OK && bitmap != null && photoPath != null) {
+                val file = File(photoPath.orEmpty())
+                val uri = Uri.fromFile(file)
+                imageCropperLauncher.launch(
+                    CropImageContractOptions(
+                        uri = uri,
+                        cropImageOptions = CropImageOptions().apply {
+                            guidelines = CropImageView.Guidelines.ON
+                            outputCompressFormat = Bitmap.CompressFormat.JPEG
+                        }
+                    )
+                )
             }
+        }
+    }
+
+    private fun beginImageAnalysis(result: CropImageView.CropResult) {
+        if (result.isSuccessful) {
+            binding.ivCroppedImage.isVisible = true
+            val croppedImageUri = result.uriContent
+            Glide.with(this)
+                .load(croppedImageUri)
+                .into(binding.ivCroppedImage)
+            croppedImageUri?.let { analyseImage(it) }
+        } else {
+            Timber.e(result.error)
+            AppUtils.showToast(this, getString(R.string.an_error_occurred))
         }
     }
 
@@ -130,7 +196,7 @@ class OcrActivity : AppCompatActivity() {
             if (photo != null) {
                 val photoUri = FileProvider.getUriForFile(this, "com.josycom.mayorjay.flowoverstack.fileprovider", photo)
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                startActivityForResult(captureIntent, CAMERA_REQUEST_CODE)
+                imageCaptureLauncher.launch(captureIntent)
             }
         }
     }
@@ -155,52 +221,24 @@ class OcrActivity : AppCompatActivity() {
     }
 
     private fun allPermissionsGranted(): Boolean {
-        var granted = false
-        for (item in requiredPermissions) {
-            granted = ContextCompat.checkSelfPermission(this, item) == PackageManager.PERMISSION_GRANTED
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Android is 11 (R) or above
+            val camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            camera == PackageManager.PERMISSION_GRANTED && Environment.isExternalStorageManager()
+        } else {
+            // Below Android 11
+            val camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            camera == PackageManager.PERMISSION_GRANTED && write == PackageManager.PERMISSION_GRANTED
         }
-        return granted
     }
 
     private fun shouldShowRequestPermissionRationale(): Boolean {
         var shouldRequest = false
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            for (item in requiredPermissions) {
-                shouldRequest = shouldShowRequestPermissionRationale(item)
-            }
+        for (item in requiredPermissions) {
+            shouldRequest = shouldShowRequestPermissionRationale(item)
         }
         return shouldRequest
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_CANCELED) {
-            finish()
-            return
-        }
-        binding.ivCroppedImage.isVisible = true
-        val bitmap = BitmapFactory.decodeFile(photoPath)
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && bitmap != null && photoPath != null) {
-                val file = File(photoPath ?: "")
-                val uri = Uri.fromFile(file)
-                CropImage.activity(uri)
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(this)
-            }
-        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode == RESULT_OK) {
-                val resultUri = result.uri
-                Glide.with(this)
-                        .load(resultUri)
-                        .into(binding.ivCroppedImage)
-                analyseImage(resultUri)
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Timber.e(result.error)
-                AppUtils.showToast(this, getString(R.string.an_error_occurred))
-            }
-        }
     }
 
     private fun analyseImage(resultUri: Uri) {
@@ -208,7 +246,13 @@ class OcrActivity : AppCompatActivity() {
         binding.btRecognise.setOnClickListener {
             binding.ocrProgressBar.isVisible = true
             try {
-                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, resultUri)
+                val bitmap = when {
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> {
+                        val source = ImageDecoder.createSource(contentResolver, resultUri)
+                        ImageDecoder.decodeBitmap(source)
+                    }
+                    else -> MediaStore.Images.Media.getBitmap(contentResolver, resultUri)
+                }
                 val image = InputImage.fromBitmap(bitmap, 0)
                 val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
                 recognizer.process(image)
@@ -310,7 +354,9 @@ class OcrActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(binding.ocrTextInputEditText.text.toString())) {
                 binding.ocrTextInputEditText.error = getString(R.string.ocr_et_error_message)
             } else {
-                searchInput = binding.ocrTextInputEditText.text.toString()
+                searchInput = binding.ocrTextInputEditText.text.toString().trim()
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                 setQuery()
             }
         }
@@ -360,6 +406,5 @@ class OcrActivity : AppCompatActivity() {
 
     companion object {
         private const val PERMISSION_REQUEST_CODE = 100
-        private const val CAMERA_REQUEST_CODE = 101
     }
 }

@@ -17,36 +17,35 @@ import javax.inject.Singleton
 @Singleton
 class SearchRepository @Inject constructor(private val apiService: ApiService) {
 
-    private val mResponse = MutableLiveData<SearchResponse>()
+    val searchResponse = MutableLiveData<SearchResponse>()
 
     private fun getQuestionsWithTextInTitle(inTitle: String?, page: Int, pageSize: Int) {
-        mResponse.postValue(SearchResponse(AppConstants.LOADING, null))
+        searchResponse.postValue(SearchResponse(AppConstants.LOADING, null))
         val call = apiService.getQuestionsWithTextInTitle(inTitle, page, pageSize)
         call.enqueue(object : Callback<QuestionsResponse?> {
             override fun onResponse(call: Call<QuestionsResponse?>, response: Response<QuestionsResponse?>) {
                 val questionsResponse = response.body()
                 if (questionsResponse != null) {
                     if (questionsResponse.items.isNotEmpty()) {
-                        mResponse.setValue(
+                        searchResponse.setValue(
                             SearchResponse(
                                 AppConstants.LOADED,
                                 questionsResponse.items.map { it.toQuestion() })
                         )
                     } else {
-                        mResponse.setValue(SearchResponse(AppConstants.NO_MATCHING_RESULT, null))
+                        searchResponse.setValue(SearchResponse(AppConstants.NO_MATCHING_RESULT, null))
                     }
                 }
             }
 
             override fun onFailure(call: Call<QuestionsResponse?>, t: Throwable) {
                 Timber.e(t)
-                mResponse.value = SearchResponse(AppConstants.FAILED, null)
+                searchResponse.value = SearchResponse(AppConstants.FAILED, null)
             }
         })
     }
 
-    fun getResponse(inTitle: String?, page: Int, pageSize: Int): MutableLiveData<SearchResponse> {
+    fun performSearch(inTitle: String?, page: Int, pageSize: Int) {
         ThreadExecutor.mExecutor.execute { getQuestionsWithTextInTitle(inTitle, page, pageSize) }
-        return mResponse
     }
 }

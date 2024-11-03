@@ -6,13 +6,16 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.josycom.mayorjay.flowoverstack.data.model.Answer
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AnswerViewModel(answerRepository: AnswerRepository, questionId: Int, order: String, sortCondition: String, site: String, filter: String, siteKey: String) : ViewModel() {
+@HiltViewModel
+class AnswerViewModel @Inject constructor(private val answerRepository: AnswerRepository) : ViewModel() {
 
-    val answerDataFlow: Flow<PagingData<Answer>>?
+    var answerDataFlow: Flow<PagingData<Answer>>? = null
 
-    init {
+    fun init(questionId: Int, order: String, sortCondition: String, site: String, filter: String, siteKey: String) {
         answerRepository.init(questionId, order, sortCondition, site, filter, siteKey)
         answerDataFlow = answerRepository.answerDataFlow?.cachedIn(viewModelScope)
     }

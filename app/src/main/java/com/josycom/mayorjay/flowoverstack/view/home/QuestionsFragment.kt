@@ -1,6 +1,5 @@
 package com.josycom.mayorjay.flowoverstack.view.home
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
@@ -24,52 +23,42 @@ import com.josycom.mayorjay.flowoverstack.databinding.FragmentQuestionsBinding
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import com.josycom.mayorjay.flowoverstack.view.answer.AnswerActivity
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomQuestionViewModelFactory
 import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionViewModel
-import dagger.android.support.AndroidSupportInjection
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * This [Fragment] houses all Questions
  */
+@AndroidEntryPoint
 class QuestionsFragment : Fragment() {
 
     private lateinit var binding: FragmentQuestionsBinding
-    private lateinit var viewModel: QuestionViewModel
-    @Inject
-    lateinit var viewModelFactory: CustomQuestionViewModelFactory
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-
-        viewModelFactory.setInputs(
-                AppConstants.FIRST_PAGE,
-                AppConstants.PAGE_SIZE,
-                AppConstants.ORDER_DESCENDING,
-                sortCondition,
-                AppConstants.SITE,
-                tagName,
-                AppConstants.QUESTION_FILTER,
-                AppConstants.API_KEY
-        )
-    }
+    private val viewModel: QuestionViewModel by viewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        binding = FragmentQuestionsBinding.inflate(inflater, container, false)
+        binding = FragmentQuestionsBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(QuestionViewModel::class.java)
+        viewModel.init(
+            AppConstants.FIRST_PAGE,
+            AppConstants.PAGE_SIZE,
+            AppConstants.ORDER_DESCENDING,
+            sortCondition,
+            AppConstants.SITE,
+            tagName,
+            AppConstants.QUESTION_FILTER,
+            AppConstants.API_KEY
+        )
 
         initViews()
         fetchAndDisplayQuestions()

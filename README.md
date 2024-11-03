@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="app_icon.png" title="App Logo">
+  <img src="app_icon.png" title="App Logo" alt="">
 </p>
 
 # StackOverflow - Community Version
@@ -25,7 +25,7 @@ Users can also search for a particular problem they are having by typing in a se
 * [Preferences DataStore](https://developer.android.com/topic/libraries/architecture/datastore) for storing and retrieving key-value pairs of primitive data types
 # Installation
 
-This App requires a minimum API level of 21. Clone the repository. You will need an API key from [Stack Exchange API](https://api.stackexchange.com/) to receive a higher request quota. Locate the StringConstants.java file and edit the following line to add your API key:
+This App requires a minimum API level of 26. Clone the repository. You will need an API key from [Stack Exchange API](https://api.stackexchange.com/) to receive a higher request quota. Locate the StringConstants.java file and edit the following line to add your API key:
 
 ````
 API_KEY = "YOUR_API_KEY"

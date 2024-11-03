@@ -2,14 +2,16 @@ package com.josycom.mayorjay.flowoverstack.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.josycom.mayorjay.flowoverstack.data.repository.PreferenceRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class QuestionActivityViewModel(private val preferenceRepository: PreferenceRepository) :
+@HiltViewModel
+class QuestionActivityViewModel @Inject constructor(private val preferenceRepository: PreferenceRepository) :
     ViewModel() {
 
     var appOpenCountLiveData: LiveData<Int?>? = null
@@ -30,20 +32,6 @@ class QuestionActivityViewModel(private val preferenceRepository: PreferenceRepo
     fun deletePreferences() {
         viewModelScope.launch {
             preferenceRepository.deleteAllPreferences()
-        }
-    }
-}
-
-class ViewModelProviderFactory(private val preferenceRepository: PreferenceRepository) :
-    ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        when {
-            modelClass.isAssignableFrom(QuestionActivityViewModel::class.java) -> return QuestionActivityViewModel(
-                preferenceRepository
-            ) as T
-            else -> throw IllegalArgumentException("Wrong Class Provided $modelClass")
         }
     }
 }

@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -20,14 +21,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.josycom.mayorjay.flowoverstack.R
-import com.josycom.mayorjay.flowoverstack.data.repository.PreferenceRepositoryImpl
-import com.josycom.mayorjay.flowoverstack.data.repository.dataStore
 import com.josycom.mayorjay.flowoverstack.databinding.ActivityQuestionBinding
 import com.josycom.mayorjay.flowoverstack.databinding.LayoutInfoDialogBinding
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
@@ -36,35 +36,32 @@ import com.josycom.mayorjay.flowoverstack.view.ocr.OcrActivity
 import com.josycom.mayorjay.flowoverstack.view.search.SearchActivity
 import com.josycom.mayorjay.flowoverstack.view.tag.TagsDialogFragment
 import com.josycom.mayorjay.flowoverstack.viewmodel.QuestionActivityViewModel
-import com.josycom.mayorjay.flowoverstack.viewmodel.ViewModelProviderFactory
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
-class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+@AndroidEntryPoint
+class QuestionActivity : AppCompatActivity() {
     private var fragmentTransaction: FragmentTransaction? = null
     private var isFragmentDisplayed = false
     private var isFabOpen = false
+    private var isRecencySelected = false
     private lateinit var binding: ActivityQuestionBinding
     private var fabOpen: Animation? = null
     private var fabClose: Animation? = null
     private var appUpdateManager: AppUpdateManager? = null
     private var job: Job? = null
-    private val viewModel: QuestionActivityViewModel by viewModels {
-        ViewModelProviderFactory(PreferenceRepositoryImpl(applicationContext.dataStore))
+    private val viewModel: QuestionActivityViewModel by viewModels()
+
+    private val appUpdateLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        if (result.resultCode != RESULT_OK) {
+            checkForUpdate()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityQuestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -170,6 +167,8 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        val menuItem = menu.findItem(R.id.action_filter_by_recency)
+        menuItem.setTitle(if (isRecencySelected) R.string.action_filter_by_activity else R.string.action_filter_by_recency)
         return true
     }
 
@@ -178,10 +177,10 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
             R.id.action_filter_by_recency -> {
                 if (item.title == getString(R.string.action_filter_by_recency)) {
                     switchView(getString(R.string.recent_questions), AppConstants.SORT_BY_CREATION)
-                    item.setTitle(R.string.action_filter_by_activity)
+                    isRecencySelected = true
                 } else if (item.title == getString(R.string.action_filter_by_activity)) {
                     switchView(getString(R.string.active_questions), AppConstants.SORT_BY_ACTIVITY)
-                    item.setTitle(R.string.action_filter_by_recency)
+                    isRecencySelected = false
                 }
                 return true
             }
@@ -235,10 +234,6 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
         finish()
     }
 
-    override fun androidInjector(): AndroidInjector<Any> {
-        return dispatchingAndroidInjector
-    }
-
     private fun checkForTablet() {
         val isTablet = resources.getBoolean(R.bool.isTablet)
         if (isTablet) {
@@ -283,9 +278,8 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
                 try {
                     appUpdateManager?.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.FLEXIBLE,
-                        this@QuestionActivity,
-                        APP_UPDATE
+                        appUpdateLauncher,
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
                     )
                 } catch (e: SendIntentException) {
                     Timber.e(e)
@@ -310,17 +304,6 @@ class QuestionActivity : AppCompatActivity(), HasAndroidInjector {
             setActionTextColor(resources.getColor(R.color.colorPrimaryText))
             show()
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == APP_UPDATE && resultCode != RESULT_OK) {
-            checkForUpdate()
-        }
-    }
-
-    companion object {
-        private const val APP_UPDATE = 10
     }
 
     private val tagSelectionListener = object : TagsDialogFragment.TagSelectionCallback {
