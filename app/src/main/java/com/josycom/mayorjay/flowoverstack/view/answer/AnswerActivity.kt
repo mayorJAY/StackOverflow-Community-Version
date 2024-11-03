@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
@@ -23,39 +23,32 @@ import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import com.josycom.mayorjay.flowoverstack.view.home.PagingLoadStateAdapter
 import com.josycom.mayorjay.flowoverstack.viewmodel.AnswerViewModel
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomAnswerViewModelFactory
-import dagger.android.AndroidInjection
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class AnswerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAnswerBinding
-    private lateinit var answerViewModel: AnswerViewModel
+    private val answerViewModel: AnswerViewModel by viewModels()
     private var ownerQuestionLink: String? = null
     private var questionId = 0
-
-    @Inject
-    lateinit var viewModelFactory: CustomAnswerViewModelFactory
     private var questionLink: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityAnswerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupViewContents(intent)
-        viewModelFactory.setInputs(questionId,
+        answerViewModel.init(questionId,
         AppConstants.ORDER_DESCENDING,
         AppConstants.SORT_BY_ACTIVITY,
         AppConstants.SITE,
         AppConstants.ANSWER_FILTER,
         AppConstants.API_KEY)
-        answerViewModel = ViewModelProvider(this, viewModelFactory).get(AnswerViewModel::class.java)
 
         fetchAndDisplayAnswers()
         setupListeners()

@@ -1,17 +1,22 @@
 package com.josycom.mayorjay.flowoverstack.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.josycom.mayorjay.flowoverstack.data.remote.model.SearchResponse
 import com.josycom.mayorjay.flowoverstack.data.repository.SearchRepository
+import com.josycom.mayorjay.flowoverstack.util.AppConstants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(private val page: Int, private val pageSize: Int, private val mSearchRepository: SearchRepository) : ViewModel() {
+@HiltViewModel
+class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) : ViewModel() {
 
-    private val mSearchLiveData = MutableLiveData<String>()
-    val responseLiveData = Transformations.switchMap(mSearchLiveData) { query: String? -> mSearchRepository.getResponse(query, page, pageSize) }
+    val responseLiveData = searchRepository.searchResponse
+
+    init {
+        responseLiveData.value = SearchResponse()
+    }
 
     fun setQuery(query: String) {
-        mSearchLiveData.value = query
+        searchRepository.performSearch(query, AppConstants.FIRST_PAGE, AppConstants.SEARCH_PAGE_SIZE)
     }
 }

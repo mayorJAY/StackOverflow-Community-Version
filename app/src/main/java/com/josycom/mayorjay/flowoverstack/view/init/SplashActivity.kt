@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.view.home.QuestionActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
 
     private var job: Job? = null

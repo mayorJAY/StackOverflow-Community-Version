@@ -6,11 +6,11 @@ import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,31 +18,24 @@ import com.josycom.mayorjay.flowoverstack.R
 import com.josycom.mayorjay.flowoverstack.databinding.ActivitySearchBinding
 import com.josycom.mayorjay.flowoverstack.data.model.Question
 import com.josycom.mayorjay.flowoverstack.data.remote.model.SearchResponse
-import com.josycom.mayorjay.flowoverstack.viewmodel.CustomSearchViewModelFactory
 import com.josycom.mayorjay.flowoverstack.viewmodel.SearchViewModel
 import com.josycom.mayorjay.flowoverstack.util.AppConstants
 import com.josycom.mayorjay.flowoverstack.util.AppUtils
 import com.josycom.mayorjay.flowoverstack.view.answer.AnswerActivity
-import dagger.android.AndroidInjection
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private var searchInput: String = ""
     private var questions: List<Question>? = listOf()
-    private lateinit var searchViewModel: SearchViewModel
-
-    @Inject
-    lateinit var viewModelFactory: CustomSearchViewModelFactory
+    private val searchViewModel: SearchViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelFactory.setInputs(AppConstants.FIRST_PAGE, AppConstants.SEARCH_PAGE_SIZE)
-        searchViewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
         binding.apply {
             rvSearchResults.layoutManager = LinearLayoutManager(this@SearchActivity)
             rvSearchResults.setHasFixedSize(true)
@@ -80,6 +73,7 @@ class SearchActivity : AppCompatActivity() {
                 }
                 AppConstants.NO_MATCHING_RESULT -> onNoMatchingResult()
                 AppConstants.FAILED -> onError()
+                else -> searchAdapter.setQuestions(null)
             }
         }
         binding.rvSearchResults.adapter = searchAdapter

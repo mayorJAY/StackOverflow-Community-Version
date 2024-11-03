@@ -20,7 +20,7 @@ interface ApiService {
             @Query("site") site: String?,
             @Query("tagged") tagged: String?,
             @Query(value = "filter", encoded = true) filter: String?,
-            @Query("key") siteKey: String?): QuestionsResponse
+            @Query("key", encoded = true) siteKey: String?): QuestionsResponse
 
     @GET(AppConstants.ANSWERS_END_POINT)
     suspend fun getAnswersToQuestion(
